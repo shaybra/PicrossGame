@@ -2,7 +2,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints; 
+import java.awt.GridBagConstraints;
 import java.awt.Color;
 
 public class FooterPanel extends JPanel {
@@ -16,15 +16,17 @@ public class FooterPanel extends JPanel {
     JLabel timerLabel = new JLabel("Timer: 00:00");
     JLabel scoreLabel = new JLabel("Score: 0");
 
+    Controller controller = new Controller(resetButton,consoleButton,chatButton,eraseButton,markButton,checkButton,timerLabel,scoreLabel);
+
     GridBagConstraints c = new GridBagConstraints();
 
     public FooterPanel() {
         setLayout(new GridBagLayout());
-        
-        //timer label
+
+        // timer label
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.gridheight = 1;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -34,10 +36,10 @@ public class FooterPanel extends JPanel {
         timerLabel.setToolTipText("Time elapsed");
         add(timerLabel, c);
 
-        //score label
+        // score label
         c.gridx = 1;
         c.gridy = 0;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.gridheight = 1;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -45,9 +47,9 @@ public class FooterPanel extends JPanel {
         scoreLabel.setForeground(new Color(0x2364C7));
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
         scoreLabel.setToolTipText("Score");
-        add(scoreLabel,c);
+        add(scoreLabel, c);
 
-        //check button
+        // check button
         c.gridx = 6;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -59,7 +61,7 @@ public class FooterPanel extends JPanel {
         checkButton.setToolTipText("Check the grid");
         add(checkButton, c);
 
-        //mark button
+        // mark button
         c.gridx = 7;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -70,8 +72,8 @@ public class FooterPanel extends JPanel {
         markButton.setForeground(new Color(0x2364C7));
         markButton.setToolTipText("Mark the grid");
         add(markButton, c);
-        
-        //erase button
+
+        // erase button
         c.gridx = 8;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -83,10 +85,10 @@ public class FooterPanel extends JPanel {
         eraseButton.setToolTipText("Erase the grid");
         add(eraseButton, c);
 
-        //reset button
+        // reset button
         c.gridx = 1;
         c.gridy = 1;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.gridheight = 1;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -95,10 +97,10 @@ public class FooterPanel extends JPanel {
         resetButton.setToolTipText("Reset the grid");
         add(resetButton, c);
 
-        //console button
+        // console button
         c.gridx = 2;
         c.gridy = 1;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.gridheight = 1;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -107,16 +109,16 @@ public class FooterPanel extends JPanel {
         consoleButton.setToolTipText("Open the console");
         add(consoleButton, c);
 
-        //chat button
+        // chat button
         c.gridx = 3;
         c.gridy = 1;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.gridheight = 1;
         c.weightx = 0.5;
         c.weighty = 0.5;
         chatButton.setBackground(new Color(0xAFB6C1));
         chatButton.setForeground(new Color(0x2364C7));
         chatButton.setToolTipText("Chat");
-        add(chatButton,c);
+        add(chatButton, c);
     }
 }
