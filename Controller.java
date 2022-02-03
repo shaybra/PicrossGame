@@ -1,5 +1,3 @@
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
@@ -11,8 +9,8 @@ public class Controller {
     private int seconds = 0;
     private int minutes = 0;
 
-    Controller(JButton resetButton, JButton consoleButton, JButton chatButton, JButton eraseButton, JButton markButton, JButton checkButton, JLabel timerLabel, JLabel scoreLabel) {
-        resetButton.addActionListener(new ActionListener() {
+    Controller(Frame frame) {
+        frame.getFooterPanel().getResetButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reset();
@@ -22,35 +20,35 @@ public class Controller {
                 score = 0;
                 seconds = 0;
                 minutes = 0;
-                timerLabel.setText("Timer: 00:00");
-                scoreLabel.setText("Score: 0");
+                frame.getFooterPanel().getTimerLabel().setText("Timer: 00:00");
+                frame.getFooterPanel().getScoreLabel().setText("Score: 0");
             }
         });
-        consoleButton.addActionListener(new ActionListener() {
+        frame.getFooterPanel().getConsoleButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Console button clicked");
             }
         });
-        chatButton.addActionListener(new ActionListener() {
+        frame.getFooterPanel().getChatButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Chat button clicked");
             }
         });
-        eraseButton.addActionListener(new ActionListener() {
+        frame.getFooterPanel().getEraseButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Erase button clicked");
             }
         });
-        markButton.addActionListener(new ActionListener() {
+        frame.getFooterPanel().getMarkButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Mark button clicked");
             }
         });
-        checkButton.addActionListener(new ActionListener() {
+        frame.getFooterPanel().getCheckButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Check button clicked");
@@ -64,7 +62,7 @@ public class Controller {
                     seconds = 0;
                     minutes++;
                 }
-                timerLabel.setText(String.format("Timer: %02d:%02d", minutes, seconds));
+                frame.getFooterPanel().getTimerLabel().setText(String.format("Timer: %02d:%02d", minutes, seconds));
             }
         };
         new Timer(1000, timeTask).start();

@@ -16,8 +16,6 @@ public class FooterPanel extends JPanel {
     JLabel timerLabel = new JLabel("Timer: 00:00");
     JLabel scoreLabel = new JLabel("Score: 0");
 
-    Controller controller = new Controller(resetButton,consoleButton,chatButton,eraseButton,markButton,checkButton,timerLabel,scoreLabel);
-
     GridBagConstraints c = new GridBagConstraints();
 
     public FooterPanel() {
@@ -120,5 +118,37 @@ public class FooterPanel extends JPanel {
         chatButton.setForeground(new Color(0x2364C7));
         chatButton.setToolTipText("Chat");
         add(chatButton, c);
+    }
+
+    public JButton getResetButton() {
+        return resetButton;
+    }
+
+    public JButton getConsoleButton() {
+        return consoleButton;
+    }
+
+    public JButton getChatButton() {
+        return chatButton;
+    }
+
+    public JButton getEraseButton() {
+        return eraseButton;
+    }
+
+    public JButton getMarkButton() {
+        return markButton;
+    }   
+
+    public JButton getCheckButton() {
+        return checkButton;
+    }
+
+    public JLabel getTimerLabel() {
+        return timerLabel;
+    }
+
+    public JLabel getScoreLabel() {
+        return scoreLabel;
     }
 }
