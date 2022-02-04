@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 
 public class GridPanel extends JPanel {
-    JButton gridButtons[][] = new JButton[5][5];
+    private JButton gridButtons[][] = new JButton[5][5];
 
     public GridPanel() {
         setLayout(new GridLayout(5, 5));
@@ -14,5 +14,9 @@ public class GridPanel extends JPanel {
                 add(gridButtons[i][j]);
             }
         }
+    }
+    
+    public JButton[][] getGridButtons() {
+        return gridButtons;
     }
 }

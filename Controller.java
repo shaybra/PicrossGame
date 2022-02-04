@@ -1,3 +1,4 @@
+import javax.swing.JButton;
 import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
@@ -10,6 +11,27 @@ public class Controller {
     private int minutes = 0;
 
     Controller(Frame frame) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                frame.getGridPanel().getGridButtons()[i][j].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JButton button = (JButton) e.getSource();
+                        int row = 0;
+                        int col = 0;
+                        for (int i = 0; i < 5; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                if (frame.getGridPanel().getGridButtons()[i][j] == button) {
+                                    row = i + 1;
+                                    col = j + 1;
+                                }
+                            }
+                        }
+                        System.out.println("row: " + row + " col: " + col);
+                    }
+                });
+            }
+        }
         frame.getFooterPanel().getResetButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
