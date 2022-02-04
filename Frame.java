@@ -1,6 +1,9 @@
 import javax.swing.JFrame;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class Frame extends JFrame {
     private TopPanel topPanel = new TopPanel();

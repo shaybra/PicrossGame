@@ -2,6 +2,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+//import java.awt.Insets;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
 
@@ -21,6 +22,9 @@ public class FooterPanel extends JPanel {
     public FooterPanel() {
         setLayout(new GridBagLayout());
 
+        c.ipadx = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        
         // timer label
         c.gridx = 0;
         c.gridy = 0;
