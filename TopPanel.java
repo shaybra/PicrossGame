@@ -1,28 +1,22 @@
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.GridBagLayout;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.GridLayout;
-import java.awt.GridBagConstraints;
 import java.awt.Color;
+import java.awt.BorderLayout;
 
 public class TopPanel extends JPanel {
     JLabel hints[][] = new JLabel[3][5];
 
     TopPanel() {
-        GridBagConstraints c = new GridBagConstraints();
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout(65,0));
         JPanel logoPanel = new JPanel();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
         JLabel logo = new JLabel("<html><h1>M&G</h1></html>");
         logo.setForeground(new Color(0x2364C7));
         logoPanel.add(logo);
-        add(logoPanel, c);
+        logoPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        add(logoPanel, BorderLayout.WEST);
         JPanel hintsPanel = new JPanel();
         hintsPanel.setLayout(new GridLayout(3, 5));
         for (int i = 0; i < 3; i++) {
@@ -33,13 +27,6 @@ public class TopPanel extends JPanel {
                 hintsPanel.add(hints[i][j]);
             }
         }
-        c.gridx = 3;
-        c.gridy = 0;
-        c.gridwidth = 5;
-        c.gridheight = 5;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        add(hintsPanel, c);
+        add(hintsPanel, BorderLayout.CENTER);
     }
 }

@@ -1,4 +1,5 @@
 import javax.swing.JButton;
+import javax.swing.JWindow;
 import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
@@ -9,6 +10,11 @@ public class Controller {
     private int score = 0;
     private int seconds = 0;
     private int minutes = 0;
+    private boolean consoleIsOpen = false;
+    private boolean chatIsOpen = false;
+    
+    JWindow console = new JWindow();
+    JWindow chat = new JWindow();
 
     Controller(Frame frame) {
         for (int i = 0; i < 5; i++) {
@@ -49,13 +55,21 @@ public class Controller {
         frame.getFooterPanel().getConsoleButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                consoleIsOpen = !consoleIsOpen;
                 System.out.println("Console button clicked");
+                console.setSize(920, 360);
+                console.setLocation(frame.getX(), frame.getY() + frame.getHeight() + 10);
+                console.setVisible(consoleIsOpen);
             }
         });
         frame.getFooterPanel().getChatButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                chatIsOpen = !chatIsOpen;
                 System.out.println("Chat button clicked");
+                chat.setSize(306, 920);
+                chat.setLocation(frame.getX() + frame.getWidth() + 10, frame.getY());
+                chat.setVisible(chatIsOpen);
             }
         });
         frame.getFooterPanel().getEraseButton().addActionListener(new ActionListener() {
