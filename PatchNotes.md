@@ -1,11 +1,3 @@
 # Patch Notes
 
-This is the patch notes for the latest version of the game.
-    
-# Changelog
-
-This is the changelog for the latest version of the game.
-    
-# Credits
-
-This is the credits for the latest version of the game.
+- The console has been moved from under the main frame (as shown in the UI design) to it's left.
