@@ -11,8 +11,8 @@ public class Controller {
     private int seconds = 0;
     private int minutes = 0;
     
-    JFrame console = new JFrame();
-    JFrame chat = new JFrame();
+    JFrame console = new JFrame("Console");
+    JFrame chat = new JFrame("Chat");
 
     Controller(Frame frame) {
         for (int i = 0; i < 5; i++) {
