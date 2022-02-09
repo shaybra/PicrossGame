@@ -1,5 +1,7 @@
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.GridLayout;
 import java.awt.Color;
 
@@ -12,6 +14,8 @@ public class SidePanel extends JPanel{
             for(int j=0;j<3;j++){
                 hints[i][j] = new JLabel("Hint"+"("+(i+1)+","+(j+1)+")");
                 hints[i][j].setForeground(new Color(0xFFFFFF));
+                hints[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+                hints[i][j].setVerticalAlignment(SwingConstants.CENTER);
                 add(hints[i][j]);
             }
         }
