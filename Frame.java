@@ -14,7 +14,7 @@ public class Frame extends JFrame {
 
     public Frame() {
         super("Picross");
-        setSize(920, 920);
+        setSize(new Dimension(920, 920));
         setLayout(new BorderLayout());
 
         // center frame
@@ -28,10 +28,10 @@ public class Frame extends JFrame {
         add(sidePanel, BorderLayout.WEST);
 
         // set size of each panel
-        topPanel.setSize(920, 240);
-        footerPanel.setSize(920, 180);
-        gridPanel.setSize(680, 680);
-        sidePanel.setSize(240, 680);
+        topPanel.setPreferredSize(new Dimension(920, 120));
+        footerPanel.setPreferredSize(new Dimension(920, 90));
+        gridPanel.setPreferredSize(new Dimension(680, 680));
+        sidePanel.setPreferredSize(new Dimension(120, 680));
 
         // set background color of each panel
         topPanel.setBackground(new Color(0x2364C7));
