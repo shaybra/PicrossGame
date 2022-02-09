@@ -11,8 +11,8 @@ public class Controller {
     private int seconds = 0;
     private int minutes = 0;
     
-    JFrame console = new JFrame("Console");
-    JFrame chat = new JFrame("Chat");
+    private JFrame console = new JFrame("Console");
+    private JFrame chat = new JFrame("Chat");
 
     Controller(Frame frame) {
         for (int i = 0; i < 5; i++) {
@@ -51,6 +51,8 @@ public class Controller {
                 minutes = 0;
                 frame.getFooterPanel().getTimerLabel().setText("Timer: 00:00");
                 frame.getFooterPanel().getScoreLabel().setText("Score: 0");
+                frame.getTopPanel().reset();
+                frame.getSidePanel().reset();
             }
         });
         frame.getFooterPanel().getConsoleButton().addActionListener(new ActionListener() {

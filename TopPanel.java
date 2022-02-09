@@ -11,8 +11,8 @@ import java.util.Random;
 import java.lang.StringBuilder;
 
 public class TopPanel extends JPanel {
-    JLabel hints[][] = new JLabel[3][5];
-    Random rand = new Random();
+    private JLabel hints[][] = new JLabel[3][5];
+    private Random rand = new Random();
 
     TopPanel() {
         setLayout(new BorderLayout());
@@ -37,4 +37,15 @@ public class TopPanel extends JPanel {
         hintsPanel.setBackground(new Color(0x2364C7));
         add(hintsPanel, BorderLayout.CENTER);
     }
+
+    public void reset(){
+        for(int i=0;i<3;i++)
+            for(int j=0;j<5;j++){
+                int number = rand.nextInt(6);
+                if(number != 0)
+                    hints[i][j].setText(new StringBuilder().append(number).toString());
+                else
+                    hints[i][j].setText("");
+            }
+    } 
 }
