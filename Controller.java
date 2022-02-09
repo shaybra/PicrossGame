@@ -23,6 +23,9 @@ public class Controller {
                         JButton button = (JButton) e.getSource();
                         int row = 0;
                         int col = 0;
+                        // to be changed to actual scoring in the future
+                        score++;
+                        frame.getFooterPanel().getScoreLabel().setText("Score: " + score);
                         for (int i = 0; i < 5; i++) {
                             for (int j = 0; j < 5; j++) {
                                 if (frame.getGridPanel().getGridButtons()[i][j] == button) {

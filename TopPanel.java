@@ -1,7 +1,6 @@
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
 import java.awt.Color;
