@@ -22,15 +22,14 @@ public class FooterPanel extends JPanel {
     public FooterPanel() {
         setLayout(new GridBagLayout());
 
-        c.ipadx = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         
         // timer label
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 1;
+        c.gridwidth = 3;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = 0.5;
         timerLabel.setBackground(new Color(0xAFB6C1));
         timerLabel.setForeground(new Color(0x2364C7));
@@ -39,11 +38,11 @@ public class FooterPanel extends JPanel {
         add(timerLabel, c);
 
         // score label
-        c.gridx = 1;
+        c.gridx = 3;
         c.gridy = 0;
-        c.gridwidth = 1;
+        c.gridwidth = 3;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = 0.5;
         scoreLabel.setBackground(new Color(0xAFB6C1));
         scoreLabel.setForeground(new Color(0x2364C7));
@@ -56,7 +55,7 @@ public class FooterPanel extends JPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.1;
         c.weighty = 0.5;
         checkButton.setBackground(new Color(0xAFB6C1));
         checkButton.setForeground(new Color(0x2364C7));
@@ -68,7 +67,7 @@ public class FooterPanel extends JPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.1;
         c.weighty = 0.5;
         markButton.setBackground(new Color(0xAFB6C1));
         markButton.setForeground(new Color(0x2364C7));
@@ -80,7 +79,7 @@ public class FooterPanel extends JPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.1;
         c.weighty = 0.5;
         eraseButton.setBackground(new Color(0xAFB6C1));
         eraseButton.setForeground(new Color(0x2364C7));
@@ -88,11 +87,11 @@ public class FooterPanel extends JPanel {
         add(eraseButton, c);
 
         // reset button
-        c.gridx = 1;
+        c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 1;
+        c.gridwidth = 3;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = 0.5;
         resetButton.setBackground(new Color(0xAFB6C1));
         resetButton.setForeground(new Color(0x2364C7));
@@ -100,11 +99,11 @@ public class FooterPanel extends JPanel {
         add(resetButton, c);
 
         // console button
-        c.gridx = 2;
+        c.gridx = 3;
         c.gridy = 1;
-        c.gridwidth = 1;
+        c.gridwidth = 3;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = 0.5;
         consoleButton.setBackground(new Color(0xAFB6C1));
         consoleButton.setForeground(new Color(0x2364C7));
@@ -112,11 +111,11 @@ public class FooterPanel extends JPanel {
         add(consoleButton, c);
 
         // chat button
-        c.gridx = 3;
+        c.gridx = 6;
         c.gridy = 1;
-        c.gridwidth = 1;
+        c.gridwidth = 3;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = 0.5;
         chatButton.setBackground(new Color(0xAFB6C1));
         chatButton.setForeground(new Color(0x2364C7));
