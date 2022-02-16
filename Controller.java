@@ -1,5 +1,4 @@
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
@@ -10,8 +9,8 @@ public class Controller implements ActionListener {
     private int seconds = 0;
     private int minutes = 0;
     private Frame mainFrame;
-    private JFrame console = new JFrame("Console");
-    private JFrame chat = new JFrame("Chat");
+    private View view;
+    private ChatFrame chat = new ChatFrame();
 
     Controller(Frame frame) {
         mainFrame = frame;
@@ -19,11 +18,11 @@ public class Controller implements ActionListener {
             for (int j = 0; j < 5; j++)
                 frame.getGridPanel().getGridButtons()[i][j].addActionListener(this);
         frame.getFooterPanel().getResetButton().addActionListener(this);
-        frame.getFooterPanel().getConsoleButton().addActionListener(this);
         frame.getFooterPanel().getChatButton().addActionListener(this);
         frame.getFooterPanel().getEraseButton().addActionListener(this);
         frame.getFooterPanel().getMarkButton().addActionListener(this);
         frame.getFooterPanel().getCheckButton().addActionListener(this);
+        chat.getSend().addActionListener(this);
         new Timer(1000, this).start();
     }
 
@@ -36,24 +35,26 @@ public class Controller implements ActionListener {
                 case "Reset":
                     reset();
                     break;
-                case "Console":
-                    console.setSize(306, 920);
-                    console.setLocation(mainFrame.getX() - console.getWidth() - 10, mainFrame.getY());
-                    console.setVisible(console.isVisible() ? false : true);
-                    break;
                 case "Chat":
                     chat.setSize(306, 920);
                     chat.setLocation(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
-                    chat.setVisible(chat.isVisible() ? false : true);
+                    chat.setVisible(!chat.isVisible());
                     break;
                 case "Erase":
-                    System.out.println("Erase button clicked");
+                    chat.getOutput().append("Erase button clicked\n");
+                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
                     break;
                 case "Mark":
-                    System.out.println("Mark button clicked");
+                    chat.getOutput().append("Mark button clicked\n");
+                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
                     break;
                 case "Check":
-                    System.out.println("Check button clicked");
+                    chat.getOutput().append("Check button clicked\n");
+                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    break;
+                case "Send":
+                    chat.getOutput().append(chat.getInput().getText() + "\n");
+                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
@@ -68,7 +69,8 @@ public class Controller implements ActionListener {
                                 row = i + 1;
                                 col = j + 1;
                             }
-                    System.out.println("row: " + row + " col: " + col);
+                    chat.getOutput().append("row: " + row + " col: " + col + "\n");
+                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
                     break;
             }
     }
