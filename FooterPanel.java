@@ -8,7 +8,6 @@ import java.awt.Color;
 
 public class FooterPanel extends JPanel {
     JButton resetButton = new JButton("Reset");
-    JButton consoleButton = new JButton("Console");
     JButton chatButton = new JButton("Chat");
     JButton eraseButton = new JButton("Erase");
     JButton markButton = new JButton("Mark");
@@ -98,18 +97,6 @@ public class FooterPanel extends JPanel {
         resetButton.setToolTipText("Reset the grid");
         add(resetButton, c);
 
-        // console button
-        c.gridx = 3;
-        c.gridy = 1;
-        c.gridwidth = 3;
-        c.gridheight = 1;
-        c.weightx = 0.3;
-        c.weighty = 0.5;
-        consoleButton.setBackground(new Color(0xAFB6C1));
-        consoleButton.setForeground(new Color(0x2364C7));
-        consoleButton.setToolTipText("Open the console");
-        add(consoleButton, c);
-
         // chat button
         c.gridx = 6;
         c.gridy = 1;
@@ -125,10 +112,6 @@ public class FooterPanel extends JPanel {
 
     public JButton getResetButton() {
         return resetButton;
-    }
-
-    public JButton getConsoleButton() {
-        return consoleButton;
     }
 
     public JButton getChatButton() {
