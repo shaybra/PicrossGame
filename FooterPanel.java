@@ -2,22 +2,52 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-//import java.awt.Insets;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
 
+/**
+ * FooterPanel is a JPanel that contain the contents of the footer.
+ */
 public class FooterPanel extends JPanel {
+    /**
+     * JButton to reset the game.
+     */
     JButton resetButton = new JButton("Reset");
+    /**
+     * JButton to open the chat.
+     * @see ChatFrame
+     */
     JButton chatButton = new JButton("Chat");
+    /**
+     * JButton to erase from the grid.
+     */
     JButton eraseButton = new JButton("Erase");
+    /**
+     * JButton to mark the grid.
+     */
     JButton markButton = new JButton("Mark");
+    /**
+     * JButton to check the grid.
+     */
     JButton checkButton = new JButton("Check");
 
+    /**
+     * JLabel to display the number of minutes and seconds.
+     */
     JLabel timerLabel = new JLabel("Timer: 00:00");
+    /**
+     * JLabel to display the score.
+     */
     JLabel scoreLabel = new JLabel("Score: 0");
 
+    /**
+     * GridBagConstraints to set the constraints of the components.
+     */
     GridBagConstraints c = new GridBagConstraints();
 
+    /**
+     * Constructor for FooterPanel.
+     */
     public FooterPanel() {
         setLayout(new GridBagLayout());
 
@@ -110,30 +140,58 @@ public class FooterPanel extends JPanel {
         add(chatButton, c);
     }
 
+    /**
+     * Getter for the reset button.
+     * @return {@link #resetButton}
+     */
     public JButton getResetButton() {
         return resetButton;
     }
 
+    /**
+     * Getter for the chat button.
+     * @return {@link #chatButton}
+     */
     public JButton getChatButton() {
         return chatButton;
     }
 
+    /**
+     * Getter for the erase button.
+     * @return {@link #eraseButton}
+     */
     public JButton getEraseButton() {
         return eraseButton;
     }
 
+    /**
+     * Getter for the mark button.
+     * @return {@link #markButton}
+     */
     public JButton getMarkButton() {
         return markButton;
     }   
 
+    /**
+     * Getter for the check button.
+     * @return {@link #checkButton}
+     */
     public JButton getCheckButton() {
         return checkButton;
     }
 
+    /**
+     * Getter for the timer label.
+     * @return {@link #timerLabel}
+     */
     public JLabel getTimerLabel() {
         return timerLabel;
     }
 
+    /**
+     * Getter for the score label.
+     * @return {@link #scoreLabel}
+     */
     public JLabel getScoreLabel() {
         return scoreLabel;
     }

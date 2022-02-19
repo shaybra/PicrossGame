@@ -4,14 +4,43 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Controller class for the game.
+ */
 public class Controller implements ActionListener {
+    /**
+     * score of the game.
+     */
     private int score = 0;
+    /**
+     * Seconds of the game timer.
+     */
     private int seconds = 0;
+    /**
+     * Minutes of the game timer.
+     */
     private int minutes = 0;
+    /**
+     * Frame of the game.
+     * @see Frame
+     */
     private Frame mainFrame;
+    /**
+     * View of the game.
+     * @see View
+     */
     private View view;
+    /**
+     * ChatFrame of the game.
+     * @see ChatFrame
+     */
     private ChatFrame chat = new ChatFrame();
 
+    /**
+     * Constructor for the Controller class.
+     * @param frame the frame of the game.
+     * @see Frame
+     */
     Controller(Frame frame) {
         mainFrame = frame;
         for (int i = 0; i < 5; i++)
@@ -26,6 +55,9 @@ public class Controller implements ActionListener {
         new Timer(1000, this).start();
     }
 
+    /**
+     * ActionPerformed method for the Controller class.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == null)
@@ -75,6 +107,9 @@ public class Controller implements ActionListener {
             }
     }
 
+    /**
+     * Resets the game.
+     */
     private void reset() {
         score = 0;
         seconds = 0;
@@ -85,6 +120,9 @@ public class Controller implements ActionListener {
         mainFrame.getSidePanel().reset();
     }
 
+    /**
+     * Updates the timer.
+     */
     private void time() {
         seconds++;
         if (seconds == 60) {

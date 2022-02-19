@@ -10,10 +10,22 @@ import java.awt.BorderLayout;
 import java.util.Random;
 import java.lang.StringBuilder;
 
+/**
+ * TopPanel is a JPanel that contains the top hints and the logo.
+ */
 public class TopPanel extends JPanel {
+    /**
+     * JLabel array that contains the hints.
+     */
     private JLabel hints[][] = new JLabel[3][5];
+    /**
+     * Random object used to generate random hints.
+     */
     private Random rand = new Random();
 
+    /**
+     * Constructor for TopPanel.
+     */
     TopPanel() {
         setLayout(new BorderLayout());
         JPanel logoPanel = new JPanel();
@@ -38,6 +50,9 @@ public class TopPanel extends JPanel {
         add(hintsPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Regenerates the hints in the array.
+     */
     public void reset(){
         for(int i=0;i<3;i++)
             for(int j=0;j<5;j++){
