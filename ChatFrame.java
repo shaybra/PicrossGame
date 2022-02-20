@@ -42,15 +42,21 @@ public class ChatFrame extends JFrame {
         setLayout(new BorderLayout());
         input.setColumns(15);
         output.setEditable(false);
+
+        // output will wrap around and will only wrap around on spaces so it won't cut words in half
         output.setLineWrap(true);
         output.setWrapStyleWord(true);
+        
         output.setColumns(20);
         output.setBackground(Color.BLACK);
         output.setForeground(Color.WHITE);
         textPanel.add(input);
         textPanel.add(send);
         outputPanel.setLayout(new BorderLayout());
+
+        // adding a scroll pane to the output panel
         outputPanel.add(new JScrollPane(output), BorderLayout.CENTER);
+
         outputPanel.setBackground(Color.BLACK);
         add(outputPanel, BorderLayout.CENTER);
         add(textPanel, BorderLayout.SOUTH);
@@ -73,10 +79,11 @@ public class ChatFrame extends JFrame {
     }
 
     /**
-     * Getter for the output JTextArea.
-     * @return {@link #output}
+     * updates the {@link #output} JTextArea with the given message.
+     * @param message the message to be added to the {@link #output} JTextArea.
      */
-    public JTextArea getOutput() {
-        return output;
+    public void updateOutput(String message) {
+        output.append(message);
+        output.setCaretPosition(output.getDocument().getLength());
     }
 }

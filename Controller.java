@@ -22,27 +22,32 @@ public class Controller implements ActionListener {
     private int minutes = 0;
     /**
      * Frame of the game.
+     * 
      * @see Frame
      */
     private Frame mainFrame;
     /**
      * View of the game.
+     * 
      * @see View
      */
     private View view;
     /**
      * ChatFrame of the game.
+     * 
      * @see ChatFrame
      */
     private ChatFrame chat = new ChatFrame();
 
     /**
      * Constructor for the Controller class.
+     * 
      * @param frame the frame of the game.
      * @see Frame
      */
     Controller(Frame frame) {
         mainFrame = frame;
+        // add action listener to the buttons
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 frame.getGridPanel().getGridButtons()[i][j].addActionListener(this);
@@ -52,6 +57,7 @@ public class Controller implements ActionListener {
         frame.getFooterPanel().getMarkButton().addActionListener(this);
         frame.getFooterPanel().getCheckButton().addActionListener(this);
         chat.getSend().addActionListener(this);
+        // add action listener to the timer that runs every second
         new Timer(1000, this).start();
     }
 
@@ -60,33 +66,32 @@ public class Controller implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        String output = new String();
         if (e.getActionCommand() == null)
             time();
-        else
+        else {
             switch (e.getActionCommand()) {
                 case "Reset":
                     reset();
                     break;
                 case "Chat":
                     chat.setSize(306, 920);
+                    // set the location of the chat frame to right of the main frame with 10 pixels
+                    // of space
                     chat.setLocation(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     chat.setVisible(!chat.isVisible());
                     break;
                 case "Erase":
-                    chat.getOutput().append("Erase button clicked\n");
-                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    output = "Erase button clicked\n";
                     break;
                 case "Mark":
-                    chat.getOutput().append("Mark button clicked\n");
-                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    output = "Mark button clicked\n";
                     break;
                 case "Check":
-                    chat.getOutput().append("Check button clicked\n");
-                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    output = "Check button clicked\n";
                     break;
                 case "Send":
-                    chat.getOutput().append(chat.getInput().getText() + "\n");
-                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    output = chat.getInput().getText() + "\n";
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
@@ -95,16 +100,18 @@ public class Controller implements ActionListener {
                     // to be changed to actual scoring in the future
                     score++;
                     mainFrame.getFooterPanel().getScoreLabel().setText("Score: " + score);
+                    // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
                             if (mainFrame.getGridPanel().getGridButtons()[i][j] == button) {
                                 row = i + 1;
                                 col = j + 1;
                             }
-                    chat.getOutput().append("row: " + row + " col: " + col + "\n");
-                    chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
+                    output = "row: " + row + " col: " + col + "\n";
                     break;
             }
+            chat.updateOutput(output);
+        }
     }
 
     /**
