@@ -3,7 +3,7 @@ import javax.swing.SwingUtilities;
 /**
  * Main class for the game.
  */
-public class GUI {
+public class Game {
     /**
      * Main method for the game.
      * @param args the arguments of the game.

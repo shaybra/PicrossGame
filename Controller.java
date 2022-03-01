@@ -47,10 +47,11 @@ public class Controller implements ActionListener {
      */
     Controller(Frame frame) {
         mainFrame = frame;
+        view = new View(frame,chat);
         // add action listener to the buttons
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
-                frame.getGridPanel().getGridButtons()[i][j].addActionListener(this);
+                frame.getGridPanel().getGridButton(i,j).addActionListener(this);
         frame.getFooterPanel().getResetButton().addActionListener(this);
         frame.getFooterPanel().getChatButton().addActionListener(this);
         frame.getFooterPanel().getEraseButton().addActionListener(this);
@@ -103,14 +104,14 @@ public class Controller implements ActionListener {
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
-                            if (mainFrame.getGridPanel().getGridButtons()[i][j] == button) {
+                            if (mainFrame.getGridPanel().getGridButton(i,j) == button) {
                                 row = i + 1;
                                 col = j + 1;
                             }
                     output = "row: " + row + " col: " + col + "\n";
                     break;
             }
-            chat.updateOutput(output);
+            view.updateChat(output);
         }
     }
 
@@ -120,11 +121,8 @@ public class Controller implements ActionListener {
     private void reset() {
         score = 0;
         seconds = 0;
-        minutes = 0;
-        mainFrame.getFooterPanel().getTimerLabel().setText("Timer: 00:00");
-        mainFrame.getFooterPanel().getScoreLabel().setText("Score: 0");
-        mainFrame.getTopPanel().reset();
-        mainFrame.getSidePanel().reset();
+        minutes = 0;  
+        view.reset();
     }
 
     /**
@@ -136,6 +134,6 @@ public class Controller implements ActionListener {
             seconds = 0;
             minutes++;
         }
-        mainFrame.getFooterPanel().getTimerLabel().setText(String.format("Timer: %02d:%02d", minutes, seconds));
+        view.updateTime(minutes, seconds);
     }
 }

@@ -79,11 +79,10 @@ public class ChatFrame extends JFrame {
     }
 
     /**
-     * updates the {@link #output} JTextArea with the given message.
-     * @param message the message to be added to the {@link #output} JTextArea.
+     * Getter for the output JTextArea.
+     * @return {@link #output}
      */
-    public void updateOutput(String message) {
-        output.append(message);
-        output.setCaretPosition(output.getDocument().getLength());
+    public JTextArea getOutput() {
+        return output;
     }
 }

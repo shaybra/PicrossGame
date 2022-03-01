@@ -27,9 +27,11 @@ public class GridPanel extends JPanel {
     
     /**
      * Getter for the gridButtons.
-     * @return {@link #gridButtons}.
+     * @param row the row of the gridButton.
+     * @param col the column of the gridButton.
+     * @return the gridButton at the specified row and column.
      */
-    public JButton[][] getGridButtons() {
-        return gridButtons;
+    public JButton getGridButton(int row, int col) {
+        return gridButtons[row][col];
     }
 }
