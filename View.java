@@ -3,36 +3,19 @@
  */
 public class View {
     /**
-     * {@link Frame} of the game.
-     */
-    private Frame frame;
-    /**
-     * {@link ChatFrame} of the game.
-     */
-    private ChatFrame chat;
-
-    /**
-     * Constructor for the View class.
-     * @param frame the frame of the game.
-     */
-    public View(Frame frame, ChatFrame chat) {
-        this.frame = frame;
-        this.chat = chat;
-    }
-
-    /**
      * Updates the timer.
+     * 
      * @param minutes the minutes of the timer.
      * @param seconds the seconds of the timer.
      */
-    public void updateTime(int minutes, int seconds) {
+    public void updateTime(int minutes, int seconds, Frame frame) {
         frame.getFooterPanel().getTimerLabel().setText(String.format("Timer: %02d:%02d", minutes, seconds));
     }
 
     /**
      * Resets the UI.
      */
-    public void reset(){
+    public void reset(Frame frame) {
         frame.getFooterPanel().getTimerLabel().setText("Timer: 00:00");
         frame.getFooterPanel().getScoreLabel().setText("Score: 0");
         frame.getTopPanel().reset();
@@ -41,11 +24,24 @@ public class View {
 
     /**
      * Updates the output of the chat area.
+     * 
      * @param output the output to be added to the chat.
      */
-    public void updateChat(String output) {
+    public void updateChat(String output, ChatFrame chat) {
         chat.getOutput().append(output);
         chat.getOutput().setCaretPosition(chat.getOutput().getDocument().getLength());
     }
 
+    /**
+     * Updates the chat window when Chat button is clicked.
+     * @param chat the chat frame.
+     * @param frame the main frame.
+     */
+    public void chatWindow(ChatFrame chat, Frame frame) {
+        chat.setSize(306, 920);
+        // set the location of the chat frame to right of the main frame with 10 pixels
+        // of space
+        chat.setLocation(frame.getX() + frame.getWidth() + 10, frame.getY());
+        chat.setVisible(!chat.isVisible());
+    }
 }

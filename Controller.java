@@ -47,11 +47,11 @@ public class Controller implements ActionListener {
      */
     Controller(Frame frame) {
         mainFrame = frame;
-        view = new View(frame,chat);
+        view = new View();
         // add action listener to the buttons
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
-                frame.getGridPanel().getGridButton(i,j).addActionListener(this);
+                frame.getGridPanel().getGridButton(i, j).addActionListener(this);
         frame.getFooterPanel().getResetButton().addActionListener(this);
         frame.getFooterPanel().getChatButton().addActionListener(this);
         frame.getFooterPanel().getEraseButton().addActionListener(this);
@@ -76,11 +76,7 @@ public class Controller implements ActionListener {
                     reset();
                     break;
                 case "Chat":
-                    chat.setSize(306, 920);
-                    // set the location of the chat frame to right of the main frame with 10 pixels
-                    // of space
-                    chat.setLocation(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
-                    chat.setVisible(!chat.isVisible());
+                    view.chatWindow(chat, mainFrame);
                     break;
                 case "Erase":
                     output = "Erase button clicked\n";
@@ -104,14 +100,14 @@ public class Controller implements ActionListener {
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
-                            if (mainFrame.getGridPanel().getGridButton(i,j) == button) {
+                            if (mainFrame.getGridPanel().getGridButton(i, j) == button) {
                                 row = i + 1;
                                 col = j + 1;
                             }
                     output = "row: " + row + " col: " + col + "\n";
                     break;
             }
-            view.updateChat(output);
+            view.updateChat(output, chat);
         }
     }
 
@@ -121,8 +117,8 @@ public class Controller implements ActionListener {
     private void reset() {
         score = 0;
         seconds = 0;
-        minutes = 0;  
-        view.reset();
+        minutes = 0;
+        view.reset(mainFrame);
     }
 
     /**
@@ -134,6 +130,6 @@ public class Controller implements ActionListener {
             seconds = 0;
             minutes++;
         }
-        view.updateTime(minutes, seconds);
+        view.updateTime(minutes, seconds, mainFrame);
     }
 }
