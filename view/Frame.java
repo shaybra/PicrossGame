@@ -1,4 +1,7 @@
+package view;
 import javax.swing.JFrame;
+
+import controller.Controller;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

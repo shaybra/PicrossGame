@@ -1,5 +1,7 @@
 import javax.swing.SwingUtilities;
 
+import view.Frame;
+
 /**
  * Main class for the game.
  */

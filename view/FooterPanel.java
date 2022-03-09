@@ -1,6 +1,8 @@
+package view;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
@@ -140,6 +142,36 @@ public class FooterPanel extends JPanel {
         add(chatButton, c);
     }
 
+    /**
+     * Updates the timer.
+     * 
+     * @param minutes the minutes of the timer.
+     * @param seconds the seconds of the timer.
+     */
+    public void updateTime(int minutes, int seconds){
+        timerLabel.setText(String.format("Timer: %02d:%02d", minutes, seconds));
+    }
+
+    /**
+     * Updates the score.
+     * @param score the score.
+     * @return the updated score.
+     */
+    public int updateScore(int score) {
+        // to be changed to actual scoring in the future
+        score++;
+        scoreLabel.setText("Score: " + score);
+        return score;
+    }
+
+    /**
+     * Resets the timer and score.
+     */
+    public void resetFooter(){
+        timerLabel.setText("Timer: 00:00");
+        scoreLabel.setText("Score: 0");
+    }
+    
     /**
      * Getter for the reset button.
      * @return {@link #resetButton}

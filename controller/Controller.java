@@ -1,5 +1,9 @@
+package controller;
 import javax.swing.JButton;
 import javax.swing.Timer;
+
+import view.ChatFrame;
+import view.Frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +31,6 @@ public class Controller implements ActionListener {
      */
     private Frame mainFrame;
     /**
-     * View of the game.
-     * 
-     * @see View
-     */
-    private View view;
-    /**
      * ChatFrame of the game.
      * 
      * @see ChatFrame
@@ -45,9 +43,8 @@ public class Controller implements ActionListener {
      * @param frame the frame of the game.
      * @see Frame
      */
-    Controller(Frame frame) {
+    public Controller(Frame frame) {
         mainFrame = frame;
-        view = new View();
         // add action listener to the buttons
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
@@ -76,7 +73,7 @@ public class Controller implements ActionListener {
                     reset();
                     break;
                 case "Chat":
-                    view.chatWindow(chat, mainFrame);
+                    chat.chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     break;
                 case "Erase":
                     output = "Erase button clicked\n";
@@ -94,7 +91,7 @@ public class Controller implements ActionListener {
                     JButton button = (JButton) e.getSource();
                     int row = 0;
                     int col = 0;
-                    score = view.updateScore(mainFrame, score);
+                    score = mainFrame.getFooterPanel().updateScore(score);
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
@@ -105,7 +102,7 @@ public class Controller implements ActionListener {
                     output = "row: " + row + " col: " + col + "\n";
                     break;
             }
-            view.updateChat(output, chat);
+            chat.updateChat(output);
         }
     }
 
@@ -116,7 +113,9 @@ public class Controller implements ActionListener {
         score = 0;
         seconds = 0;
         minutes = 0;
-        view.reset(mainFrame);
+        mainFrame.getFooterPanel().resetFooter();
+        mainFrame.getSidePanel().resetSidePanel();
+        mainFrame.getTopPanel().resetTopPanel();
     }
 
     /**
@@ -128,6 +127,6 @@ public class Controller implements ActionListener {
             seconds = 0;
             minutes++;
         }
-        view.updateTime(minutes, seconds, mainFrame);
+        mainFrame.getFooterPanel().updateTime(minutes, seconds);
     }
 }

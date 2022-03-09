@@ -1,3 +1,4 @@
+package view;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -37,7 +38,7 @@ public class ChatFrame extends JFrame {
     /**
      * Constructor for ChatFrame.
      */
-    ChatFrame() {
+    public ChatFrame() {
         super("Chat");
         setLayout(new BorderLayout());
         input.setColumns(15);
@@ -60,6 +61,27 @@ public class ChatFrame extends JFrame {
         outputPanel.setBackground(Color.BLACK);
         add(outputPanel, BorderLayout.CENTER);
         add(textPanel, BorderLayout.SOUTH);
+    }
+
+    /**
+     * Updates the chat window when Chat button is clicked.
+     * @param x xposition of chat.
+     * @param y y position of chat.
+     */
+    public void chatWindow(int x, int y) {
+        setSize(306, 920);
+        setLocation(x, y);
+        setVisible(!isVisible());
+    }
+
+    /**
+     * Updates the output of the chat area.
+     * 
+     * @param output the output to be added to the chat.
+     */
+    public void updateChat(String message) {
+        output.append(message);
+        output.setCaretPosition(output.getDocument().getLength());
     }
 
     /**
