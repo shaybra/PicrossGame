@@ -44,4 +44,17 @@ public class View {
         chat.setLocation(frame.getX() + frame.getWidth() + 10, frame.getY());
         chat.setVisible(!chat.isVisible());
     }
+
+    /**
+     * Updates the score.
+     * @param frame the main frame.
+     * @param score the score.
+     * @return the updated score.
+     */
+    public int updateScore(Frame frame, int score) {
+        // to be changed to actual scoring in the future
+        score++;
+        frame.getFooterPanel().getScoreLabel().setText("Score: " + score);
+        return score;
+    }
 }

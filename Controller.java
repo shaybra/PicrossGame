@@ -94,9 +94,7 @@ public class Controller implements ActionListener {
                     JButton button = (JButton) e.getSource();
                     int row = 0;
                     int col = 0;
-                    // to be changed to actual scoring in the future
-                    score++;
-                    mainFrame.getFooterPanel().getScoreLabel().setText("Score: " + score);
+                    score = view.updateScore(mainFrame, score);
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
