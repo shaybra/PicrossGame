@@ -3,6 +3,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.Controller;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
@@ -140,6 +142,18 @@ public class FooterPanel extends JPanel {
         chatButton.setForeground(new Color(0x2364C7));
         chatButton.setToolTipText("Chat");
         add(chatButton, c);
+    }
+
+    /**
+     * Add action listener to the buttons.
+     * @param controller the controller of the game.
+     */
+    public void addListener(Controller controller){
+        resetButton.addActionListener(controller);
+        chatButton.addActionListener(controller);
+        eraseButton.addActionListener(controller);
+        markButton.addActionListener(controller);
+        checkButton.addActionListener(controller);
     }
 
     /**

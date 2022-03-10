@@ -2,6 +2,8 @@ package view;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import controller.Controller;
+
 import java.awt.GridLayout;
 
 /**
@@ -24,6 +26,16 @@ public class GridPanel extends JPanel {
                 add(gridButtons[i][j]);
             }
         }
+    }
+
+    /**
+     * Add a listener to the grid.
+     * @param controller is a Controller object.
+     */
+    public void addListener(Controller controller){
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                gridButtons[i][j].addActionListener(controller);
     }
     
     /**

@@ -6,6 +6,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import controller.Controller;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -38,10 +40,15 @@ public class ChatFrame extends JFrame {
     /**
      * Constructor for ChatFrame.
      */
-    public ChatFrame() {
+    public ChatFrame(Controller controller) {
         super("Chat");
         setLayout(new BorderLayout());
         input.setColumns(15);
+        input.setActionCommand("Send");
+        // add action listeners
+        send.addActionListener(controller);
+        input.addActionListener(controller);
+        
         output.setEditable(false);
 
         // output will wrap around and will only wrap around on spaces so it won't cut words in half
@@ -75,11 +82,12 @@ public class ChatFrame extends JFrame {
     }
 
     /**
-     * Updates the output of the chat area.
+     * Updates the {@link #output} of the chat area and sets the {@link #input} field to an empty string.
      * 
      * @param output the output to be added to the chat.
      */
     public void updateChat(String message) {
+        input.setText(new String());
         output.append(message);
         output.setCaretPosition(output.getDocument().getLength());
     }

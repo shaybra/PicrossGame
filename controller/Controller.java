@@ -35,7 +35,7 @@ public class Controller implements ActionListener {
      * 
      * @see ChatFrame
      */
-    private ChatFrame chat = new ChatFrame();
+    private ChatFrame chat = new ChatFrame(this);
 
     /**
      * Constructor for the Controller class.
@@ -45,16 +45,6 @@ public class Controller implements ActionListener {
      */
     public Controller(Frame frame) {
         mainFrame = frame;
-        // add action listener to the buttons
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                frame.getGridPanel().getGridButton(i, j).addActionListener(this);
-        frame.getFooterPanel().getResetButton().addActionListener(this);
-        frame.getFooterPanel().getChatButton().addActionListener(this);
-        frame.getFooterPanel().getEraseButton().addActionListener(this);
-        frame.getFooterPanel().getMarkButton().addActionListener(this);
-        frame.getFooterPanel().getCheckButton().addActionListener(this);
-        chat.getSend().addActionListener(this);
         // add action listener to the timer that runs every second
         new Timer(1000, this).start();
     }

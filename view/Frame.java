@@ -36,7 +36,7 @@ public class Frame extends JFrame {
      * controller is a Controller object.
      * @see Controller
      */
-    Controller controller = new Controller(this);
+    private Controller controller = new Controller(this);
 
     /**
      * Constructor for the Frame class.
@@ -49,6 +49,10 @@ public class Frame extends JFrame {
         // center frame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width / 2 - getSize().width / 2, d.height / 2 - getSize().height / 2);
+
+        // add action listeners
+        footerPanel.addListener(controller);
+        gridPanel.addListener(controller);
 
         // add panels to frame
         add(topPanel, BorderLayout.NORTH);
