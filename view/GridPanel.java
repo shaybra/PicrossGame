@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import controller.Controller;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 
 /**
@@ -36,6 +37,37 @@ public class GridPanel extends JPanel {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 gridButtons[i][j].addActionListener(controller);
+    }
+
+    /**
+     * Reacts if the user clicks a correct button.
+     * @param x is the row index of the button.
+     * @param y is the column index of the button.
+     */
+    public void correct(int x,int y){
+        gridButtons[x][y].setEnabled(false);
+        gridButtons[x][y].setBackground(Color.GREEN);
+    }
+
+    /**
+     * Reacts if the user clicks a incorrect button.
+     * @param x is the row index of the button.
+     * @param y is the column index of the button.
+     */
+    public void incorrect(int x,int y){
+        gridButtons[x][y].setBackground(Color.RED);
+    }
+
+    /**
+     * Resets the grid buttons.
+     */
+    public void reset(){
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                gridButtons[i][j].setEnabled(true);
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                gridButtons[i][j].setBackground(Color.WHITE);
     }
     
     /**

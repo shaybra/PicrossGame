@@ -1,9 +1,12 @@
 package controller;
+
 import javax.swing.JButton;
 import javax.swing.Timer;
 
 import view.ChatFrame;
 import view.Frame;
+
+import model.Model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +28,7 @@ public class Controller implements ActionListener {
      */
     private int minutes = 0;
     /**
-     * Frame of the game.
+     * Frame of the game, it's the view.
      * 
      * @see Frame
      */
@@ -36,6 +39,12 @@ public class Controller implements ActionListener {
      * @see ChatFrame
      */
     private ChatFrame chat = new ChatFrame(this);
+    /**
+     * Model of the game.
+     * 
+     * @see Model
+     */
+    private Model model = new Model();
 
     /**
      * Constructor for the Controller class.
@@ -45,6 +54,7 @@ public class Controller implements ActionListener {
      */
     public Controller(Frame frame) {
         mainFrame = frame;
+        reset();
         // add action listener to the timer that runs every second
         new Timer(1000, this).start();
     }
@@ -79,17 +89,16 @@ public class Controller implements ActionListener {
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
-                    int row = 0;
-                    int col = 0;
-                    score = mainFrame.getFooterPanel().updateScore(score);
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
                             if (mainFrame.getGridPanel().getGridButton(i, j) == button) {
-                                row = i + 1;
-                                col = j + 1;
+                                if(model.getGrid(i, j)){
+                                    mainFrame.getGridPanel().correct(i, j);
+                                    score = mainFrame.getFooterPanel().updateScore(score);
+                                }else
+                                    mainFrame.getGridPanel().incorrect(i, j);
                             }
-                    output = "row: " + row + " col: " + col + "\n";
                     break;
             }
             chat.updateChat(output);
@@ -103,9 +112,14 @@ public class Controller implements ActionListener {
         score = 0;
         seconds = 0;
         minutes = 0;
+
+        mainFrame.getGridPanel().reset();
+
+        model.generateGrid();
+        mainFrame.getSidePanel().generateHints(model);
+        mainFrame.getTopPanel().generateHints(model);
+
         mainFrame.getFooterPanel().resetFooter();
-        mainFrame.getSidePanel().resetSidePanel();
-        mainFrame.getTopPanel().resetTopPanel();
     }
 
     /**

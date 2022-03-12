@@ -1,4 +1,5 @@
 package view;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +11,8 @@ import java.awt.BorderLayout;
 
 import java.util.Random;
 import java.lang.StringBuilder;
+
+import model.Model;
 
 /**
  * TopPanel is a JPanel that contains the top hints and the logo.
@@ -54,14 +57,39 @@ public class TopPanel extends JPanel {
     /**
      * Regenerates the hints in the array.
      */
-    public void resetTopPanel(){
-        for(int i=0;i<3;i++)
-            for(int j=0;j<5;j++){
-                int number = rand.nextInt(6);
-                if(number != 0)
-                    hints[i][j].setText(new StringBuilder().append(number).toString());
-                else
-                    hints[i][j].setText("");
+    public void generateHints(Model model) {
+        int count, row;
+        resetHints();
+        for (int j = 4; j >= 0; j--) {
+            count = 0;
+            row = 2;
+            for (int i = 4; i >= 0; i--) {
+                if (model.getGrid(i, j)) {
+                    count++;
+                    if (count == 5) {
+                        hints[row--][j].setText(new StringBuilder().append(count).toString());
+                        count = 0;
+                    }
+                } else {
+                    if (count != 0) {
+                        hints[row--][j].setText(new StringBuilder().append(count).toString());
+                        count = 0;
+                    }
+                }
             }
-    } 
+            if (count != 0) {
+                hints[row--][j].setText(new StringBuilder().append(count).toString());
+                count = 0;
+            }
+        }
+    }
+
+    /**
+     * Cleans the hints in the array.
+     */
+    private void resetHints() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 5; j++)
+                hints[i][j].setText("");
+    }
 }
