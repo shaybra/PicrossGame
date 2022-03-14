@@ -55,6 +55,7 @@ public class GridPanel extends JPanel {
      * @param y is the column index of the button.
      */
     public void incorrect(int x,int y){
+        gridButtons[x][y].setEnabled(false);
         gridButtons[x][y].setBackground(Color.RED);
     }
 

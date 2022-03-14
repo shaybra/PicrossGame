@@ -1,5 +1,6 @@
 package view;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import controller.Controller;
 
@@ -37,6 +38,7 @@ public class Frame extends JFrame {
      * @see Controller
      */
     private Controller controller = new Controller(this);
+    private Menu menu = new Menu(controller);
 
     /**
      * Constructor for the Frame class.
@@ -45,6 +47,8 @@ public class Frame extends JFrame {
         super("Picross");
         setSize(new Dimension(920, 920));
         setLayout(new BorderLayout());
+
+        setJMenuBar(menu);
 
         // center frame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -75,6 +79,17 @@ public class Frame extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    /**
+     * Shows the about Dialog.
+     */
+    public void showAboutDialog(){
+        JOptionPane.showMessageDialog(this, "Picross\n\n" +
+                "By: \n" +
+                "Mohamad Chaaban\n"+
+                "Garrick Weiler\n\n"+
+                "Winter term 2022", "Information", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

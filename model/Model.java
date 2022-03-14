@@ -36,4 +36,13 @@ public class Model {
     public boolean getGrid(int x, int y){
         return grid[x][y];
     }
+
+    public void firstSenario() {
+    }
+
+    public void secondSenario() {
+    }
+
+    public void thirdSenario() {
+    }
 }

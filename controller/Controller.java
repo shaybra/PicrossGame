@@ -54,7 +54,7 @@ public class Controller implements ActionListener {
      */
     public Controller(Frame frame) {
         mainFrame = frame;
-        reset();
+        newGame();
         // add action listener to the timer that runs every second
         new Timer(1000, this).start();
     }
@@ -87,6 +87,34 @@ public class Controller implements ActionListener {
                 case "Send":
                     output = chat.getInput().getText() + "\n";
                     break;
+                case "New":
+                    newGame();
+                    break;
+                case "Exit":
+                    mainFrame.dispose();
+                    System.exit(0);
+                    break;
+                case "About":
+                    mainFrame.showAboutDialog();
+                    break;
+                case "First senario":
+                    model.firstSenario();
+                    break;
+                case "Second senario":
+                    model.secondSenario();
+                    break;
+                case "Third senario":
+                    model.thirdSenario();
+                    break;
+                case "Solution":
+                    //output solution
+                    for (int i = 0; i < 5; i++)
+                        for (int j = 0; j < 5; j++)
+                                if(model.getGrid(i, j))
+                                    mainFrame.getGridPanel().correct(i, j);
+                                else
+                                    mainFrame.getGridPanel().incorrect(i, j);
+                    break;
                 default:
                     JButton button = (JButton) e.getSource();
                     // get the row and column of the button in the grid that was clicked
@@ -106,9 +134,9 @@ public class Controller implements ActionListener {
     }
 
     /**
-     * Resets the game.
+     * Makes a new game.
      */
-    private void reset() {
+    private void newGame() {
         score = 0;
         seconds = 0;
         minutes = 0;
@@ -118,6 +146,19 @@ public class Controller implements ActionListener {
         model.generateGrid();
         mainFrame.getSidePanel().generateHints(model);
         mainFrame.getTopPanel().generateHints(model);
+
+        mainFrame.getFooterPanel().resetFooter();
+    }
+
+    /**
+     * Resets the game.
+     */
+    public void reset(){
+        score = 0;
+        seconds = 0;
+        minutes = 0;
+
+        mainFrame.getGridPanel().reset();
 
         mainFrame.getFooterPanel().resetFooter();
     }
