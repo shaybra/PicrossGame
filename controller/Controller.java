@@ -3,7 +3,6 @@ package controller;
 import javax.swing.JButton;
 import javax.swing.Timer;
 
-import view.ChatFrame;
 import view.Frame;
 
 import model.Model;
@@ -33,12 +32,6 @@ public class Controller implements ActionListener {
      * @see Frame
      */
     private Frame mainFrame;
-    /**
-     * ChatFrame of the game.
-     * 
-     * @see ChatFrame
-     */
-    private ChatFrame chat = new ChatFrame(this);
     /**
      * Model of the game.
      * 
@@ -73,7 +66,7 @@ public class Controller implements ActionListener {
                     reset();
                     break;
                 case "Chat":
-                    chat.chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
+                    mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     break;
                 case "Erase":
                     output = "Erase button clicked\n";
@@ -85,7 +78,7 @@ public class Controller implements ActionListener {
                     output = "Check button clicked\n";
                     break;
                 case "Send":
-                    output = chat.getInput().getText() + "\n";
+                    output = mainFrame.getChat().getInput().getText() + "\n";
                     break;
                 case "New":
                     newGame();
@@ -129,7 +122,7 @@ public class Controller implements ActionListener {
                             }
                     break;
             }
-            chat.updateChat(output);
+            mainFrame.getChat().updateChat(output);
         }
     }
 

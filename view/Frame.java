@@ -38,7 +38,16 @@ public class Frame extends JFrame {
      * @see Controller
      */
     private Controller controller = new Controller(this);
+    /**
+     * Menu is the menu bar of the game.
+     * @see Menu
+     */
     private Menu menu = new Menu(controller);
+    /**
+     * Chat of the game.
+     */
+    private ChatFrame chat = new ChatFrame(controller);
+    
 
     /**
      * Constructor for the Frame class.
@@ -49,7 +58,7 @@ public class Frame extends JFrame {
         setLayout(new BorderLayout());
 
         setJMenuBar(menu);
-
+        
         // center frame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width / 2 - getSize().width / 2, d.height / 2 - getSize().height / 2);
@@ -98,6 +107,14 @@ public class Frame extends JFrame {
      */
     public TopPanel getTopPanel() {
         return topPanel;
+    }
+
+    /**
+     * Getter for the chat.
+     * @return {@link #chat}
+     */
+    public ChatFrame getChat() {
+        return chat;
     }
 
     /**
