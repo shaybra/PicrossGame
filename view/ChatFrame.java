@@ -1,4 +1,7 @@
 package view;
+import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -7,9 +10,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import controller.Controller;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 
 /**
  * ChatFrame is a JFrame that contains a JTextArea to display messages and a

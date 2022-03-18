@@ -1,11 +1,11 @@
 package view;
+import java.awt.Color;
+import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import controller.Controller;
-
-import java.awt.Color;
-import java.awt.GridLayout;
 
 /**
  * GridPanel is a JPanel that contains the grid.

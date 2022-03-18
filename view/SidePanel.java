@@ -1,13 +1,11 @@
 package view;
 
+import java.awt.Color;
+import java.awt.GridLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import java.awt.GridLayout;
-import java.awt.Color;
-
-import java.lang.StringBuilder;
 
 import model.Model;
 

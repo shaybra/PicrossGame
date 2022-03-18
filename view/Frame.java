@@ -1,13 +1,14 @@
 package view;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import controller.Controller;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import controller.Controller;
 
 /**
  * Frame is a JFrame that contains the content of the game.
@@ -99,6 +100,20 @@ public class Frame extends JFrame {
                 "Mohamad Chaaban\n"+
                 "Garrick Weiler\n\n"+
                 "Winter term 2022", "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Shows the game over, perfect dialog.
+     */
+    public void perfectGame(){
+        JOptionPane.showMessageDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Shows the game over.
+     */
+    public void gameOver(){
+        JOptionPane.showMessageDialog(this, new ImageIcon("images/GameOver.png"), "Game Over", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

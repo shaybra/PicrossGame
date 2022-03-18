@@ -1,16 +1,14 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.util.Random;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import java.awt.GridLayout;
-import java.awt.Color;
-import java.awt.BorderLayout;
-
-import java.util.Random;
-import java.lang.StringBuilder;
 
 import model.Model;
 

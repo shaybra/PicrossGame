@@ -1,10 +1,15 @@
 package view;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import controller.Controller;
-
-import java.awt.event.*;
 
 public class Menu extends JMenuBar {
     private JMenu menu;

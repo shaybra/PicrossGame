@@ -1,14 +1,13 @@
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.Timer;
 
-import view.Frame;
-
 import model.Model;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import view.Frame;
 
 /**
  * Controller class for the game.
@@ -110,16 +109,23 @@ public class Controller implements ActionListener {
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
+                    boolean done = false;
                     // get the row and column of the button in the grid that was clicked
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
                             if (mainFrame.getGridPanel().getGridButton(i, j) == button) {
+                                done = model.updateCurrentGrid(i, j);
                                 if(model.getGrid(i, j)){
                                     mainFrame.getGridPanel().correct(i, j);
                                     score = mainFrame.getFooterPanel().updateScore(score);
                                 }else
                                     mainFrame.getGridPanel().incorrect(i, j);
                             }
+                    if(done)
+                        if(model.isPerfectGame())
+                            mainFrame.perfectGame();
+                        else
+                            mainFrame.gameOver();
                     break;
             }
             mainFrame.getChat().updateChat(output);
