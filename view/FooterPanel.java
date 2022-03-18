@@ -88,7 +88,7 @@ public class FooterPanel extends JPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.weightx = 0.1;
+        c.weightx = 0.15;
         c.weighty = 0.5;
         checkButton.setBackground(new Color(0xAFB6C1));
         checkButton.setForeground(new Color(0x2364C7));
@@ -100,24 +100,13 @@ public class FooterPanel extends JPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.weightx = 0.1;
+        c.weightx = 0.15;
         c.weighty = 0.5;
         markButton.setBackground(new Color(0xAFB6C1));
         markButton.setForeground(new Color(0x2364C7));
         markButton.setToolTipText("Mark the grid");
         add(markButton, c);
 
-        // erase button
-        c.gridx = 8;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.gridheight = 1;
-        c.weightx = 0.1;
-        c.weighty = 0.5;
-        eraseButton.setBackground(new Color(0xAFB6C1));
-        eraseButton.setForeground(new Color(0x2364C7));
-        eraseButton.setToolTipText("Erase the grid");
-        add(eraseButton, c);
 
         // reset button
         c.gridx = 0;

@@ -23,13 +23,13 @@ public class SplashScreen extends JWindow {
     public void showSplashWindow() {
         JPanel content = new JPanel(new BorderLayout());
 
-        content.setBackground(Color.GRAY);
+        content.setBackground(Color.BLACK);
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
         BufferedImage image = null;
         try{
-            image = ImageIO.read(new File("SplashScreen.png"));
+            image = ImageIO.read(new File("images/SplashScreen.png"));
         }catch (IOException e1){
 
         }
@@ -41,12 +41,21 @@ public class SplashScreen extends JWindow {
         int y = (screen.height-height)/2;
 
         setBounds(x,y,width,height);
+        
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("/images/SplashScreen.png")));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
+
+        content.add(label,BorderLayout.CENTER);
+
+        setContentPane(content);
+
+        setVisible(true);
         try {
     	
             Thread.sleep(duration); 
         } catch (InterruptedException e){
-            
+
         }
         dispose();
     }

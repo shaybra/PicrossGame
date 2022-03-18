@@ -12,11 +12,8 @@ public class Game {
      * @param args the arguments of the game.
      */
     public static void main(String[] args) {
-
-        int duration = 6000;
         
-        SplashScreen splashWindow = new SplashScreen(duration);
-
+        SplashScreen splashWindow = new SplashScreen(6000);
         splashWindow.showSplashWindow();
         /**
          * SwingUtilities.invokeLater is used to run the game in the EDT.
