@@ -160,6 +160,8 @@ public class Controller implements ActionListener {
         mainFrame.getGridPanel().reset();
 
         mainFrame.getFooterPanel().resetFooter();
+
+        model.resetCurrentGrid();
     }
 
     /**

@@ -23,12 +23,18 @@ public class Model {
      * Generates a random grid and resets the current grid.
      */
     public void generateGrid() {
-        for (int i = 0; i < 5; i++) 
-            for (int j = 0; j < 5; j++) 
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
                 grid[i][j] = rand.nextBoolean();
-        
-        for (int i = 0; i < 5; i++) 
-            for (int j = 0; j < 5; j++) 
+        resetCurrentGrid();
+    }
+
+    /**
+     * Resets the current grid.
+     */
+    public void resetCurrentGrid() {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
     }
 
@@ -55,7 +61,7 @@ public class Model {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (grid[i][j])
-                    if (!currentGrid[i][j]){
+                    if (!currentGrid[i][j]) {
                         done = false;
                         break;
                     }
