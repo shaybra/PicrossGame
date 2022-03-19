@@ -27,6 +27,13 @@ public class Model {
             for (int j = 0; j < 5; j++)
                 grid[i][j] = rand.nextBoolean();
 
+        resetCurrentGrid();
+    }
+
+    /**
+     * Resets the current grid.
+     */
+    public void resetCurrentGrid() {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
