@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import model.Model;
@@ -90,13 +91,23 @@ public class Controller implements ActionListener {
                     mainFrame.showAboutDialog();
                     break;
                 case "First senario":
+                    reset();
                     model.firstSenario();
+                    mainFrame.getTopPanel().generateHints(model);
+                    mainFrame.getSidePanel().generateHints(model);
                     break;
                 case "Second senario":
+                    reset();
                     model.secondSenario();
+                    mainFrame.getTopPanel().generateHints(model);
+                    mainFrame.getSidePanel().generateHints(model);
+                    mainFrame.perfectGame();
                     break;
                 case "Third senario":
+                    reset();
                     model.thirdSenario();
+                    mainFrame.getTopPanel().generateHints(model);
+                    mainFrame.getSidePanel().generateHints(model);
                     break;
                 case "Solution":
                     //output solution
@@ -122,10 +133,13 @@ public class Controller implements ActionListener {
                                     mainFrame.getGridPanel().incorrect(i, j);
                             }
                     if(done)
-                        if(model.isPerfectGame())
-                            mainFrame.perfectGame();
-                        else
-                            mainFrame.gameOver();
+                        if(model.isPerfectGame()){
+                            if(mainFrame.perfectGame() == 0)
+                                newGame();
+                        } else{
+                            if(mainFrame.gameOver() == 0)
+                                newGame();
+                        }
                     break;
             }
             mainFrame.getChat().updateChat(output);
@@ -147,6 +161,9 @@ public class Controller implements ActionListener {
         mainFrame.getTopPanel().generateHints(model);
 
         mainFrame.getFooterPanel().resetFooter();
+
+        if(model.isPerfectGame())
+        mainFrame.perfectGame();
     }
 
     /**

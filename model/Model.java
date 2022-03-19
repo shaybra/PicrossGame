@@ -23,12 +23,12 @@ public class Model {
      * Generates a random grid and resets the current grid.
      */
     public void generateGrid() {
-        for (int i = 0; i < 5; i++) 
-            for (int j = 0; j < 5; j++) 
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
                 grid[i][j] = rand.nextBoolean();
-        
-        for (int i = 0; i < 5; i++) 
-            for (int j = 0; j < 5; j++) 
+
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
     }
 
@@ -55,7 +55,7 @@ public class Model {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (grid[i][j])
-                    if (!currentGrid[i][j]){
+                    if (!currentGrid[i][j]) {
                         done = false;
                         break;
                     }
@@ -79,11 +79,48 @@ public class Model {
     }
 
     public void firstSenario() {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++) {
+                if (i == 2 && j == 2) {
+                    grid[i][j] = true;
+                } else {
+                    grid[i][j] = false;
+                }
+            }
+
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                currentGrid[i][j] = false;
     }
 
     public void secondSenario() {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                grid[i][j] = false;
+
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                currentGrid[i][j] = false;
     }
 
     public void thirdSenario() {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++) {
+                if (i == 0 && j == 4) {
+                    grid[i][j] = true;
+                } else if (i == 1 && j == 0) {
+                    grid[i][j] = true;
+                } else if (i == 2 && j == 4) {
+                    grid[i][j] = true;
+                } else if (i == 3 && j == 0) {
+                    grid[i][j] = true;
+                } else
+                    grid[i][j] = false;
+                }
+            
+
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                currentGrid[i][j] = false;
     }
 }

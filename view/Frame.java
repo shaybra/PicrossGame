@@ -105,15 +105,19 @@ public class Frame extends JFrame {
     /**
      * Shows the game over, perfect dialog.
      */
-    public void perfectGame(){
-        JOptionPane.showMessageDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!", JOptionPane.INFORMATION_MESSAGE);
+    public int perfectGame(){
+        
+       int response = JOptionPane.showConfirmDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+       
+       return response;
     }
 
     /**
      * Shows the game over.
      */
-    public void gameOver(){
-        JOptionPane.showMessageDialog(this, new ImageIcon("images/GameOver.png"), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+    public int gameOver(){
+        int response = JOptionPane.showConfirmDialog(this, new ImageIcon("images/GameOver.png"), "Game Over",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        return response;
     }
 
     /**
