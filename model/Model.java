@@ -18,6 +18,10 @@ public class Model {
      * Random object to generate random numbers
      */
     private Random rand = new Random();
+    /**
+     * Mode of the game, false for check and true for mark.
+     */
+    private boolean mode = false;
 
     /**
      * Generates a random grid and resets the current grid.
@@ -83,6 +87,20 @@ public class Model {
                     break;
                 }
         return perfect;
+    }
+
+    /**
+     * Sets the mdoe of the game.
+     */
+    public void setMode(boolean mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * Gets the mode of the game.
+     */
+    public boolean getMode() {
+        return mode;
     }
 
     public void firstSenario() {
