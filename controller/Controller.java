@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import model.Model;
@@ -101,7 +100,8 @@ public class Controller implements ActionListener {
                     model.secondSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
-                    mainFrame.perfectGame();
+                    if(mainFrame.perfectGame() == 0)
+                                newGame();
                     break;
                 case "Third senario":
                     reset();
@@ -163,9 +163,10 @@ public class Controller implements ActionListener {
         mainFrame.getFooterPanel().resetFooter();
 
         if(model.isPerfectGame())
-        mainFrame.perfectGame();
+            if(mainFrame.perfectGame() == 0)
+                newGame();
+    
     }
-
     /**
      * Resets the game.
      */
