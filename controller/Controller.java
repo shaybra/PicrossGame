@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,6 +38,10 @@ public class Controller implements ActionListener {
      * @see Model
      */
     private Model model = new Model();
+    /**
+     * Timer of the game.
+     */
+    private Timer timer;
 
     /**
      * Constructor for the Controller class.
@@ -46,9 +51,10 @@ public class Controller implements ActionListener {
      */
     public Controller(Frame frame) {
         mainFrame = frame;
-        newGame();
         // add action listener to the timer that runs every second
-        new Timer(1000, this).start();
+        timer = new Timer(1000, this);
+        timer.start();
+        newGame();
     }
 
     /**
@@ -67,14 +73,13 @@ public class Controller implements ActionListener {
                 case "Chat":
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     break;
-                case "Erase":
-                    output = "Erase button clicked\n";
-                    break;
                 case "Mark":
-                    output = "Mark button clicked\n";
+                    model.setIsMark(true);
+                    mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                     break;
                 case "Check":
-                    output = "Check button clicked\n";
+                    model.setIsMark(false);
+                    mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     break;
                 case "Send":
                     output = mainFrame.getChat().getInput().getText() + "\n";
@@ -100,8 +105,8 @@ public class Controller implements ActionListener {
                     model.secondSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
-                    if(mainFrame.perfectGame() == 0)
-                                newGame();
+                    if (mainFrame.perfectGame() == 0)
+                        newGame();
                     break;
                 case "Third senario":
                     reset();
@@ -110,13 +115,11 @@ public class Controller implements ActionListener {
                     mainFrame.getSidePanel().generateHints(model);
                     break;
                 case "Solution":
-                    //output solution
+                    // output solution
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
-                                if(model.getGrid(i, j))
-                                    mainFrame.getGridPanel().correct(i, j);
-                                else
-                                    mainFrame.getGridPanel().incorrect(i, j);
+                            if (model.getGrid(i, j))
+                                mainFrame.getGridPanel().addCheck(i, j);
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
@@ -126,20 +129,42 @@ public class Controller implements ActionListener {
                         for (int j = 0; j < 5; j++)
                             if (mainFrame.getGridPanel().getGridButton(i, j) == button) {
                                 done = model.updateCurrentGrid(i, j);
-                                if(model.getGrid(i, j)){
-                                    mainFrame.getGridPanel().correct(i, j);
-                                    score = mainFrame.getFooterPanel().updateScore(score);
-                                }else
-                                    mainFrame.getGridPanel().incorrect(i, j);
+                                if (!model.getIsMark())
+                                    if (model.getGrid(i, j)) {
+                                        mainFrame.getGridPanel().correct(i, j);
+                                        score = mainFrame.getFooterPanel().updateScore(score);
+                                    } else {
+                                        mainFrame.getGridPanel().incorrect(i, j);
+                                        mainFrame.getGridPanel().addMark(i, j);
+                                    }
+                                else {
+                                    if (model.getGrid(i, j)) {
+                                        mainFrame.getGridPanel().correct(i, j);
+                                        mainFrame.getGridPanel().addMark(i, j);
+                                    } else {
+                                        mainFrame.getGridPanel().incorrect(i, j);
+                                        score = mainFrame.getFooterPanel().updateScore(score);
+                                    }
+                                }
                             }
-                    if(done)
-                        if(model.isPerfectGame()){
-                            if(mainFrame.perfectGame() == 0)
+                    if (done) {
+                        timer.stop();
+                        for (int i = 0; i < 5; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                if (!model.getGrid(i, j) && !model.getCurrentGrid(i, j)) {
+                                    score = mainFrame.getFooterPanel().updateScore(score);
+                                }
+                            }
+                        }
+                        if (model.isPerfectGame() || score == 25) {
+                            mainFrame.getFooterPanel().updateScore(24);
+                            if (mainFrame.perfectGame() == 0)
                                 newGame();
-                        } else{
-                            if(mainFrame.gameOver() == 0)
+                        } else {
+                            if (mainFrame.gameOver() == 0)
                                 newGame();
                         }
+                    }
                     break;
             }
             mainFrame.getChat().updateChat(output);
@@ -162,15 +187,16 @@ public class Controller implements ActionListener {
 
         mainFrame.getFooterPanel().resetFooter();
 
-        if(model.isPerfectGame())
-            if(mainFrame.perfectGame() == 0)
+        if (model.isPerfectGame())
+            if (mainFrame.perfectGame() == 0)
                 newGame();
-    
+        timer.start();
     }
+
     /**
      * Resets the game.
      */
-    public void reset(){
+    public void reset() {
         score = 0;
         seconds = 0;
         minutes = 0;
@@ -180,6 +206,7 @@ public class Controller implements ActionListener {
         mainFrame.getFooterPanel().resetFooter();
 
         model.resetCurrentGrid();
+        timer.start();
     }
 
     /**

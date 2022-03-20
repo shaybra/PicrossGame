@@ -104,20 +104,18 @@ public class Frame extends JFrame {
 
     /**
      * Shows the game over, perfect dialog.
+     * @return 0 if the ok button was clicked -1 if the close button was clicked.
      */
     public int perfectGame(){
-        
-       int response = JOptionPane.showConfirmDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-       
-       return response;
+       return JOptionPane.showConfirmDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
      * Shows the game over.
+     * @return 0 if the ok button was clicked -1 if the close button was clicked.
      */
-    public int gameOver(){
-        int response = JOptionPane.showConfirmDialog(this, new ImageIcon("images/GameOver.png"), "Game Over",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        return response;
+    public int gameOver(){ 
+        return JOptionPane.showConfirmDialog(this, new ImageIcon("images/GameOver.png"), "Game Over",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
