@@ -8,18 +8,31 @@ import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * SplashScreen is the splash screen of the game.
+ */
 public class SplashScreen extends JWindow {
 
     // It likes when you have ID tagged soldiers with ID tagged weapons
+    /**
+     * serialVersionUID is the serial version UID.
+     */
     private static final long serialVersionUID = 6248477399124883341L;
     // It make the splash screen go weeeeeeeeeee until it runs out of breath
     private final int duration;
 
     // Oh right i need to figure out how much breath the splash has better ask somebody
+    /**
+     * Constructor for the SplashScreen class.
+     * @param duration is the duration of the splash screen.
+     */
     public SplashScreen(int duration){
         this.duration = duration;
     }
 
+    /**
+     * Shows the splash screen and disposes of it after the duration has passed.
+     */
     public void showSplashWindow() {
         JPanel content = new JPanel(new BorderLayout());
 

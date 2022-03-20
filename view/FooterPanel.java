@@ -23,10 +23,6 @@ public class FooterPanel extends JPanel {
      */
     JButton chatButton = new JButton("Chat");
     /**
-     * JButton to erase from the grid.
-     */
-    JButton eraseButton = new JButton("Erase");
-    /**
      * JButton to mark the grid.
      */
     JButton markButton = new JButton("Mark");
@@ -140,14 +136,12 @@ public class FooterPanel extends JPanel {
     public void addListener(Controller controller){
         resetButton.addActionListener(controller);
         chatButton.addActionListener(controller);
-        eraseButton.addActionListener(controller);
         markButton.addActionListener(controller);
         checkButton.addActionListener(controller);
     }
 
     /**
      * Updates the timer.
-     * 
      * @param minutes the minutes of the timer.
      * @param seconds the seconds of the timer.
      */
@@ -189,14 +183,6 @@ public class FooterPanel extends JPanel {
      */
     public JButton getChatButton() {
         return chatButton;
-    }
-
-    /**
-     * Getter for the erase button.
-     * @return {@link #eraseButton}
-     */
-    public JButton getEraseButton() {
-        return eraseButton;
     }
 
     /**

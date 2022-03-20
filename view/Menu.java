@@ -11,11 +11,27 @@ import javax.swing.KeyStroke;
 
 import controller.Controller;
 
+/**
+ * Menu is the menu bar of the game.
+ */
 public class Menu extends JMenuBar {
+    /**
+     * menu is used to add menus to the menu bar.
+     */
     private JMenu menu;
+    /**
+     * subMenu is used to add sub menus.
+     */
     private JMenu submenu;
+    /**
+     * menuItem is used to add menu items.
+     */
     private JMenuItem menuItem;
 
+    /**
+     * Constructor for the Menu class.
+     * @param controller is the controller for the menu items.  
+     */
     public Menu(Controller controller) {
         //Game Menu.
         menu = new JMenu("Game");

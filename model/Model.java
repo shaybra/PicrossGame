@@ -119,6 +119,9 @@ public class Model {
         this.isMark = isMark;
     }
 
+    /**
+     * Generates first senario grids
+     */
     public void firstSenario() {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++) {
@@ -134,6 +137,9 @@ public class Model {
                 currentGrid[i][j] = false;
     }
 
+    /**
+     * Generates second senario grids
+     */
     public void secondSenario() {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
@@ -144,6 +150,9 @@ public class Model {
                 currentGrid[i][j] = false;
     }
 
+    /**
+     * Generates third senario grids
+     */
     public void thirdSenario() {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++) {
