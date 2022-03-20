@@ -114,9 +114,7 @@ public class Controller implements ActionListener {
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
                             if (model.getGrid(i, j))
-                                mainFrame.getGridPanel().correct(i, j);
-                            else
-                                mainFrame.getGridPanel().incorrect(i, j);
+                                mainFrame.getGridPanel().addCheck(i, j);
                     break;
                 default:
                     JButton button = (JButton) e.getSource();
