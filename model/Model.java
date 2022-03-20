@@ -18,6 +18,10 @@ public class Model {
      * Random object to generate random numbers
      */
     private Random rand = new Random();
+    /**
+     * Tells if the user is in mark mode or not.
+     */
+    private boolean isMark = false;
 
     /**
      * Generates a random grid and resets the current grid.
@@ -94,6 +98,23 @@ public class Model {
                     break;
                 }
         return perfect;
+    }
+
+    /**
+     * Gets the {@link #grid}.
+     * 
+     * @return the {@link #grid}.
+     */
+    public boolean getIsMark(){
+        return isMark;
+    }
+
+    /**
+     * Sets the value of the {@link #isMark} to true.
+     * @param isMark is the value of the {@link #isMark}.
+     */
+    public void setIsMark(boolean isMark){
+        this.isMark = isMark;
     }
 
     public void firstSenario() {

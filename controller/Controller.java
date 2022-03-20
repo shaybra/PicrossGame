@@ -67,14 +67,11 @@ public class Controller implements ActionListener {
                 case "Chat":
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     break;
-                case "Erase":
-                    output = "Erase button clicked\n";
-                    break;
                 case "Mark":
-                    output = "Mark button clicked\n";
+                    model.setIsMark(true);
                     break;
                 case "Check":
-                    output = "Check button clicked\n";
+                    model.setIsMark(false);
                     break;
                 case "Send":
                     output = mainFrame.getChat().getInput().getText() + "\n";
@@ -124,11 +121,23 @@ public class Controller implements ActionListener {
                         for (int j = 0; j < 5; j++)
                             if (mainFrame.getGridPanel().getGridButton(i, j) == button) {
                                 done = model.updateCurrentGrid(i, j);
-                                if (model.getGrid(i, j)) {
-                                    mainFrame.getGridPanel().correct(i, j);
-                                    score = mainFrame.getFooterPanel().updateScore(score);
-                                } else
-                                    mainFrame.getGridPanel().incorrect(i, j);
+                                if (!model.getIsMark())
+                                    if (model.getGrid(i, j)) {
+                                        mainFrame.getGridPanel().correct(i, j);
+                                        score = mainFrame.getFooterPanel().updateScore(score);
+                                    } else{
+                                        mainFrame.getGridPanel().incorrect(i, j);
+                                        mainFrame.getGridPanel().addMark(i, j);
+                                    }
+                                else {
+                                    if (model.getGrid(i, j)) {
+                                        mainFrame.getGridPanel().correct(i, j);
+                                        mainFrame.getGridPanel().addMark(i, j);
+                                    } else {
+                                        mainFrame.getGridPanel().incorrect(i, j);
+                                        score = mainFrame.getFooterPanel().updateScore(score);
+                                    }
+                                }
                             }
                     if (done) {
                         if (model.isPerfectGame()) {
@@ -138,7 +147,7 @@ public class Controller implements ActionListener {
                         } else {
                             for (int i = 0; i < 5; i++) {
                                 for (int j = 0; j < 5; j++) {
-                                    if(!model.getGrid(i, j) && !model.getCurrentGrid(i, j)){
+                                    if (!model.getGrid(i, j) && !model.getCurrentGrid(i, j)) {
                                         score = mainFrame.getFooterPanel().updateScore(score);
                                     }
                                 }
