@@ -41,11 +41,22 @@ public class Model {
 
     /**
      * Gets the value of the grid at the specified row and column.
-     * 
+     * @param x is the row index.
+     * @param y is the column index.
      * @return the value of the grid at the specified row and column.
      */
     public boolean getGrid(int x, int y) {
         return grid[x][y];
+    }
+
+    /**
+     * Gets the value of the current grid at the specified row and column.
+     * @param x the row of the grid.
+     * @param y the column of the grid.
+     * @return the value of the current grid at the specified row and column.
+     */
+    public boolean getCurrentGrid(int x, int y) {
+        return currentGrid[x][y];
     }
 
     /**
