@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,6 +38,10 @@ public class Controller implements ActionListener {
      * @see Model
      */
     private Model model = new Model();
+    /**
+     * Timer of the game.
+     */
+    private Timer timer;
 
     /**
      * Constructor for the Controller class.
@@ -46,9 +51,10 @@ public class Controller implements ActionListener {
      */
     public Controller(Frame frame) {
         mainFrame = frame;
-        newGame();
         // add action listener to the timer that runs every second
-        new Timer(1000, this).start();
+        timer = new Timer(1000, this);
+        timer.start();
+        newGame();
     }
 
     /**
@@ -69,9 +75,11 @@ public class Controller implements ActionListener {
                     break;
                 case "Mark":
                     model.setIsMark(true);
+                    mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                     break;
                 case "Check":
                     model.setIsMark(false);
+                    mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     break;
                 case "Send":
                     output = mainFrame.getChat().getInput().getText() + "\n";
@@ -125,7 +133,7 @@ public class Controller implements ActionListener {
                                     if (model.getGrid(i, j)) {
                                         mainFrame.getGridPanel().correct(i, j);
                                         score = mainFrame.getFooterPanel().updateScore(score);
-                                    } else{
+                                    } else {
                                         mainFrame.getGridPanel().incorrect(i, j);
                                         mainFrame.getGridPanel().addMark(i, j);
                                     }
@@ -140,18 +148,19 @@ public class Controller implements ActionListener {
                                 }
                             }
                     if (done) {
-                        if (model.isPerfectGame()) {
-                            mainFrame.getFooterPanel().updateScore(25);
+                        timer.stop();
+                        for (int i = 0; i < 5; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                if (!model.getGrid(i, j) && !model.getCurrentGrid(i, j)) {
+                                    score = mainFrame.getFooterPanel().updateScore(score);
+                                }
+                            }
+                        }
+                        if (model.isPerfectGame() || score == 25) {
+                            mainFrame.getFooterPanel().updateScore(24);
                             if (mainFrame.perfectGame() == 0)
                                 newGame();
                         } else {
-                            for (int i = 0; i < 5; i++) {
-                                for (int j = 0; j < 5; j++) {
-                                    if (!model.getGrid(i, j) && !model.getCurrentGrid(i, j)) {
-                                        score = mainFrame.getFooterPanel().updateScore(score);
-                                    }
-                                }
-                            }
                             if (mainFrame.gameOver() == 0)
                                 newGame();
                         }
@@ -181,7 +190,7 @@ public class Controller implements ActionListener {
         if (model.isPerfectGame())
             if (mainFrame.perfectGame() == 0)
                 newGame();
-
+        timer.start();
     }
 
     /**
@@ -197,6 +206,7 @@ public class Controller implements ActionListener {
         mainFrame.getFooterPanel().resetFooter();
 
         model.resetCurrentGrid();
+        timer.start();
     }
 
     /**

@@ -1,5 +1,6 @@
 package view;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
@@ -70,6 +71,7 @@ public class GridPanel extends JPanel {
                 gridButtons[i][j].setBackground(Color.WHITE);
                 gridButtons[i][j].setIcon(null);
             }
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**
@@ -88,6 +90,17 @@ public class GridPanel extends JPanel {
      */
     public void addMark(int x, int y){
         gridButtons[x][y].setIcon(new ImageIcon("images/Mark.png"));
+    }
+
+    /**
+     * Sets the cursor of all buttons in the grid to the cursor given in the parameter.
+     * @param c is the cursor to set.
+     */
+    @Override
+    public void setCursor(Cursor c){
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                gridButtons[i][j].setCursor(c);
     }
     
     /**
