@@ -1,3 +1,9 @@
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: March 20th, 2022
+* Class: SidePanel.java
+* Proffesor: Daniel Cormier
+*/
 package view;
 
 import java.awt.Color;
@@ -35,7 +41,7 @@ public class SidePanel extends JPanel {
     }
 
     /**
-     * Regenerates the hints in the array.
+     * Generates the hints in the array.
      */
     public void generateHints(Model model) {
         int count, col;

@@ -1,3 +1,10 @@
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: March 20th, 2022
+* Class: FooterPanel.java
+* Proffesor: Daniel Cormier
+*/ 
+
 package view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;

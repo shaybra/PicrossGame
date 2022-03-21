@@ -1,3 +1,9 @@
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: March 20th, 2022
+* Class: Controller.java
+* Proffesor: Daniel Cormier
+*/
 package controller;
 
 import java.awt.Cursor;
@@ -50,7 +56,7 @@ public class Controller implements ActionListener {
      * @see Frame
      */
     public Controller(Frame frame) {
-        mainFrame = frame;
+        mainFrame = frame; //sets up the base look of grid's house
         // add action listener to the timer that runs every second
         timer = new Timer(1000, this);
         timer.start();
@@ -66,41 +72,41 @@ public class Controller implements ActionListener {
         if (e.getActionCommand() == null)
             time();
         else {
-            switch (e.getActionCommand()) {
-                case "Reset":
+            switch (e.getActionCommand()) { // everyones constantly listening to grid to understand when he wants to do something
+                case "Reset": //grid starts from the top trying to recall how he thinks chaos set up the house
                     reset();
                     break;
-                case "Chat":
+                case "Chat": //grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
                     break;
-                case "Mark":
+                case "Mark": //asks mark to come over
                     model.setIsMark(true);
                     mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                     break;
-                case "Check":
+                case "Check": //asks mark to leave
                     model.setIsMark(false);
                     mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     break;
-                case "Send":
+                case "Send": //lets grid send mail
                     output = mainFrame.getChat().getInput().getText() + "\n";
                     break;
-                case "New":
+                case "New": //grid asks chaos to change the inside of his house again
                     newGame();
                     break;
-                case "Exit":
+                case "Exit": //grid stops plaing with chaos for the day
                     mainFrame.dispose();
                     System.exit(0);
                     break;
-                case "About":
+                case "About": //the sign at the front of grids house
                     mainFrame.showAboutDialog();
                     break;
-                case "First senario":
+                case "First senario": //grid trys the first house configuration hes used too
                     reset();
                     model.firstSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
                     break;
-                case "Second senario":
+                case "Second senario": //grid trys the second house configuration hes used too
                     reset();
                     model.secondSenario();
                     mainFrame.getTopPanel().generateHints(model);
@@ -108,20 +114,19 @@ public class Controller implements ActionListener {
                     if (mainFrame.perfectGame() == 0)
                         newGame();
                     break;
-                case "Third senario":
+                case "Third senario": //grid trys the third house configuration hes used too
                     reset();
                     model.thirdSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
                     break;
-                case "Solution":
-                    // output solution
+                case "Solution": // sometimes grid just likes to get chaos to tell him how the house is set up
                     for (int i = 0; i < 5; i++)
                         for (int j = 0; j < 5; j++)
                             if (model.getGrid(i, j))
                                 mainFrame.getGridPanel().addCheck(i, j);
                     break;
-                default:
+                default: //grid plays with chaos
                     JButton button = (JButton) e.getSource();
                     boolean done = false;
                     // get the row and column of the button in the grid that was clicked
@@ -181,13 +186,13 @@ public class Controller implements ActionListener {
 
         mainFrame.getGridPanel().reset();
 
-        model.generateGrid();
+        model.generateGrid(); //gets a new configuration for grids house with chaos's hints
         mainFrame.getSidePanel().generateHints(model);
         mainFrame.getTopPanel().generateHints(model);
 
         mainFrame.getFooterPanel().resetFooter();
 
-        if (model.isPerfectGame())
+        if (model.isPerfectGame()) //grid always asks chaos if his house is empty
             if (mainFrame.perfectGame() == 0)
                 newGame();
         timer.start();
@@ -201,7 +206,7 @@ public class Controller implements ActionListener {
         seconds = 0;
         minutes = 0;
 
-        mainFrame.getGridPanel().reset();
+        mainFrame.getGridPanel().reset(); // lets grid start from the top
 
         mainFrame.getFooterPanel().resetFooter();
 
@@ -213,8 +218,8 @@ public class Controller implements ActionListener {
      * Updates the timer.
      */
     private void time() {
-        seconds++;
-        if (seconds == 60) {
+        seconds++; 
+        if (seconds == 60) { //chaos always runs a timer for grid
             seconds = 0;
             minutes++;
         }
