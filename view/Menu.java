@@ -33,6 +33,18 @@ public class Menu extends JMenuBar {
      * menuItem is used to add menu items.
      */
     private JMenuItem menuItem;
+    /**
+     * Menu for the networking options.
+     */
+    private JMenu networkMenu;
+    /**
+     * Menu item for connecting to a server.
+     */
+    private JMenuItem networkConnect;
+    /**
+     * Menu item for disconnecting from a server.
+     */
+    private JMenuItem networkDisconnect;
 
     /**
      * Constructor for the Menu class.
@@ -80,6 +92,27 @@ public class Menu extends JMenuBar {
         menuItem.addActionListener(controller);
         menu.add(menuItem);
 
+        //Network menu.
+        networkMenu = new JMenu("Network");
+        networkMenu.getAccessibleContext().setAccessibleDescription("Stuff dealing with network connection");
+
+        //Network connection menu item.
+        networkConnect = new JMenuItem("New Connection");
+        networkConnect.setActionCommand("Connect");
+        networkConnect.getAccessibleContext().setAccessibleDescription("Make a new connection");
+        networkConnect.addActionListener(controller);
+        networkMenu.add(networkConnect);
+
+        //Network disconnection menu item.
+        networkDisconnect = new JMenuItem("Disconnect");
+        networkDisconnect.setActionCommand("Disconnect");
+        networkDisconnect.getAccessibleContext().setAccessibleDescription("Disconnect from the server");
+        networkDisconnect.addActionListener(controller);
+        networkDisconnect.setEnabled(false);
+        networkMenu.add(networkDisconnect);
+
+        add(networkMenu);
+
         //Help menu.
         menu = new JMenu("Help");
         menu.getAccessibleContext().setAccessibleDescription("Help Menu");
@@ -100,5 +133,13 @@ public class Menu extends JMenuBar {
         menu.add(menuItem);
 
         add(menu);
+    }
+
+    /**
+     * Sets the network menus to be enabled or disabled depending on the status.
+     */
+    public void connected(boolean connected) {
+        networkConnect.setEnabled(!connected);
+        networkDisconnect.setEnabled(connected);
     }
 }
