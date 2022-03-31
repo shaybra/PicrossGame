@@ -48,6 +48,10 @@ public class Controller implements ActionListener {
      * Timer of the game.
      */
     private Timer timer;
+    /**
+     * Network dialog for the game.
+     */
+    private NetwokDialog netwokDialog;
 
     /**
      * Constructor for the Controller class.
@@ -125,6 +129,13 @@ public class Controller implements ActionListener {
                         for (int j = 0; j < 5; j++)
                             if (model.getGrid(i, j))
                                 mainFrame.getGridPanel().addCheck(i, j);
+                    break;
+                case "Connect":
+                    netwokDialog = new NetwokDialog(mainFrame);
+                    mainFrame.getMenu().connected(netwokDialog.pressedConnect());
+                    break;
+                case "Disconnect":
+                    mainFrame.getMenu().connected(false);
                     break;
                 default: //grid plays with chaos
                     JButton button = (JButton) e.getSource();

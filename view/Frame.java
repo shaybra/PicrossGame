@@ -95,6 +95,7 @@ public class Frame extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        pack();
     }
 
     /**
@@ -109,19 +110,27 @@ public class Frame extends JFrame {
     }
 
     /**
+     * Menu getter.
+     * @return {@link #menu}
+     */
+    public Menu getMenu() {
+        return menu;
+    }
+
+    /**
      * Shows the game over, perfect dialog.
-     * @return 0 if the ok button was clicked -1 if the close button was clicked.
+     * @return 0 if the yes button was clicked -1 if the close or no button was clicked.
      */
     public int perfectGame(){
-       return JOptionPane.showConfirmDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+       return JOptionPane.showConfirmDialog(this, new ImageIcon("images/PerfectGame.png"), "Winner!",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 
     /**
      * Shows the game over.
-     * @return 0 if the ok button was clicked -1 if the close button was clicked.
+     * @return 0 if the yes button was clicked -1 if the close or no button was clicked.
      */
     public int gameOver(){ 
-        return JOptionPane.showConfirmDialog(this, new ImageIcon("images/GameOver.png"), "Game Over",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        return JOptionPane.showConfirmDialog(this, new ImageIcon("images/GameOver.png"), "Game Over",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 
     /**

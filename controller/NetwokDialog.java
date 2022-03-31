@@ -1,5 +1,6 @@
+package controller;
 /*###############################################
-# PiccrossNetworkModalVC (ViewController)
+# NetwokDialog (ViewController)
 # by Daniel Cormier, for CST8221 Assignment 4
 #
 # This will produce a dialog which is modal that
@@ -25,7 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * PiccrossNetworkModalVC creates a basic UI to get user input for a network
+ * NetwokDialog creates a basic UI to get user input for a network
  * connection.
  * 
  * @author Daniel Cormier
@@ -34,7 +35,7 @@ import javax.swing.JTextField;
  * @see PiccrossView
  **/
 
-public class PiccrossNetworkModalVC extends JDialog {
+public class NetwokDialog extends JDialog {
     /** Has the user pressed connect or cancel? */
     private Boolean hasConnected = false;
 
@@ -42,7 +43,7 @@ public class PiccrossNetworkModalVC extends JDialog {
     private Controller handler = new Controller();
 
     /** Will be used by the user to select desired port. */
-    private JComboBox portInput;
+    private JComboBox<String> portInput;
 
     /** Textfields for inputting desired address and user name. */
     private JTextField addressInput, nameInput;
@@ -56,7 +57,7 @@ public class PiccrossNetworkModalVC extends JDialog {
      * @param mainView the JFrame this basic UI will sit over. Generally your "view"
      *                 class.
      **/
-    public PiccrossNetworkModalVC(JFrame mainView) {
+    public NetwokDialog(JFrame mainView) {
         super(mainView, "Enter Network Address", true);
 
         // If you are changing how this UI looks or operates, I strongly encourage
@@ -183,10 +184,13 @@ public class PiccrossNetworkModalVC extends JDialog {
 
         outerPanel.add(innerPanel);
         networkPanel.add(outerPanel);
-
+        
         // When assembling a UI with any layout manager, the last statement should be
         // "pack".
         pack();
+        
+        setLocation(mainView.getX() + mainView.getWidth() / 2 - getWidth() / 2, mainView.getY() + mainView.getHeight() / 2 - getHeight() / 2);
+        setVisible(true);
     }
 
     /**
@@ -266,7 +270,7 @@ public class PiccrossNetworkModalVC extends JDialog {
      * @author Daniel Cormier
      * @version 1.1
      * @since 1.8.0_291
-     * @see PiccrossNetworkModalVCView
+     * @see NetwokDialogView
      */
     private class Controller implements ActionListener {
         @Override
