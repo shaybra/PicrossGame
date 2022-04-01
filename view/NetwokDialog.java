@@ -1,4 +1,4 @@
-package controller;
+package view;
 /*###############################################
 # NetwokDialog (ViewController)
 # by Daniel Cormier, for CST8221 Assignment 4

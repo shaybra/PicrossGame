@@ -15,6 +15,7 @@ import javax.swing.Timer;
 
 import model.Model;
 import view.Frame;
+import view.NetwokDialog;
 
 /**
  * Controller class for the game.
