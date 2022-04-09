@@ -1,39 +1,54 @@
 package model;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Scanner;
 
 public class NetworkThread implements Runnable {
-    private Client client;
+    private final Socket socket;
 
-    public NetworkThread(Client client) {
-        this.client = client;
+    public NetworkThread(Socket socket) {
+        this.socket = socket;
     }
 
     @Override
     public void run() {
         try {
-            ObjectInputStream inStream = client.getInputStream();
-            ObjectOutputStream outStream = client.getOutputStream();
-
+            ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
             Scanner in = new Scanner(inStream);
-            PrintWriter out = new PrintWriter(outStream, true /* autoFlush */);
-
-            out.println("Hello! Enter BYE to exit.");
-
-            // echo client input
+            PrintWriter out = new PrintWriter(outStream, true);
+            
+            out.println("Hello! Enter /bye to exit.");
             boolean done = false;
             while (!done && in.hasNextLine()) {
                 String line = in.nextLine();
                 out.println("Echo: " + line);
                 System.out.println("Client: " + line);
-                if (line.trim().equals("BYE"))
-                    done = true;
+                if (line.trim().charAt(0) == '/')
+                    switch (line.trim()) {
+                        case "bye":
+                            done = true;
+                            break;
+                        case "help":
+                            break;
+                        case "name":
+                            break;
+                        case "who":
+                            break;
+                    }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
-            client.close();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

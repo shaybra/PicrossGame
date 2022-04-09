@@ -25,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Client;
+
 /**
  * NetwokDialog creates a basic UI to get user input for a network
  * connection.
@@ -184,12 +186,13 @@ public class NetwokDialog extends JDialog {
 
         outerPanel.add(innerPanel);
         networkPanel.add(outerPanel);
-        
+
         // When assembling a UI with any layout manager, the last statement should be
         // "pack".
         pack();
-        
-        setLocation(mainView.getX() + mainView.getWidth() / 2 - getWidth() / 2, mainView.getY() + mainView.getHeight() / 2 - getHeight() / 2);
+
+        setLocation(mainView.getX() + mainView.getWidth() / 2 - getWidth() / 2,
+                mainView.getY() + mainView.getHeight() / 2 - getHeight() / 2);
         setVisible(true);
     }
 
@@ -311,11 +314,14 @@ public class NetwokDialog extends JDialog {
                     addrError.setText("The address must not be blank.");
                     flag = false;
                 }
+
             } else {
                 // My "Cancel" button has an action command of "X" and gets called here.
                 // Flag will remain true because we wish to allow an exit.
                 hasConnected = false;
             }
+            if (flag)
+                new Client(getAddress(), getPort());
             // Hide, but do not dispose the dialog. We may want to use it again.
             if (flag)
                 hideModal();

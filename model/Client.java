@@ -14,9 +14,7 @@ public class Client {
     private ObjectInputStream input;
     private ObjectOutputStream out;
 
-    // constructor to put ip address and port
     public Client(String address, int port) {
-        // establish a connection
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(InetAddress.getByName(address), port), 10000);
@@ -32,41 +30,16 @@ public class Client {
             } catch (ClassNotFoundException e) {
                 System.out.println(e);
             } finally {
-                socket.close();
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (UnknownHostException u) {
             System.out.println(u);
         } catch (IOException i) {
             System.out.println(i);
-        }
-    }
-
-    /**
-     * Input stream getter.
-     * @return the {@link #input} stream
-     */
-    public ObjectInputStream getInputStream() {
-        return input;
-    }
-
-    /**
-     * Output stream getter.
-     * @return the {@link #out} stream
-     */
-    public ObjectOutputStream getOutputStream() {
-        return out;
-    }
-
-    /**
-     * Closes the connection
-     */
-    public void close() {
-        try {
-            input.close();
-            out.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -134,6 +134,7 @@ public class Controller implements ActionListener {
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
                     mainFrame.getMenu().connected(netwokDialog.pressedConnect());
+                    netwokDialog.getName();
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
