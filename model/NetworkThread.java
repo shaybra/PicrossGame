@@ -35,11 +35,13 @@ public class NetworkThread extends Thread {
         try {
             InputStream inStream = socket.getInputStream();
             OutputStream outStream = socket.getOutputStream();
+
             Scanner in = new Scanner(inStream);
             PrintWriter out = new PrintWriter(outStream, true);
             
             name = in.nextLine();
-            out.println("Hello!" + name + " Enter /bye to exit.");
+            out.println("Hello! " + name + " Enter /bye to exit.");
+            
             boolean done = false;
             while (!done && in.hasNextLine()) {
                 String line = in.nextLine();
