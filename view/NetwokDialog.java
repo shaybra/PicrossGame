@@ -25,8 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.Client;
-
 /**
  * NetwokDialog creates a basic UI to get user input for a network
  * connection.
@@ -320,8 +318,6 @@ public class NetwokDialog extends JDialog {
                 // Flag will remain true because we wish to allow an exit.
                 hasConnected = false;
             }
-            if (flag)
-                new Client(getAddress(), getPort());
             // Hide, but do not dispose the dialog. We may want to use it again.
             if (flag)
                 hideModal();

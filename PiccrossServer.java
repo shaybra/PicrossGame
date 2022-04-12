@@ -1,19 +1,13 @@
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
-import model.Client;
 import model.NetworkThread;
 
 public class PiccrossServer {
-    private Vector<Thread> clients;
-    // initialize socket and input stream
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private Vector<NetworkThread> clients = new Vector<NetworkThread>();
 
     public static void main(String[] args) {
         if (args.length == 0 || Integer.parseInt(args[0]) <= 0 || Integer.parseInt(args[0]) >= 65536) {
@@ -37,8 +31,9 @@ public class PiccrossServer {
             System.out.println("Now listening to port:" + port);
             while (true) {
                 Socket socket = server.accept();
-                Runnable r = new NetworkThread(socket);
-                new Thread(r).start();
+                NetworkThread thread = new NetworkThread(socket);
+                thread.start();
+                clients.add(thread);
             }
         } catch (IOException i) {
             System.out.println(i);

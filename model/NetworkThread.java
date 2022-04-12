@@ -1,28 +1,45 @@
 package model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class NetworkThread implements Runnable {
+/**
+ * 
+ */
+public class NetworkThread extends Thread {
+    /**
+     * Socket for the client.
+     */
     private final Socket socket;
+    private String name;
 
+    /**
+     * Constructor for the NetworkThread class.
+     * 
+     * @param socket the socket that the thread will use to communicate with the
+     *               server.
+     */
     public NetworkThread(Socket socket) {
         this.socket = socket;
     }
 
     @Override
+    /**
+     * Runnable method for the thread.
+     */
     public void run() {
         try {
-            ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
+            InputStream inStream = socket.getInputStream();
+            OutputStream outStream = socket.getOutputStream();
             Scanner in = new Scanner(inStream);
             PrintWriter out = new PrintWriter(outStream, true);
             
-            out.println("Hello! Enter /bye to exit.");
+            name = in.nextLine();
+            out.println("Hello!" + name + " Enter /bye to exit.");
             boolean done = false;
             while (!done && in.hasNextLine()) {
                 String line = in.nextLine();
@@ -39,8 +56,11 @@ public class NetworkThread implements Runnable {
                             break;
                         case "who":
                             break;
+                        default:
+                            break;
                     }
             }
+            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

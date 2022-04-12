@@ -1,8 +1,8 @@
 package model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -11,24 +11,24 @@ import java.util.Scanner;
 
 public class Client {
     private Socket socket;
-    private ObjectInputStream input;
-    private ObjectOutputStream out;
+    private InputStream input;
+    private OutputStream out;
 
-    public Client(String address, int port) {
+    public Client(String address, int port, String name) {
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(InetAddress.getByName(address), port), 10000);
             socket.setSoTimeout(10000);
-            input = new ObjectInputStream(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
+            input = socket.getInputStream();
+            out = socket.getOutputStream();
             try {
+                out.write(name.getBytes());
                 Scanner in = new Scanner(input);
                 while (in.hasNextLine()) {
-                    String line = input.readObject().toString();
-                    out.writeObject(line);
+                    String line = in.nextLine();
+                    out.write(line.getBytes());
                 }
-            } catch (ClassNotFoundException e) {
-                System.out.println(e);
+                in.close();
             } finally {
                 try {
                     socket.close();
