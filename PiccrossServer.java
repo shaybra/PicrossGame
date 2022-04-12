@@ -1,10 +1,13 @@
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
-
-import model.NetworkThread;
 
 public class PiccrossServer {
     private Vector<NetworkThread> clients = new Vector<NetworkThread>();
@@ -37,6 +40,41 @@ public class PiccrossServer {
             }
         } catch (IOException i) {
             System.out.println(i);
+        }
+    }
+}
+
+class NetworkThread extends Thread {
+    private Socket socket;
+
+    public NetworkThread(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            try {
+                InputStream inStream = socket.getInputStream();
+                OutputStream outStream = socket.getOutputStream();
+                InputStreamReader in = new InputStreamReader(inStream);
+                BufferedReader bf = new BufferedReader(in);
+                PrintWriter out = new PrintWriter(outStream, true /* autoFlush */);
+
+                String name = bf.readLine();
+                System.out.printf("Hello! %s Enter BYE to exit.", name);
+                while (true) {
+                    String line = bf.readLine();
+                    if (line == null)
+                        break;
+                    System.out.println("Client: " + line);
+                    if (line.trim().equals("BYE"))
+                        break;
+                }
+            } finally {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

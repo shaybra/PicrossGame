@@ -1,18 +1,20 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class Client {
     private Socket socket;
     private InputStream input;
-    private OutputStream out;
+    private OutputStream output;
 
     public Client(String address, int port, String name) {
         try {
@@ -20,13 +22,17 @@ public class Client {
             socket.connect(new InetSocketAddress(InetAddress.getByName(address), port), 10000);
             socket.setSoTimeout(10000);
             input = socket.getInputStream();
-            out = socket.getOutputStream();
+            output = socket.getOutputStream();
             try {
-                out.write(name.getBytes());
-                Scanner in = new Scanner(input);
-                while (in.hasNextLine()) {
-                    String line = in.nextLine();
-                    out.write(line.getBytes());
+                PrintWriter out = new PrintWriter(output, true /* autoFlush */);
+                InputStreamReader in = new InputStreamReader(System.in);
+                BufferedReader bf = new BufferedReader(in);
+                bf.read(name.toCharArray());
+                while (true) {
+                    String line = bf.readLine();
+                    if (line == null)
+                        break;
+                    out.println(line);
                 }
                 in.close();
             } finally {

@@ -312,7 +312,6 @@ public class NetwokDialog extends JDialog {
                     addrError.setText("The address must not be blank.");
                     flag = false;
                 }
-
             } else {
                 // My "Cancel" button has an action command of "X" and gets called here.
                 // Flag will remain true because we wish to allow an exit.
