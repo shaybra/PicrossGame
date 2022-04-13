@@ -94,16 +94,7 @@ public class Controller implements ActionListener {
                     break;
                 case "Chat": // grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
-                    if(socket.isConnected()){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while(socket.isConnected()){
-                                mainFrame.getChat().updateChat(client.receiveMessage());
-                            }
-                        }
-                    });
-                }
+                    client.receiveMessage(mainFrame);
                     break;
                 case "Mark": // asks mark to come over
                     model.setIsMark(true);
@@ -267,7 +258,7 @@ public class Controller implements ActionListener {
     public Socket connectSocket(){
         socket = new Socket();
         try{
-            socket.connect(new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()));
+            socket.connect(new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()), 10000);
             socket.setSoTimeout(10000);
             return socket;
         }catch (IOException e){
