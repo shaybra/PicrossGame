@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import view.Frame;
+
 public class Client {
     private Socket socket;
     private Scanner in;
@@ -31,12 +33,24 @@ public class Client {
         out.flush();
         while(socket.isConnected()){
             out.write(username + ": "+ messageToSend);
+            out.println();
+            out.flush();
         }
     }
-    public String receiveMessage(){
-            String msgFromGroupChat;
-            msgFromGroupChat = in.nextLine();
-            return msgFromGroupChat;
+    public void receiveMessage(Frame frame){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String msgFromGroupChat;
+                while(socket.isConnected() && in.hasNextLine()){
+                    msgFromGroupChat = in.nextLine();
+                    frame.getChat().updateChat(msgFromGroupChat);
+                }
+            }
+        });
+            
+            
+            
             
     }
 
