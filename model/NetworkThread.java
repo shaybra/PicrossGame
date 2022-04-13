@@ -31,17 +31,18 @@ public class NetworkThread implements Runnable {
      *               server.
      */
     public NetworkThread(Socket socket) {
-        try{
+        try {
             this.socket = socket;
-            this.in = new Scanner(new InputStreamReader(socket.getInputStream()));
-            this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.clientName = in.nextLine();
+            this.in = new Scanner(socket.getInputStream());
+            this.out = new PrintWriter(socket.getOutputStream(), true);
+            if (in.hasNextLine())
+                this.clientName = in.nextLine();
             clients.add(this);
             broadcastMessage(clientName + "has entered the chat!");
-        } catch (IOException e){
+        } catch (IOException e) {
             closeAll(socket, in, out);
         }
-        
+
     }
 
     @Override
@@ -51,35 +52,35 @@ public class NetworkThread implements Runnable {
     public void run() {
         String messageFromClient;
         try {
-            while (socket.isConnected()){
+            while (socket.isConnected() && in.hasNextLine()) {
                 messageFromClient = in.nextLine();
-            // if (messageFromClient.trim().charAt(0) == '/')
-            //         switch (messageFromClient.trim()) {
-            //             case "bye":
-            //                 closeAll(socket, in, out);
-            //                 break;
-            //             case "help":
-            //                 break;
-            //             case "name":
-            //                 break;
-            //             case "who":
-            //                 break;
-            //             default:
-            //                 break;
-            //         }
-            // else
-            
+                // if (messageFromClient.trim().charAt(0) == '/')
+                // switch (messageFromClient.trim()) {
+                // case "bye":
+                // closeAll(socket, in, out);
+                // break;
+                // case "help":
+                // break;
+                // case "name":
+                // break;
+                // case "who":
+                // break;
+                // default:
+                // break;
+                // }
+                // else
+                System.out.println("Message: " + messageFromClient);
+                out.println("Hey there!" + messageFromClient);
                 broadcastMessage(messageFromClient);
-            
-            } 
-    }  catch (IOException e) {
+            }
+        } catch (IOException e) {
             closeAll(socket, in, out);
         }
     }
 
-    public void broadcastMessage(String messageToSend) throws IOException{
-        for (NetworkThread networkThread : clients){
-            if(!networkThread.clientName.equals(clientName)){
+    public synchronized void broadcastMessage(String messageToSend) throws IOException {
+        for (NetworkThread networkThread : clients) {
+            if (!networkThread.clientName.equals(clientName)) {
                 networkThread.out.write(messageToSend);
                 networkThread.out.println();
                 networkThread.out.flush();
@@ -87,20 +88,20 @@ public class NetworkThread implements Runnable {
         }
     }
 
-    public void removeNetworkThread() throws IOException{
+    public synchronized void removeNetworkThread() throws IOException {
         clients.remove(this);
-        broadcastMessage("Server: "+ clientName + " has disconnected!");
+        broadcastMessage("Server: " + clientName + " has disconnected!");
     }
 
-    public void closeAll(Socket socket, Scanner in, PrintWriter out){
+    public void closeAll(Socket socket, Scanner in, PrintWriter out) {
         try {
-            if (in != null){
+            if (in != null) {
                 in.close();
             }
-            if (out != null){
+            if (out != null) {
                 out.close();
             }
-            if (socket != null){
+            if (socket != null) {
                 socket.close();
             }
         } catch (IOException e) {
