@@ -9,6 +9,10 @@ package controller;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.Timer;
@@ -55,6 +59,10 @@ public class Controller implements ActionListener {
      */
     private NetwokDialog netwokDialog;
 
+    private Socket socket;
+
+    private Client client;
+
     /**
      * Constructor for the Controller class.
      * 
@@ -73,7 +81,7 @@ public class Controller implements ActionListener {
      * ActionPerformed method for the Controller class.
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
         String output = new String();
         if (e.getActionCommand() == null)
             time();
@@ -86,6 +94,16 @@ public class Controller implements ActionListener {
                     break;
                 case "Chat": // grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
+                    if(socket.isConnected()){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while(socket.isConnected()){
+                                mainFrame.getChat().updateChat(client.receiveMessage());
+                            }
+                        }
+                    });
+                }
                     break;
                 case "Mark": // asks mark to come over
                     model.setIsMark(true);
@@ -97,6 +115,11 @@ public class Controller implements ActionListener {
                     break;
                 case "Send": // lets grid send mail
                     output = mainFrame.getChat().getInput().getText() + "\n";
+                    try {
+                        client.sendMessage(output);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     break;
                 case "New": // grid asks chaos to change the inside of his house again
                     newGame();
@@ -137,8 +160,7 @@ public class Controller implements ActionListener {
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
                     mainFrame.getMenu().connected(netwokDialog.pressedConnect());
-                    Client client = new Client(netwokDialog.getAddress(), netwokDialog.getPort(),
-                            netwokDialog.getName());
+                    client = new Client(connectSocket(),netwokDialog.getName());
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
@@ -190,7 +212,7 @@ public class Controller implements ActionListener {
                     break;
             }
             mainFrame.getChat().updateChat(output);
-        }
+        } 
     }
 
     /**
@@ -242,4 +264,17 @@ public class Controller implements ActionListener {
         }
         mainFrame.getFooterPanel().updateTime(minutes, seconds);
     }
+    public Socket connectSocket(){
+        socket = new Socket();
+        try{
+            socket.connect(new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()));
+            socket.setSoTimeout(10000);
+            return socket;
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }

@@ -1,21 +1,28 @@
 package model;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * 
  */
-public class NetworkThread extends Thread {
+public class NetworkThread implements Runnable {
     /**
      * Socket for the client.
      */
-    private final Socket socket;
-    private String name;
+    public static ArrayList<NetworkThread> clients = new ArrayList<>();
+
+    private Socket socket;
+
+    private Scanner in;
+    private PrintWriter out;
+
+    private String clientName;
 
     /**
      * Constructor for the NetworkThread class.
@@ -24,7 +31,17 @@ public class NetworkThread extends Thread {
      *               server.
      */
     public NetworkThread(Socket socket) {
-        this.socket = socket;
+        try{
+            this.socket = socket;
+            this.in = new Scanner(new InputStreamReader(socket.getInputStream()));
+            this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            this.clientName = in.nextLine();
+            clients.add(this);
+            broadcastMessage(clientName + "has entered the chat!");
+        } catch (IOException e){
+            closeAll(socket, in, out);
+        }
+        
     }
 
     @Override
@@ -32,45 +49,62 @@ public class NetworkThread extends Thread {
      * Runnable method for the thread.
      */
     public void run() {
+        String messageFromClient;
         try {
-            InputStream inStream = socket.getInputStream();
-            OutputStream outStream = socket.getOutputStream();
+            while (socket.isConnected()){
+                messageFromClient = in.nextLine();
+            // if (messageFromClient.trim().charAt(0) == '/')
+            //         switch (messageFromClient.trim()) {
+            //             case "bye":
+            //                 closeAll(socket, in, out);
+            //                 break;
+            //             case "help":
+            //                 break;
+            //             case "name":
+            //                 break;
+            //             case "who":
+            //                 break;
+            //             default:
+            //                 break;
+            //         }
+            // else
+            
+                broadcastMessage(messageFromClient);
+            
+            } 
+    }  catch (IOException e) {
+            closeAll(socket, in, out);
+        }
+    }
 
-            Scanner in = new Scanner(inStream);
-            PrintWriter out = new PrintWriter(outStream, true);
-            
-            name = in.nextLine();
-            out.println("Hello! " + name + " Enter /bye to exit.");
-            
-            boolean done = false;
-            while (!done && in.hasNextLine()) {
-                String line = in.nextLine();
-                out.println("Echo: " + line);
-                System.out.println("Client: " + line);
-                if (line.trim().charAt(0) == '/')
-                    switch (line.trim()) {
-                        case "bye":
-                            done = true;
-                            break;
-                        case "help":
-                            break;
-                        case "name":
-                            break;
-                        case "who":
-                            break;
-                        default:
-                            break;
-                    }
+    public void broadcastMessage(String messageToSend) throws IOException{
+        for (NetworkThread networkThread : clients){
+            if(!networkThread.clientName.equals(clientName)){
+                networkThread.out.write(messageToSend);
+                networkThread.out.println();
+                networkThread.out.flush();
             }
-            in.close();
+        }
+    }
+
+    public void removeNetworkThread() throws IOException{
+        clients.remove(this);
+        broadcastMessage("Server: "+ clientName + " has disconnected!");
+    }
+
+    public void closeAll(Socket socket, Scanner in, PrintWriter out){
+        try {
+            if (in != null){
+                in.close();
+            }
+            if (out != null){
+                out.close();
+            }
+            if (socket != null){
+                socket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
