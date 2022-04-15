@@ -37,7 +37,10 @@ public class NetworkThread implements Runnable {
                 if (in.hasNextLine())
                     this.clientName = in.nextLine();
                 clients.add(this);
-                broadcastMessage(clientName + " has entered the chat!");
+                if (clientName != null) {
+                    broadcastMessage(clientName + " has entered the chat!");
+                    System.out.println(clientName + " has entered the chat!");
+                }
             }
         } catch (IOException e) {
             closeAll();
@@ -62,6 +65,7 @@ public class NetworkThread implements Runnable {
                             String oldName = clientName;
                             clientName = in.nextLine();
                             broadcastMessage(oldName + " has changed their name to " + clientName);
+                            System.out.println(oldName + " has changed their name to " + clientName);
                         }
                         break;
                     case "/who":
@@ -75,6 +79,7 @@ public class NetworkThread implements Runnable {
                         break;
                     default:
                         broadcastMessage(clientName + ": " + messageFromClient);
+                        System.out.println(clientName + ": " + messageFromClient);
                         break;
                 }
             }
@@ -104,6 +109,7 @@ public class NetworkThread implements Runnable {
 
     public void removeNetworkThread() throws IOException {
         broadcastMessage("Server: " + clientName + " has disconnected!");
+        System.out.println(clientName + " has disconnected!");
         closeAll();
         clients.remove(this);
     }

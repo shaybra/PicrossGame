@@ -31,13 +31,8 @@ public class Client {
     }
 
     public void sendMessage(String messageToSend) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (out != null)
-                    out.println(messageToSend);
-            }
-        }).start();
+        if (out != null)
+            out.println(messageToSend);
     }
 
     public void receiveMessage(ChatFrame chat) throws InvocationTargetException, InterruptedException {
@@ -72,6 +67,5 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

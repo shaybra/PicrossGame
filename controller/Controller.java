@@ -270,8 +270,8 @@ public class Controller implements ActionListener {
         try {
             socket.connect(
                     new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
-                    10000);
-            socket.setSoTimeout(10000);
+                    300000);
+            socket.setSoTimeout(300000);
             return socket;
         } catch (IOException e) {
             e.printStackTrace();
