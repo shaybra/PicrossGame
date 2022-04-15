@@ -10,6 +10,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -94,8 +95,6 @@ public class Controller implements ActionListener {
                     break;
                 case "Chat": // grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
-                    output = client.receiveMessage();
-                    mainFrame.getChat().updateChat(output);
                     break;
                 case "Mark": // asks mark to come over
                     model.setIsMark(true);
@@ -106,8 +105,9 @@ public class Controller implements ActionListener {
                     mainFrame.getGridPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     break;
                 case "Send": // lets grid send mail
-                    output = mainFrame.getChat().getInput().getText() + "\n";
-                    client.sendMessage(output);
+                    output = mainFrame.getChat().getInput().getText();
+                    if (!output.isEmpty() && client != null)
+                        client.sendMessage(output);
                     break;
                 case "New": // grid asks chaos to change the inside of his house again
                     newGame();
@@ -148,7 +148,18 @@ public class Controller implements ActionListener {
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
                     mainFrame.getMenu().connected(netwokDialog.pressedConnect());
-                    client = new Client(connectSocket(), netwokDialog.getName());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            client = new Client(connectSocket(), netwokDialog.getName());
+                            if (client != null)
+                                try {
+                                    client.receiveMessage(mainFrame.getChat());
+                                } catch (InvocationTargetException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                        }
+                    }).start();
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
@@ -199,7 +210,8 @@ public class Controller implements ActionListener {
                     }
                     break;
             }
-            mainFrame.getChat().updateChat(output);
+            if (!output.isEmpty())
+                mainFrame.getChat().updateChat("You: " + output + "\n");
         }
     }
 

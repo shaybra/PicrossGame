@@ -1,25 +1,31 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
-import java.util.Scanner;
+import javax.swing.SwingUtilities;
+
+import view.ChatFrame;
 
 public class Client {
-    private Socket socket;
-    private Scanner in;
+    private static Socket socket;
+    private BufferedReader bf;
     private PrintWriter out;
     private String username;
+    private String recievedMessage;
 
     public Client(Socket socket, String username) {
         try {
             this.socket = socket;
             this.username = username;
-            this.in = new Scanner(socket.getInputStream());
+            this.bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(socket.getOutputStream(), true);
             out.println(username);
         } catch (IOException e) {
-            closeAll(socket, in, out);
+            closeAll();
         }
 
     }
@@ -28,24 +34,34 @@ public class Client {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                out.println(messageToSend);
-                while (socket.isConnected())
-                    out.write(username + ": " + messageToSend);
+                if (out != null)
+                    out.println(messageToSend);
             }
         }).start();
     }
 
-    public String receiveMessage() {
-        String msgFromGroupChat = new String();
-        if (in.hasNextLine())
-            msgFromGroupChat = in.nextLine();
-        return msgFromGroupChat;
+    public void receiveMessage(ChatFrame chat) throws InvocationTargetException, InterruptedException {
+        while (true) {
+            try {
+                recievedMessage = bf.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (!recievedMessage.isEmpty()) {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        chat.updateChat(recievedMessage + '\n');
+                    }
+                });
+            }
+        }
     }
 
-    public void closeAll(Socket socket, Scanner in, PrintWriter out) {
+    public void closeAll() {
         try {
-            if (in != null) {
-                in.close();
+            if (bf != null) {
+                bf.close();
             }
             if (out != null) {
                 out.close();

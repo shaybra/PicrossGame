@@ -34,7 +34,7 @@ public class ChatFrame extends JFrame {
     /**
      * The JTextArea to display messages.
      */
-    private JTextArea output = new JTextArea("Welcome to the chat room!\n");
+    private static JTextArea output = new JTextArea("Welcome to the chat room!\n");
     /**
      * JPanel to hold the JTextField and JButton.
      */

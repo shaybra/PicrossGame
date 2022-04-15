@@ -94,12 +94,11 @@ public class NetworkThread implements Runnable {
     public synchronized void broadcastMessage(String messageToSend) throws IOException {
         if (!clients.isEmpty())
             for (NetworkThread networkThread : clients) {
-                if (networkThread != null && networkThread.clientName != null)
-                    if (!networkThread.clientName.equals(clientName)) {
-                        networkThread.out.println(messageToSend);
-                        networkThread.out.println();
-                        networkThread.out.flush();
-                    }
+                if (!networkThread.clientName.equals(clientName)) {
+                    networkThread.out.println(messageToSend);
+                    networkThread.out.println();
+                    networkThread.out.flush();
+                }
             }
     }
 
