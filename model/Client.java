@@ -17,7 +17,7 @@ public class Client {
             this.username = username;
             this.in = new Scanner(socket.getInputStream());
             this.out = new PrintWriter(socket.getOutputStream(), true);
-            out.write(username);
+            out.println(username);
         } catch (IOException e) {
             closeAll(socket, in, out);
         }

@@ -37,10 +37,10 @@ public class NetworkThread implements Runnable {
                 if (in.hasNextLine())
                     this.clientName = in.nextLine();
                 clients.add(this);
-                broadcastMessage(clientName + "has entered the chat!");
+                broadcastMessage(clientName + " has entered the chat!");
             }
         } catch (IOException e) {
-            closeAll(socket, in, out);
+            closeAll();
         }
     }
 
@@ -79,7 +79,9 @@ public class NetworkThread implements Runnable {
                 }
             }
         } catch (IOException e) {
-            closeAll(socket, in, out);
+            closeAll();
+        } catch (IllegalStateException e) {
+            return;
         }
     }
 
@@ -103,10 +105,11 @@ public class NetworkThread implements Runnable {
 
     public void removeNetworkThread() throws IOException {
         broadcastMessage("Server: " + clientName + " has disconnected!");
+        closeAll();
         clients.remove(this);
     }
 
-    public void closeAll(Socket socket, Scanner in, PrintWriter out) {
+    public void closeAll() {
         try {
             if (in != null) {
                 in.close();
