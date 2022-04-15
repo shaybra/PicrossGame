@@ -81,7 +81,7 @@ public class Controller implements ActionListener {
      * ActionPerformed method for the Controller class.
      */
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         String output = new String();
         if (e.getActionCommand() == null)
             time();
@@ -94,7 +94,8 @@ public class Controller implements ActionListener {
                     break;
                 case "Chat": // grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
-                    client.receiveMessage(mainFrame);
+                    output = client.receiveMessage();
+                    mainFrame.getChat().updateChat(output);
                     break;
                 case "Mark": // asks mark to come over
                     model.setIsMark(true);
@@ -106,11 +107,7 @@ public class Controller implements ActionListener {
                     break;
                 case "Send": // lets grid send mail
                     output = mainFrame.getChat().getInput().getText() + "\n";
-                    try {
-                        client.sendMessage(output);
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
+                    client.sendMessage(output);
                     break;
                 case "New": // grid asks chaos to change the inside of his house again
                     newGame();
@@ -151,7 +148,7 @@ public class Controller implements ActionListener {
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
                     mainFrame.getMenu().connected(netwokDialog.pressedConnect());
-                    client = new Client(connectSocket(),netwokDialog.getName());
+                    client = new Client(connectSocket(), netwokDialog.getName());
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
@@ -203,7 +200,7 @@ public class Controller implements ActionListener {
                     break;
             }
             mainFrame.getChat().updateChat(output);
-        } 
+        }
     }
 
     /**
@@ -255,13 +252,16 @@ public class Controller implements ActionListener {
         }
         mainFrame.getFooterPanel().updateTime(minutes, seconds);
     }
-    public Socket connectSocket(){
+
+    public Socket connectSocket() {
         socket = new Socket();
-        try{
-            socket.connect(new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()), 10000);
+        try {
+            socket.connect(
+                    new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
+                    10000);
             socket.setSoTimeout(10000);
             return socket;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

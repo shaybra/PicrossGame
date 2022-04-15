@@ -23,11 +23,15 @@ public class Client {
 
     }
 
-    public void sendMessage(String messageToSend) throws IOException {
-        out.write(username);
-        while (socket.isConnected()) {
-            out.write(username + ": " + messageToSend);
-        }
+    public void sendMessage(String messageToSend) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                out.println(messageToSend);
+                while (socket.isConnected())
+                    out.write(username + ": " + messageToSend);
+            }
+        }).start();
     }
 
     public String receiveMessage() {
