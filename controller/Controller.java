@@ -21,6 +21,7 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import model.Client;
+import model.GameObject;
 import model.Model;
 import view.Frame;
 import view.NetwokDialog;
@@ -161,6 +162,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     mainFrame.getMenu().connected(false);
                     break;
                 default: // grid plays with chaos
+                String time;
                     JButton button = (JButton) e.getSource();
                     boolean done = false;
                     // get the row and column of the button in the grid that was clicked
@@ -198,6 +200,8 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                         if (model.isPerfectGame() || score == 25) {
                             mainFrame.getFooterPanel().updateScore(24);
                             if (mainFrame.perfectGame() == 0)
+                                time = (minutes + " Min " + seconds + "Sec");
+                                //GameObject game = new GameObject(game, score, time);
                                 newGame();
                         } else {
                             if (mainFrame.gameOver() == 0)

@@ -179,4 +179,8 @@ public class Model {
             for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
     }
+
+    public void readScenario(int[][] game){
+
+    }
 }

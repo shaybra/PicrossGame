@@ -45,7 +45,7 @@ public class Client {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    chat.updateChat("Connection successful\n");
+                    chat.updateChat("Connection successful\nWelcome to our server!\nEnter'/help' for commands\n");
                 }
             });
             out.println(username);
@@ -95,6 +95,10 @@ public class Client {
 
             }
         }
+    }
+
+    public void sendScore(GameObject game){
+        
     }
 
     /**
