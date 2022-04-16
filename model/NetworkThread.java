@@ -70,20 +70,21 @@ public class NetworkThread implements Runnable {
                         removeNetworkThread();
                         break;
                     case "/name":
-                        out.print("Enter your new name: ");
+                        out.println("Enter your new name: ");
                         if (in.hasNextLine()) {
                             broadcastMessage(clientName);
                             System.out.print(clientName);
                             clientName = in.nextLine();
                             broadcastMessage(" has changed their name to " + clientName);
                             System.out.println(" has changed their name to " + clientName);
+                            out.println("Your name has been changed to " + clientName);
                         }
                         break;
                     case "/who":
                         listAllUsers();
                         break;
                     case "/help":
-                        out.print("/help - displays this message\n");
+                        out.println("/help - displays this message");
                         out.println("/name - change your name");
                         out.println("/who - list all users");
                         out.println("/bye - exit the chat");

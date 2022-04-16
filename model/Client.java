@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 
 import javax.swing.SwingUtilities;
@@ -73,9 +74,11 @@ public class Client {
     }
 
     /**
+     * @throws InterruptedException
+     * @throws InvocationTargetException
      * 
      */
-    public void receiveMessage(ChatFrame chat) {
+    public void receiveMessage(ChatFrame chat) throws InvocationTargetException, InterruptedException {
         while (true) {
             try {
                 recievedMessage = bf.readLine();
@@ -83,12 +86,13 @@ public class Client {
                 e.printStackTrace();
             }
             if (!recievedMessage.isEmpty()) {
-                SwingUtilities.invokeLater(new Runnable() {
+                SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
                     public void run() {
                         chat.updateChat(recievedMessage + '\n');
                     }
                 });
+
             }
         }
     }
