@@ -14,12 +14,21 @@ public class NetworkThread implements Runnable {
      * Socket for the client.
      */
     public static Vector<NetworkThread> clients = new Vector<NetworkThread>();
-
+    /**
+     * 
+     */
     private Socket socket;
-
+    /**
+     * 
+     */
     private Scanner in;
+    /**
+     * 
+     */
     private PrintWriter out;
-
+    /**
+     * 
+     */
     private String clientName;
 
     /**
@@ -32,14 +41,14 @@ public class NetworkThread implements Runnable {
         try {
             if (socket != null) {
                 this.socket = socket;
-                this.in = new Scanner(socket.getInputStream());
-                this.out = new PrintWriter(socket.getOutputStream(), true);
+                in = new Scanner(socket.getInputStream());
+                out = new PrintWriter(socket.getOutputStream(), true);
                 if (in.hasNextLine())
                     this.clientName = in.nextLine();
                 clients.add(this);
                 if (clientName != null) {
-                    broadcastMessage(clientName + " has entered the chat!");
-                    System.out.println(clientName + " has entered the chat!");
+                    broadcastMessage(clientName + " has connected.");
+                    System.out.println(clientName + " has connected.");
                 }
             }
         } catch (IOException e) {
@@ -47,10 +56,10 @@ public class NetworkThread implements Runnable {
         }
     }
 
-    @Override
     /**
      * Runnable method for the thread.
      */
+    @Override
     public void run() {
         String messageFromClient;
         try {
@@ -61,11 +70,13 @@ public class NetworkThread implements Runnable {
                         removeNetworkThread();
                         break;
                     case "/name":
+                        out.print("Enter your new name: ");
                         if (in.hasNextLine()) {
-                            String oldName = clientName;
+                            broadcastMessage(clientName);
+                            System.out.print(clientName);
                             clientName = in.nextLine();
-                            broadcastMessage(oldName + " has changed their name to " + clientName);
-                            System.out.println(oldName + " has changed their name to " + clientName);
+                            broadcastMessage(" has changed their name to " + clientName);
+                            System.out.println(" has changed their name to " + clientName);
                         }
                         break;
                     case "/who":
@@ -79,41 +90,55 @@ public class NetworkThread implements Runnable {
                         break;
                     default:
                         broadcastMessage(clientName + ": " + messageFromClient);
-                        System.out.println(clientName + ": " + messageFromClient);
                         break;
                 }
             }
         } catch (IOException e) {
             closeAll();
         } catch (IllegalStateException e) {
-            return;
+            closeAll();
         }
     }
 
+    /**
+     * 
+     */
     public synchronized void listAllUsers() {
         for (NetworkThread client : clients) {
-            out.println(client.clientName);
+            if (client != this)
+                out.println(client.clientName);
+            else {
+                out.println(client.clientName + "(you)");
+            }
         }
     }
 
+    /**
+     * 
+     */
     public synchronized void broadcastMessage(String messageToSend) throws IOException {
         if (!clients.isEmpty())
             for (NetworkThread networkThread : clients) {
                 if (!networkThread.clientName.equals(clientName)) {
                     networkThread.out.println(messageToSend);
-                    networkThread.out.println();
                     networkThread.out.flush();
                 }
             }
     }
 
-    public void removeNetworkThread() throws IOException {
+    /**
+     * 
+     */
+    public synchronized void removeNetworkThread() throws IOException {
         broadcastMessage("Server: " + clientName + " has disconnected!");
         System.out.println(clientName + " has disconnected!");
         closeAll();
         clients.remove(this);
     }
 
+    /**
+     * 
+     */
     public void closeAll() {
         try {
             if (in != null) {
