@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import javax.swing.JButton;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import model.Client;
@@ -26,7 +27,7 @@ import view.NetwokDialog;
 /**
  * Controller class for the game.
  */
-public class Controller implements ActionListener {
+public class Controller extends SwingWorker<Void, Void> implements ActionListener {
     /**
      * score of the game.
      */
@@ -148,18 +149,19 @@ public class Controller implements ActionListener {
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
                     mainFrame.getMenu().connected(netwokDialog.pressedConnect());
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            client = new Client(connectSocket(), netwokDialog.getName());
-                            if (client != null)
-                                try {
-                                    client.receiveMessage(mainFrame.getChat());
-                                } catch (InvocationTargetException | InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                        }
-                    }).start();
+                    this.execute();
+                    // new Thread(new Runnable() {
+                    // @Override
+                    // public void run() {
+                    // client = new Client(connectSocket(), netwokDialog.getName());
+                    // if (client != null)
+                    // try {
+                    // client.receiveMessage(mainFrame.getChat());
+                    // } catch (InvocationTargetException | InterruptedException e) {
+                    // e.printStackTrace();
+                    // }
+                    // }
+                    // }).start();
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
@@ -278,6 +280,18 @@ public class Controller implements ActionListener {
             return null;
         }
 
+    }
+
+    @Override
+    protected Void doInBackground() throws Exception {
+        client = new Client(connectSocket(), netwokDialog.getName());
+        if (client != null)
+            try {
+                client.receiveMessage(mainFrame.getChat());
+            } catch (InvocationTargetException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        return null;
     }
 
 }
