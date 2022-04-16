@@ -70,7 +70,7 @@ public class NetworkThread implements Runnable {
                         removeNetworkThread();
                         break;
                     case "/name":
-                        out.print("Enter your new name: ");
+                        out.println("Enter your new name: ");
                         if (in.hasNextLine()) {
                             broadcastMessage(clientName);
                             System.out.print(clientName);
@@ -83,7 +83,7 @@ public class NetworkThread implements Runnable {
                         listAllUsers();
                         break;
                     case "/help":
-                        out.print("/help - displays this message\n");
+                        out.println("/help - displays this message");
                         out.println("/name - change your name");
                         out.println("/who - list all users");
                         out.println("/bye - exit the chat");
@@ -119,10 +119,8 @@ public class NetworkThread implements Runnable {
     public synchronized void broadcastMessage(String messageToSend) throws IOException {
         if (!clients.isEmpty())
             for (NetworkThread networkThread : clients) {
-                if (!networkThread.clientName.equals(clientName)) {
+                if (!networkThread.clientName.equals(clientName))
                     networkThread.out.println(messageToSend);
-                    networkThread.out.flush();
-                }
             }
     }
 
