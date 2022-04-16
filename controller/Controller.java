@@ -120,10 +120,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     newGame();
                     break;
                 case "Exit": // grid stops plaing with chaos for the day
-                    client.sendMessage("/bye", mainFrame.getChat());
-                    client.closeAll();
-                    mainFrame.dispose();
-                    System.exit(0);
+                    close();
                     break;
                 case "About": // the sign at the front of grids house
                     mainFrame.showAboutDialog();
@@ -160,6 +157,8 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
+                    cancel(true);
+                    client.disconnect(mainFrame.getChat());
                     break;
                 default: // grid plays with chaos
                 String time;
@@ -310,4 +309,14 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
         return null;
     }
 
+    /**
+     * 
+     */
+    public void close() {
+        cancel(true);
+        if (client != null)
+            client.disconnect(mainFrame.getChat());
+        mainFrame.dispose();
+        System.exit(0);
+    }
 }
