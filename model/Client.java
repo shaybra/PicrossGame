@@ -60,16 +60,11 @@ public class Client {
      * @param chat
      */
     public void sendMessage(String messageToSend, ChatFrame chat) {
-        if (out != null)
-            out.println(messageToSend);
-        if ("/bye".equals(messageToSend)) {
-            closeAll();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    chat.updateChat("You Disconnected\n");
-                }
-            });
+        if (out != null) {
+            if ("/bye".equals(messageToSend))
+                disconnect(chat);
+            else
+                out.println(messageToSend);
         }
     }
 
@@ -95,6 +90,20 @@ public class Client {
 
             }
         }
+    }
+
+    /**
+     * 
+     */
+    public void disconnect(ChatFrame chat) {
+        out.println("/bye");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                chat.updateChat("You Disconnected\n");
+            }
+        });
+        closeAll();
     }
 
     /**
