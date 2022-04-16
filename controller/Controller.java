@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -161,7 +162,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     client.disconnect(mainFrame.getChat());
                     break;
                 default: // grid plays with chaos
-                String time;
+                    String time;
                     JButton button = (JButton) e.getSource();
                     boolean done = false;
                     // get the row and column of the button in the grid that was clicked
@@ -198,13 +199,31 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                         }
                         if (model.isPerfectGame() || score == 25) {
                             mainFrame.getFooterPanel().updateScore(24);
-                            if (mainFrame.perfectGame() == 0)
-                                time = (minutes + " Min " + seconds + "Sec");
-                                //GameObject game = new GameObject(game, score, time);
+                            if (mainFrame.perfectGame() == 0) {
+                                if (client != null) {
+                                    time = (minutes + ":" + seconds);
+                                    boolean[][] board = new boolean[5][5];
+                                    for (int i = 0; i < 5; i++)
+                                        for (int j = 0; j < 5; j++)
+                                            board[i][j] = model.getGrid(i, j);
+                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, time);
+                                    client.sendGame(game);
+                                }
                                 newGame();
+                            }
                         } else {
-                            if (mainFrame.gameOver() == 0)
+                            if (mainFrame.gameOver() == 0) {
+                                if (client != null) {
+                                    time = (minutes + ":" + seconds);
+                                    boolean[][] board = new boolean[5][5];
+                                    for (int i = 0; i < 5; i++)
+                                        for (int j = 0; j < 5; j++)
+                                            board[i][j] = model.getGrid(i, j);
+                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, time);
+                                    client.sendGame(game);
+                                }
                                 newGame();
+                            }
                         }
                     }
                     break;

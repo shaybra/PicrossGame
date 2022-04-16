@@ -69,9 +69,9 @@ public class Client {
     }
 
     /**
+     * 
      * @throws InterruptedException
      * @throws InvocationTargetException
-     * 
      */
     public void receiveMessage(ChatFrame chat) throws InvocationTargetException, InterruptedException {
         while (true) {
@@ -92,8 +92,8 @@ public class Client {
         }
     }
 
-    public void sendScore(GameObject game){
-        
+    public void sendGame(GameObject game) {
+        out.println(game.toString());
     }
 
     /**
