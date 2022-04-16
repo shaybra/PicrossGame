@@ -24,17 +24,17 @@ public class Model {
     /**
      * Random object to generate random numbers
      */
-    private Random rand = new Random(); //invite chao into your house give it a try
+    private Random rand = new Random(); // invite chao into your house give it a try
     /**
      * Tells if the user is in mark mode or not.
      */
-    private boolean isMark = false; //Just make sure mark knows if you need him or not he a determiner
+    private boolean isMark = false; // Just make sure mark knows if you need him or not he a determiner
 
     /**
      * Generates a random grid and resets the current grid.
      */
     public void generateGrid() {
-        for (int i = 0; i < 5; i++) //grid isnt sure what hes feeling so he invites chaos over to set up his house
+        for (int i = 0; i < 5; i++) // grid isnt sure what hes feeling so he invites chaos over to set up his house
             for (int j = 0; j < 5; j++)
                 grid[i][j] = rand.nextBoolean();
 
@@ -45,7 +45,8 @@ public class Model {
      * Resets the current grid.
      */
     public void resetCurrentGrid() {
-        for (int i = 0; i < 5; i++) // like i said ealier grid empties his house for chaos to come over and change it
+        for (int i = 0; i < 5; i++) // like i said ealier grid empties his house for chaos to come over and change
+                                    // it
             for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
         isMark = false; // we never start making the house with mark around
@@ -53,22 +54,24 @@ public class Model {
 
     /**
      * Gets the value of the grid at the specified row and column.
+     * 
      * @param x is the row index.
      * @param y is the column index.
      * @return the value of the grid at the specified row and column.
      */
     public boolean getGrid(int x, int y) {
-        return grid[x][y]; //sometimes grid need to know what his house looks like
+        return grid[x][y]; // sometimes grid need to know what his house looks like
     }
 
     /**
      * Gets the value of the current grid at the specified row and column.
+     * 
      * @param x the row of the grid.
      * @param y the column of the grid.
      * @return the value of the current grid at the specified row and column.
      */
     public boolean getCurrentGrid(int x, int y) {
-        return currentGrid[x][y]; //grid likes to refer to the current state of the house to keep tabs on chaos
+        return currentGrid[x][y]; // grid likes to refer to the current state of the house to keep tabs on chaos
     }
 
     /**
@@ -82,14 +85,14 @@ public class Model {
     public boolean updateCurrentGrid(int x, int y) {
         boolean done = true; // grid almost all the time says annoyingly "are we done yet?"
         currentGrid[x][y] = true;
-        for (int i = 0; i < 5; i++) //grid checking each part of his house after chaos is done
+        for (int i = 0; i < 5; i++) // grid checking each part of his house after chaos is done
             for (int j = 0; j < 5; j++)
                 if (grid[i][j])
                     if (!currentGrid[i][j]) {
                         done = false;
                         break;
                     }
-        return done; //chaos lets grid know if hes looked at the whole house yet
+        return done; // chaos lets grid know if hes looked at the whole house yet
     }
 
     /**
@@ -99,13 +102,14 @@ public class Model {
      */
     public boolean isPerfectGame() {
         boolean perfect = true;
-        for (int i = 0; i < 5; i++) // sometimes afer guessing based of chaos's clues he manages to perfectly describe the new house set up
+        for (int i = 0; i < 5; i++) // sometimes afer guessing based of chaos's clues he manages to perfectly
+                                    // describe the new house set up
             for (int j = 0; j < 5; j++)
                 if (grid[i][j] != currentGrid[i][j]) {
                     perfect = false;
                     break;
                 }
-        return perfect; 
+        return perfect;
     }
 
     /**
@@ -113,15 +117,16 @@ public class Model {
      * 
      * @return the {@link #grid}.
      */
-    public boolean getIsMark(){
-        return isMark; //Lets grid know if mark is around
+    public boolean getIsMark() {
+        return isMark; // Lets grid know if mark is around
     }
 
     /**
      * Sets the value of the {@link #isMark} to true.
+     * 
      * @param isMark is the value of the {@link #isMark}.
      */
-    public void setIsMark(boolean isMark){
+    public void setIsMark(boolean isMark) {
         this.isMark = isMark; // finds out if mark is around
     }
 
@@ -172,15 +177,16 @@ public class Model {
                     grid[i][j] = true;
                 } else
                     grid[i][j] = false;
-                }
-            
+            }
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 currentGrid[i][j] = false;
     }
 
-    public void readScenario(int[][] game){
-
+    public void setBoard(boolean[][] board) {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                grid[i][j] = board[i][j];
     }
 }

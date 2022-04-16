@@ -73,7 +73,8 @@ public class Client {
      * @throws InterruptedException
      * @throws InvocationTargetException
      */
-    public void receiveMessage(ChatFrame chat) throws InvocationTargetException, InterruptedException {
+    public synchronized void receiveMessage(ChatFrame chat, Model model)
+            throws InvocationTargetException, InterruptedException {
         while (true) {
             try {
                 recievedMessage = bf.readLine();
@@ -81,13 +82,25 @@ public class Client {
                 e.printStackTrace();
             }
             if (!recievedMessage.isEmpty()) {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override
-                    public void run() {
-                        chat.updateChat(recievedMessage + '\n');
-                    }
-                });
-
+                if (!recievedMessage.startsWith("`")) {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        @Override
+                        public void run() {
+                            chat.updateChat(recievedMessage + '\n');
+                        }
+                    });
+                } else {
+                    boolean[][] board = new boolean[5][5];
+                    String command = recievedMessage.substring(1);
+                    String args[] = command.split(",");
+                    for (int i = 0; i < 5; i++)
+                        for (int j = 0; j < 5; j++)
+                            if (args[i * 5 + j].equals("true"))
+                                board[i][j] = true;
+                            else
+                                board[i][j] = false;
+                    model.setBoard(board);
+                }
             }
         }
     }

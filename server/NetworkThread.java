@@ -14,6 +14,8 @@ public class NetworkThread implements Runnable {
      * Socket for the client.
      */
     public static Vector<NetworkThread> clients = new Vector<NetworkThread>();
+    public static String currentBoard = new String();
+    public static String scoreBoard = new String("PLAYER TIME SCORE\n====================\n");
     /**
      * 
      */
@@ -30,6 +32,8 @@ public class NetworkThread implements Runnable {
      * 
      */
     private String clientName;
+    private int score;
+    private String time;
 
     /**
      * Constructor for the NetworkThread class.
@@ -60,39 +64,73 @@ public class NetworkThread implements Runnable {
      * Runnable method for the thread.
      */
     @Override
-    public void run() {
+    public synchronized void run() {
         String messageFromClient;
         try {
             while (socket.isConnected() && in.hasNextLine()) {
                 messageFromClient = in.nextLine();
-                switch (messageFromClient) {
-                    case "/bye":
-                        removeNetworkThread();
-                        break;
-                    case "/name":
-                        out.println("Enter your new name: ");
-                        if (in.hasNextLine()) {
-                            broadcastMessage(clientName);
-                            System.out.print(clientName);
-                            clientName = in.nextLine();
-                            broadcastMessage(" has changed their name to " + clientName);
-                            System.out.println(" has changed their name to " + clientName);
-                            out.println("Your name has been changed to " + clientName);
+                if (messageFromClient.startsWith("`")) {
+                    String command = messageFromClient.substring(1);
+                    String args[] = command.split(",");
+                    String incominBoard = new String();
+                    for (int i = 0; i < 25; i++)
+                        incominBoard += i != 24 ? args[i] + "," : args[i];
+                    if (!incominBoard.equals(currentBoard)) {
+                        currentBoard = incominBoard;
+                        scoreBoard = new String("PLAYER TIME SCORE\n====================\n");
+                        broadcastMessage(clientName + " has sent a board.");
+                    }
+                    score = Integer.parseInt(args[25]);
+                    time = messageFromClient.substring(26);
+                    // if clientName is already in the scoreBoard, update the time and score
+                    if (scoreBoard.contains(clientName)) {
+                        int index = scoreBoard.indexOf(clientName);
+                        if (time.compareTo(scoreBoard.substring(index + clientName.length() + 1,
+                                index + clientName.length() + 6)) < 0) {
+                            scoreBoard = scoreBoard.substring(0, index + clientName.length() + 1) + time
+                                    + scoreBoard.substring(index + clientName.length() + 6);
                         }
-                        break;
-                    case "/who":
-                        listAllUsers();
-                        break;
-                    case "/help":
-                        out.println("/help - displays this message");
-                        out.println("/name - change your name");
-                        out.println("/who - list all users");
-                        out.println("/bye - exit the chat");
-                        break;
-                    default:
-                        broadcastMessage(clientName + ": " + messageFromClient);
-                        break;
-                }
+                        if (score > Integer.parseInt(scoreBoard.substring(index + clientName.length() + 6,
+                                index + clientName.length() + 9))) {
+                            scoreBoard = scoreBoard.substring(0, index + clientName.length() + 6) + score
+                                    + scoreBoard.substring(index + clientName.length() + 9);
+                        }
+                    } else {
+                        scoreBoard += clientName + " " + time + " " + score + "\n";
+                    }
+                } else
+                    switch (messageFromClient) {
+                        case "/bye":
+                            removeNetworkThread();
+                            break;
+                        case "/name":
+                            out.println("Enter your new name: ");
+                            if (in.hasNextLine()) {
+                                broadcastMessage(clientName);
+                                System.out.print(clientName);
+                                clientName = in.nextLine();
+                                broadcastMessage(" has changed their name to " + clientName);
+                                System.out.println(" has changed their name to " + clientName);
+                                out.println("Your name has been changed to " + clientName);
+                            }
+                            break;
+                        case "/who":
+                            listAllUsers();
+                            break;
+                        case "/get":
+                            out.println("`" + currentBoard);
+                            out.println(scoreBoard);
+                            break;
+                        case "/help":
+                            out.println("/help - displays this message");
+                            out.println("/name - change your name");
+                            out.println("/who - list all users");
+                            out.println("/bye - exit the chat");
+                            break;
+                        default:
+                            broadcastMessage(clientName + ": " + messageFromClient);
+                            break;
+                    }
             }
         } catch (IOException e) {
             closeAll();

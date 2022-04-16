@@ -324,7 +324,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
             }
         });
         if (client != null)
-            client.receiveMessage(mainFrame.getChat());
+            client.receiveMessage(mainFrame.getChat(), model);
         return null;
     }
 
