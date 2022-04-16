@@ -6,6 +6,7 @@
 */
 
 package view;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -34,7 +35,7 @@ public class ChatFrame extends JFrame {
     /**
      * The JTextArea to display messages.
      */
-    private static JTextArea output = new JTextArea("Welcome to the chat room!\n");
+    private static JTextArea output = new JTextArea();
     /**
      * JPanel to hold the JTextField and JButton.
      */
@@ -55,13 +56,14 @@ public class ChatFrame extends JFrame {
         // add action listeners
         send.addActionListener(controller);
         input.addActionListener(controller);
-        
+
         output.setEditable(false);
 
-        // output will wrap around and will only wrap around on spaces so it won't cut words in half
+        // output will wrap around and will only wrap around on spaces so it won't cut
+        // words in half
         output.setLineWrap(true);
         output.setWrapStyleWord(true);
-        
+
         output.setColumns(20);
         output.setBackground(Color.BLACK);
         output.setForeground(Color.WHITE);
@@ -79,6 +81,7 @@ public class ChatFrame extends JFrame {
 
     /**
      * Updates the chat window when Chat button is clicked.
+     * 
      * @param x xposition of chat.
      * @param y y position of chat.
      */
@@ -89,7 +92,8 @@ public class ChatFrame extends JFrame {
     }
 
     /**
-     * Updates the {@link #output} of the chat area and sets the {@link #input} field to an empty string.
+     * Updates the {@link #output} of the chat area and sets the {@link #input}
+     * field to an empty string.
      * 
      * @param output the output to be added to the chat.
      */
@@ -101,6 +105,7 @@ public class ChatFrame extends JFrame {
 
     /**
      * Getter for the input JTextField.
+     * 
      * @return {@link #input}
      */
     public JTextField getInput() {
@@ -109,6 +114,7 @@ public class ChatFrame extends JFrame {
 
     /**
      * Getter for the send JButton.
+     * 
      * @return {@link #send}
      */
     public JButton getSend() {
@@ -117,6 +123,7 @@ public class ChatFrame extends JFrame {
 
     /**
      * Getter for the output JTextArea.
+     * 
      * @return {@link #output}
      */
     public JTextArea getOutput() {

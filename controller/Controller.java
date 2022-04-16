@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
@@ -60,9 +61,13 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
      * Network dialog for the game.
      */
     private NetwokDialog netwokDialog;
-
+    /**
+     * 
+     */
     private Socket socket;
-
+    /**
+     * 
+     */
     private Client client;
 
     /**
@@ -108,12 +113,14 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                 case "Send": // lets grid send mail
                     output = mainFrame.getChat().getInput().getText();
                     if (!output.isEmpty() && client != null)
-                        client.sendMessage(output);
+                        client.sendMessage(output, mainFrame.getChat());
                     break;
                 case "New": // grid asks chaos to change the inside of his house again
                     newGame();
                     break;
                 case "Exit": // grid stops plaing with chaos for the day
+                    client.sendMessage("/bye", mainFrame.getChat());
+                    client.closeAll();
                     mainFrame.dispose();
                     System.exit(0);
                     break;
@@ -148,20 +155,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     break;
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
-                    mainFrame.getMenu().connected(netwokDialog.pressedConnect());
                     this.execute();
-                    // new Thread(new Runnable() {
-                    // @Override
-                    // public void run() {
-                    // client = new Client(connectSocket(), netwokDialog.getName());
-                    // if (client != null)
-                    // try {
-                    // client.receiveMessage(mainFrame.getChat());
-                    // } catch (InvocationTargetException | InterruptedException e) {
-                    // e.printStackTrace();
-                    // }
-                    // }
-                    // }).start();
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
@@ -267,30 +261,46 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
         mainFrame.getFooterPanel().updateTime(minutes, seconds);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Socket connectSocket() {
         socket = new Socket();
         try {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainFrame.getChat()
+                            .updateChat("Negotiating connection to " + netwokDialog.getAddress() + " on port "
+                                    + netwokDialog.getPort() + "\n");
+                }
+            });
             socket.connect(
                     new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
                     300000);
             socket.setSoTimeout(300000);
             return socket;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
 
     }
 
+    /**
+     * 
+     */
     @Override
-    protected Void doInBackground() throws Exception {
-        client = new Client(connectSocket(), netwokDialog.getName());
-        if (client != null)
-            try {
-                client.receiveMessage(mainFrame.getChat());
-            } catch (InvocationTargetException | InterruptedException e) {
-                e.printStackTrace();
+    protected Void doInBackground() {
+        client = new Client(connectSocket(), netwokDialog.getName(), mainFrame.getChat());
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                mainFrame.getMenu().connected(client != null);
             }
+        });
+        if (client != null)
+            client.receiveMessage(mainFrame.getChat());
         return null;
     }
 

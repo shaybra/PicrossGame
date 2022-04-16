@@ -5,10 +5,18 @@ import java.net.Socket;
 
 import model.NetworkThread;
 
+/**
+ * 
+ */
 public class PiccrossServer {
-
+    /**
+     * 
+     */
     private ServerSocket serverSocket;
 
+    /**
+     * 
+     */
     public PiccrossServer(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -22,6 +30,9 @@ public class PiccrossServer {
         }
     }
 
+    /**
+     * 
+     */
     public void startServer() {
         try {
             while (!serverSocket.isClosed()) {
@@ -31,10 +42,12 @@ public class PiccrossServer {
                 thread.start();
             }
         } catch (IOException e) {
-
         }
     }
 
+    /**
+     * 
+     */
     public void closeServerSocket() {
         try {
             if (serverSocket != null) {
@@ -45,24 +58,19 @@ public class PiccrossServer {
         }
     }
 
-    public void checkPort(int port) {
-        if (port == 61001)
-            System.out.println("Using default port: " + port);
-        else
-            System.out.println("Using port: " + port);
-    }
-
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         if (args.length == 0 || Integer.parseInt(args[0]) <= 0 || Integer.parseInt(args[0]) >= 65536) {
             if (args.length != 0)
                 System.out.println("ERROR: Invalid port number: " + args[0]);
-
             PiccrossServer server = new PiccrossServer(61001);
             server.startServer();
         } else {
             PiccrossServer server = new PiccrossServer(Integer.parseInt(args[0]));
             server.startServer();
         }
-
     }
 }
