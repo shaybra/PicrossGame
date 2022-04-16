@@ -77,6 +77,7 @@ public class NetworkThread implements Runnable {
                             clientName = in.nextLine();
                             broadcastMessage(" has changed their name to " + clientName);
                             System.out.println(" has changed their name to " + clientName);
+                            out.println("Your name has been changed to " + clientName);
                         }
                         break;
                     case "/who":

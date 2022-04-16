@@ -10,6 +10,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -287,10 +288,12 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
     }
 
     /**
+     * @throws InterruptedException
+     * @throws InvocationTargetException
      * 
      */
     @Override
-    protected Void doInBackground() {
+    protected Void doInBackground() throws InvocationTargetException, InterruptedException {
         client = new Client(connectSocket(), netwokDialog.getName(), mainFrame.getChat());
         SwingUtilities.invokeLater(new Runnable() {
             @Override
