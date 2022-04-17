@@ -13,9 +13,9 @@ public class NetworkThread implements Runnable {
     /**
      * Socket for the client.
      */
-    public static Vector<NetworkThread> clients = new Vector<NetworkThread>();
-    public static String currentBoard = new String();
-    public static String scoreBoard = new String("PLAYER TIME SCORE\n====================\n");
+    private static Vector<NetworkThread> clients = new Vector<NetworkThread>();
+    private static String currentBoard = new String();
+    private static Vector<String> scoreBoard = new Vector<String>();
     /**
      * 
      */
@@ -77,26 +77,25 @@ public class NetworkThread implements Runnable {
                         incominBoard += i != 24 ? args[i] + "," : args[i];
                     if (!incominBoard.equals(currentBoard)) {
                         currentBoard = incominBoard;
-                        scoreBoard = new String("PLAYER TIME SCORE\n====================\n");
-                        broadcastMessage(clientName + " has sent a board.");
+                        scoreBoard.add(new String("PLAYER TIME SCORE\n====================\n"));
+                        broadcastMessage("Server: " + clientName + " has sent a board.");
                     }
                     score = Integer.parseInt(args[25]);
-                    time = messageFromClient.substring(26);
-                    if (scoreBoard.contains(clientName)) {
-                        int index = scoreBoard.indexOf(clientName);
-                        if (time.compareTo(scoreBoard.substring(index + clientName.length() + 1,
-                                index + clientName.length() + 6)) < 0) {
-                            scoreBoard = scoreBoard.substring(0, index + clientName.length() + 1) + time
-                                    + scoreBoard.substring(index + clientName.length() + 6);
+                    time = args[26];
+                    boolean isThere = false;
+                    for (String s : scoreBoard)
+                        if (s.contains(clientName)) {
+                            isThere = true;
+                            int oldScore = Integer.parseInt(scoreBoard.get(scoreBoard.size() - 1).split(" ")[2]);
+                            String oldTime = scoreBoard.get(scoreBoard.size() - 1).split(" ")[3];
+                            if (score > oldScore || time.compareTo(oldTime) < 0) {
+                                scoreBoard.remove(scoreBoard.size() - 1);
+                                scoreBoard.add(new String(clientName + " " + time + " " + score));
+                            }
                         }
-                        if (score > Integer.parseInt(scoreBoard.substring(index + clientName.length() + 6,
-                                index + clientName.length() + 9))) {
-                            scoreBoard = scoreBoard.substring(0, index + clientName.length() + 6) + score
-                                    + scoreBoard.substring(index + clientName.length() + 9);
-                        }
-                    } else {
-                        scoreBoard += clientName + " " + time + " " + score + "\n";
-                    }
+                    if (isThere)
+                        scoreBoard.add(clientName + " " + score + " " + time + "\n");
+
                 } else
                     switch (messageFromClient) {
                         case "/bye":

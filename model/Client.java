@@ -10,6 +10,7 @@ import java.net.SocketTimeoutException;
 
 import javax.swing.SwingUtilities;
 
+import controller.Controller;
 import view.ChatFrame;
 
 /**
@@ -74,7 +75,7 @@ public class Client {
      * @throws InterruptedException
      * @throws InvocationTargetException
      */
-    public synchronized void receiveMessage(ChatFrame chat, Model model)
+    public synchronized void receiveMessage(ChatFrame chat, Model model, Controller controller)
             throws InvocationTargetException, InterruptedException {
         while (true) {
             try {
@@ -103,6 +104,7 @@ public class Client {
                             else
                                 board[i][j] = false;
                     model.setBoard(board);
+                    controller.reset(true);
                 }
             }
         }

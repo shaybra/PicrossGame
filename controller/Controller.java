@@ -99,7 +99,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                                             // something
                 case "Reset": // grid starts from the top trying to recall how he thinks chaos set up the
                               // house
-                    reset();
+                    reset(false);
                     break;
                 case "Chat": // grid checks his mail
                     mainFrame.getChat().chatWindow(mainFrame.getX() + mainFrame.getWidth() + 10, mainFrame.getY());
@@ -127,13 +127,13 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     mainFrame.showAboutDialog();
                     break;
                 case "First senario": // grid trys the first house configuration hes used too
-                    reset();
+                    reset(false);
                     model.firstSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
                     break;
                 case "Second senario": // grid trys the second house configuration hes used too
-                    reset();
+                    reset(false);
                     model.secondSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
@@ -141,7 +141,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                         newGame();
                     break;
                 case "Third senario": // grid trys the third house configuration hes used too
-                    reset();
+                    reset(false);
                     model.thirdSenario();
                     mainFrame.getTopPanel().generateHints(model);
                     mainFrame.getSidePanel().generateHints(model);
@@ -258,13 +258,16 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
     /**
      * Resets the game.
      */
-    public void reset() {
+    public void reset(boolean fromClient) {
         score = 0;
         seconds = 0;
         minutes = 0;
 
         mainFrame.getGridPanel().reset(); // lets grid start from the top
-
+        if (fromClient) {
+            mainFrame.getSidePanel().generateHints(model);
+            mainFrame.getTopPanel().generateHints(model);
+        }
         mainFrame.getFooterPanel().resetFooter();
 
         model.resetCurrentGrid();
@@ -324,7 +327,7 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
             }
         });
         if (client != null)
-            client.receiveMessage(mainFrame.getChat(), model);
+            client.receiveMessage(mainFrame.getChat(), model, this);
         return null;
     }
 
