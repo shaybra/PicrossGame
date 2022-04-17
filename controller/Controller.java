@@ -154,12 +154,12 @@ public class Controller implements ActionListener {
                             if (model.getGrid(i, j))
                                 mainFrame.getGridPanel().addCheck(i, j);
                     break;
-                case "Connect":
+                case "Connect": // once connected it executes the blocking background work on a diffrent thread
                     netwokDialog = new NetwokDialog(mainFrame);
                     bgw = new BackGroundWork();
                     bgw.execute();
                     break;
-                case "Disconnect":
+                case "Disconnect": // it cancels the background work and closes the socket
                     mainFrame.getMenu().connected(false);
                     bgw.cancel(true);
                     client.disconnect(mainFrame.getChat());
@@ -202,6 +202,8 @@ public class Controller implements ActionListener {
                         if (model.isPerfectGame() || score == 25) {
                             mainFrame.getFooterPanel().updateScore(24);
                             if (mainFrame.perfectGame() == 0) {
+                                // if the user clicks yes in the dialog box it sends the game board to the
+                                // server along with the score and time
                                 if (client != null) {
                                     boolean[][] board = new boolean[5][5];
                                     for (int i = 0; i < 5; i++)
@@ -215,6 +217,8 @@ public class Controller implements ActionListener {
                             }
                         } else {
                             if (mainFrame.gameOver() == 0) {
+                                // if the user clicks yes in the dialog box it sends the game board to the
+                                // server along with the score and time
                                 if (client != null) {
                                     boolean[][] board = new boolean[5][5];
                                     for (int i = 0; i < 5; i++)
@@ -289,8 +293,9 @@ public class Controller implements ActionListener {
     }
 
     /**
+     * Makes the socket and connects to the server then returns that socket.
      * 
-     * @return
+     * @return the socket
      */
     public Socket connectSocket() {
         socket = new Socket();
@@ -311,11 +316,10 @@ public class Controller implements ActionListener {
         } catch (IOException e) {
             return null;
         }
-
     }
 
     /**
-     * 
+     * Closes up the game.
      */
     public void close() {
         bgw.cancel(true);
@@ -325,7 +329,14 @@ public class Controller implements ActionListener {
         System.exit(0);
     }
 
+    /**
+     * SwingWorker inner class to be able to do things safely in the background.
+     */
     private class BackGroundWork extends SwingWorker<Void, Void> {
+        /**
+         * When execute is called it runs this on the worker thread to avoid blocking
+         * the EDT.
+         */
         @Override
         protected Void doInBackground() {
             try {

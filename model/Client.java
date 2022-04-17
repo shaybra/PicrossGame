@@ -1,3 +1,9 @@
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: April 17th, 2022
+* Class: Client.java
+* Proffesor: Daniel Cormier
+*/
 package model;
 
 import java.io.BufferedReader;
@@ -14,7 +20,7 @@ import controller.Controller;
 import view.ChatFrame;
 
 /**
- * 
+ * Client is the class that handels network traffic for the client.
  */
 public class Client {
     /**
@@ -36,9 +42,11 @@ public class Client {
     private String recievedMessage;
 
     /**
+     * Client constructor.
      * 
-     * @param socket
-     * @param username
+     * @param socket    Socket to be used for the client
+     * @param username  the usernamme of the client
+     * @param ChatFrame the chat frame of the user where we update the chat box
      */
     public Client(Socket socket, String username, ChatFrame chat) {
         try {
@@ -58,9 +66,10 @@ public class Client {
     }
 
     /**
+     * Sends a message to the server.
      * 
-     * @param messageToSend
-     * @param chat
+     * @param messageToSend the message to be sent to the server
+     * @param chat          the chat frame where we update the chat box
      */
     public void sendMessage(String messageToSend, ChatFrame chat) {
         if (out != null) {
@@ -72,6 +81,13 @@ public class Client {
     }
 
     /**
+     * Listens for incoming messages from the server. If the message recived starts
+     * with the prefix '`' then it is seen as a game board, else it is seen as a
+     * chat message.
+     * 
+     * @param chat       the chat frame where we update the chat box
+     * @param model      the model of the game
+     * @param controller the controller of the game
      * 
      * @throws InterruptedException
      * @throws InvocationTargetException
@@ -111,12 +127,19 @@ public class Client {
         }
     }
 
+    /**
+     * Sends the gameboard as a string to the server.
+     * 
+     * @param game the gameboard to be sent
+     */
     public void sendGame(GameObject game) {
         out.println(game.toString());
     }
 
     /**
+     * Disconnects the client from the server. And updates the chat box.
      * 
+     * @param chat the chat frame where we update the chat box
      */
     public void disconnect(ChatFrame chat) {
         out.println("/bye");
@@ -129,7 +152,7 @@ public class Client {
     }
 
     /**
-     * Closes all IO
+     * Closes all the streams and socket.
      */
     public void closeAll() {
         try {

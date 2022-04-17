@@ -1,3 +1,10 @@
+
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: April 17th, 2022
+* Class: PiccrossServer.java
+* Proffesor: Daniel Cormier
+*/
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -5,16 +12,18 @@ import java.net.Socket;
 import server.NetworkThread;
 
 /**
- * 
+ * PiccrossServer is the main class for the server.
  */
 public class PiccrossServer {
     /**
-     * 
+     * The server socket.
      */
     private ServerSocket serverSocket;
 
     /**
+     * PiccrossServer constructor.
      * 
+     * @param port the port to host the server on
      */
     public PiccrossServer(int port) {
         try {
@@ -30,7 +39,8 @@ public class PiccrossServer {
     }
 
     /**
-     * 
+     * Starts the server and listens for connections. When a connection is made it
+     * makes a new thread for the client handler.
      */
     public void startServer() {
         try {
@@ -45,21 +55,9 @@ public class PiccrossServer {
     }
 
     /**
+     * The main method for the server.
      * 
-     */
-    public void closeServerSocket() {
-        try {
-            if (serverSocket != null) {
-                serverSocket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 
-     * @param args
+     * @param args the port to host the server on
      */
     public static void main(String[] args) {
         if (args.length == 0 || Integer.parseInt(args[0]) <= 0 || Integer.parseInt(args[0]) >= 65536) {

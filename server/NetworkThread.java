@@ -1,3 +1,9 @@
+/*
+* Name: Mohammed Chabaan and Garrick Weiler
+* Due Date: April 17th, 2022
+* Class: NetworkThread.java
+* Proffesor: Daniel Cormier
+*/
 package server;
 
 import java.io.IOException;
@@ -7,33 +13,37 @@ import java.util.Scanner;
 import java.util.Vector;
 
 /**
- * 
+ * Network handler for the server to handle a client.
  */
 public class NetworkThread implements Runnable {
     /**
-     * Socket for the client.
+     * All the clients that are connected to the server.
      */
     private static Vector<NetworkThread> clients = new Vector<NetworkThread>();
+    /**
+     * The Current challenege that is being played.
+     */
     private static String currentBoard = new String();
+    /**
+     * The score board of the current challenge.
+     */
     private static Vector<String> scoreBoard = new Vector<String>();
     /**
-     * 
+     * The socket of the client.
      */
     private Socket socket;
     /**
-     * 
+     * input from the client.
      */
     private Scanner in;
     /**
-     * 
+     * output to the client.
      */
     private PrintWriter out;
     /**
-     * 
+     * The client's name.
      */
     private String clientName;
-    private int score;
-    private String time;
 
     /**
      * Constructor for the NetworkThread class.
@@ -80,11 +90,11 @@ public class NetworkThread implements Runnable {
                         scoreBoard = new Vector<String>();
                         broadcastMessage("Server: " + clientName + " has sent a board.");
                     }
-                    score = Integer.parseInt(args[25]);
+                    int score = Integer.parseInt(args[25]);
                     int minutes = Integer.parseInt(args[26]);
                     int seconds = Integer.parseInt(args[27]);
-                    int timeComp = (minutes* 60) + seconds;
-                    time = minutes + ":" + seconds;
+                    int timeComp = (minutes * 60) + seconds;
+                    String time = minutes + ":" + seconds;
                     boolean isThere = false;
                     for (String s : scoreBoard)
                         if (s.contains(clientName)) {
@@ -176,7 +186,7 @@ public class NetworkThread implements Runnable {
     }
 
     /**
-     * 
+     * Listst all the users in the chat.
      */
     public synchronized void listAllUsers() {
         for (NetworkThread client : clients) {
@@ -189,7 +199,9 @@ public class NetworkThread implements Runnable {
     }
 
     /**
+     * broadcaststs a message to all the users connected to the chat.
      * 
+     * @param message the message to be broadcasted.
      */
     public synchronized void broadcastMessage(String messageToSend) {
         if (!clients.isEmpty())
@@ -200,7 +212,8 @@ public class NetworkThread implements Runnable {
     }
 
     /**
-     * 
+     * Removes the current thread(client) from the list of connected clients. Also
+     * closes all the streams and sockets.
      */
     public synchronized void removeNetworkThread() {
         broadcastMessage("Server: " + clientName + " has disconnected!");
@@ -210,7 +223,7 @@ public class NetworkThread implements Runnable {
     }
 
     /**
-     * 
+     * Closes all the streams and sockets.
      */
     public void closeAll() {
         try {
