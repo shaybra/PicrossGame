@@ -77,7 +77,7 @@ public class NetworkThread implements Runnable {
                         incominBoard += i != 24 ? args[i] + "," : args[i];
                     if (!incominBoard.equals(currentBoard)) {
                         currentBoard = incominBoard;
-                        scoreBoard.add(new String("PLAYER TIME SCORE\n====================\n"));
+                        scoreBoard = new Vector<String>();
                         broadcastMessage("Server: " + clientName + " has sent a board.");
                     }
                     score = Integer.parseInt(args[25]);
@@ -109,7 +109,37 @@ public class NetworkThread implements Runnable {
                         }
                     if (!isThere)
                         scoreBoard.add(clientName + " " + score + " " + time);
-
+                    if (!scoreBoard.isEmpty())
+                        for (int i = 0; i < scoreBoard.size() - 1; i++)
+                            for (int j = 0; j < scoreBoard.size() - 1 - i; j++) {
+                                String[] temp1 = scoreBoard.get(j).split(" ");
+                                int score1 = Integer.parseInt(temp1[1]);
+                                String[] temp2 = scoreBoard.get(j + 1).split(" ");
+                                int score2 = Integer.parseInt(temp2[1]);
+                                if (score1 < score2) {
+                                    String temp = scoreBoard.get(j);
+                                    scoreBoard.set(j, scoreBoard.get(j + 1));
+                                    scoreBoard.set(j + 1, temp);
+                                } else if (score1 == score2) {
+                                    String[] temp1Time = temp1[2].split(":");
+                                    int minutes1 = Integer.parseInt(temp1Time[0]);
+                                    int seconds1 = Integer.parseInt(temp1Time[1]);
+                                    String[] temp2Time = temp2[2].split(":");
+                                    int minutes2 = Integer.parseInt(temp2Time[0]);
+                                    int seconds2 = Integer.parseInt(temp2Time[1]);
+                                    if (minutes1 < minutes2) {
+                                        String temp = scoreBoard.get(j);
+                                        scoreBoard.set(j, scoreBoard.get(j + 1));
+                                        scoreBoard.set(j + 1, temp);
+                                    } else if (minutes1 == minutes2) {
+                                        if (seconds1 < seconds2) {
+                                            String temp = scoreBoard.get(j);
+                                            scoreBoard.set(j, scoreBoard.get(j + 1));
+                                            scoreBoard.set(j + 1, temp);
+                                        }
+                                    }
+                                }
+                            }
                 } else
                     switch (messageFromClient) {
                         case "/bye":
@@ -131,6 +161,7 @@ public class NetworkThread implements Runnable {
                             break;
                         case "/get":
                             out.println("`" + currentBoard);
+                            out.println("PLAYER TIME SCORE\n====================\n");
                             for (String s : scoreBoard)
                                 out.println(s);
                             break;
