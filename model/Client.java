@@ -18,19 +18,19 @@ import view.ChatFrame;
  */
 public class Client {
     /**
-     * 
+     * Holds Socket Information for the Client
      */
     private Socket socket;
     /**
-     * 
+     * Holds BufferedReader Information for the Client (Input)
      */
     private BufferedReader bf;
     /**
-     * 
+     * Holds PrintWriter Information for the Client (Output)
      */
     private PrintWriter out;
     /**
-     * 
+     * Any incoming message is stored in the String to be held and used briefly to send to the chat box
      */
     private String recievedMessage;
 
@@ -62,11 +62,15 @@ public class Client {
      * @param chat
      */
     public void sendMessage(String messageToSend, ChatFrame chat) {
+        try{
         if (out != null) {
             if ("/bye".equals(messageToSend))
                 disconnect(chat);
             else
                 out.println(messageToSend);
+        }
+        }catch (IOException e){
+            closeAll();
         }
     }
 
@@ -83,7 +87,7 @@ public class Client {
             } catch (SocketTimeoutException se) {
                 continue;
             } catch (IOException e) {
-                continue;
+                closeAll();
             }
             if (!recievedMessage.isEmpty()) {
                 if (!recievedMessage.startsWith("`")) {
@@ -111,13 +115,18 @@ public class Client {
     }
 
     public void sendGame(GameObject game) {
+        try{
         out.println(game.toString());
+        } catch (IOException e) {
+            closeAll();
+        }
     }
 
     /**
      * 
      */
     public void disconnect(ChatFrame chat) {
+        try{
         out.println("/bye");
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -125,11 +134,13 @@ public class Client {
                 chat.updateChat("You Disconnected\n");
             }
         });
+        } catch (IOException e) {
         closeAll();
+        }
     }
 
     /**
-     * 
+     * Closes all IO 
      */
     public void closeAll() {
         try {
