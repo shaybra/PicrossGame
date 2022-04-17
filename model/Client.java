@@ -54,7 +54,7 @@ public class Client {
             this.socket = socket;
             bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() { //Announce to chat UI when user is connected
                 @Override
                 public void run() {
                     chat.updateChat("Connection successful\nWelcome to our server!\nEnter'/help' for commands\n");
@@ -111,7 +111,7 @@ public class Client {
                             chat.updateChat(recievedMessage + '\n');
                         }
                     });
-                } else {
+                } else { // grabs board from server when "/get" is typed and resets timer and scored
                     boolean[][] board = new boolean[5][5];
                     String command = recievedMessage.substring(1);
                     String args[] = command.split(",");

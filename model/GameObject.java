@@ -51,7 +51,7 @@ public class GameObject {
     @Override
     public String toString() {
         String output = "`";
-        for (int i = 0; i < board.length; i++)
+        for (int i = 0; i < board.length; i++) // uploads board into a string to send over to the server
             for (int j = 0; j < board[i].length; j++)
                 output += board[i][j] + ",";
         output += score + "," + minutes + "," + seconds;

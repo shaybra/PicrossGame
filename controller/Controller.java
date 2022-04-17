@@ -233,7 +233,7 @@ public class Controller implements ActionListener {
                     }
                     break;
             }
-            if (!output.isEmpty())
+            if (!output.isEmpty()) // sends output to chat UI
                 mainFrame.getChat().updateChat("You: " + output + "\n");
         }
     }
@@ -299,7 +299,7 @@ public class Controller implements ActionListener {
     public Socket connectSocket() {
         socket = new Socket();
         try {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() { //lets user know were about to connect with there specified data
                 @Override
                 public void run() {
                     mainFrame.getChat()
@@ -307,7 +307,7 @@ public class Controller implements ActionListener {
                                     + netwokDialog.getPort() + "\n");
                 }
             });
-            socket.connect(
+            socket.connect( // Attempts to connect to server
                     new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
                     3000);
             socket.setSoTimeout(3000);
@@ -346,7 +346,7 @@ public class Controller implements ActionListener {
                         mainFrame.getMenu().connected(client != null);
                     }
                 });
-                if (client != null)
+                if (client != null) //Constantly updates chat with server and other client messages
                     try {
                         client.receiveMessage(mainFrame.getChat(), model, controller);
                     } catch (InvocationTargetException e) {
