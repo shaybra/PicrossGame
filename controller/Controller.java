@@ -165,8 +165,6 @@ public class Controller implements ActionListener {
                     client.disconnect(mainFrame.getChat());
                     break;
                 default: // grid plays with chaos
-                    String time;
-                    int timeCompare;
                     JButton button = (JButton) e.getSource();
                     boolean done = false;
                     // get the row and column of the button in the grid that was clicked
@@ -205,13 +203,12 @@ public class Controller implements ActionListener {
                             mainFrame.getFooterPanel().updateScore(24);
                             if (mainFrame.perfectGame() == 0) {
                                 if (client != null) {
-                                    time = (minutes + ":" + seconds);
-                                    timeCompare = (60 * minutes) + seconds;
                                     boolean[][] board = new boolean[5][5];
                                     for (int i = 0; i < 5; i++)
                                         for (int j = 0; j < 5; j++)
                                             board[i][j] = model.getGrid(i, j);
-                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, time, timeCompare);
+                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, minutes,
+                                            seconds);
                                     client.sendGame(game);
                                 }
                                 newGame();
@@ -219,12 +216,12 @@ public class Controller implements ActionListener {
                         } else {
                             if (mainFrame.gameOver() == 0) {
                                 if (client != null) {
-                                    time = (minutes + ":" + seconds);
                                     boolean[][] board = new boolean[5][5];
                                     for (int i = 0; i < 5; i++)
                                         for (int j = 0; j < 5; j++)
                                             board[i][j] = model.getGrid(i, j);
-                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, time);
+                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, minutes,
+                                            seconds);
                                     client.sendGame(game);
                                 }
                                 newGame();

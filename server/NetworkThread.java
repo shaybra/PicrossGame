@@ -81,20 +81,34 @@ public class NetworkThread implements Runnable {
                         broadcastMessage("Server: " + clientName + " has sent a board.");
                     }
                     score = Integer.parseInt(args[25]);
-                    time = args[26];
+                    int minutes = Integer.parseInt(args[26]);
+                    int seconds = Integer.parseInt(args[27]);
+                    time = minutes + ":" + seconds;
                     boolean isThere = false;
                     for (String s : scoreBoard)
                         if (s.contains(clientName)) {
                             isThere = true;
-                            int oldScore = Integer.parseInt(scoreBoard.get(scoreBoard.size() - 1).split(" ")[2]);
-                            String oldTime = scoreBoard.get(scoreBoard.size() - 1).split(" ")[3];
-                            if (score > oldScore || time.compareTo(oldTime) < 0) {
-                                scoreBoard.remove(scoreBoard.size() - 1);
-                                scoreBoard.add(new String(clientName + " " + time + " " + score));
+                            String[] temp = s.split(" ");
+                            int oldMinutes = Integer.parseInt(temp[2].split(":")[0]);
+                            int oldSeconds = Integer.parseInt(temp[2].split(":")[1]);
+                            int oldScore = Integer.parseInt(temp[1]);
+                            if (score > oldScore) {
+                                scoreBoard.remove(s);
+                                scoreBoard.add(new String(clientName + " " + score + " " + time));
+                            } else if (score == oldScore) {
+                                if (minutes < oldMinutes) {
+                                    scoreBoard.remove(s);
+                                    scoreBoard.add(new String(clientName + " " + score + " " + time));
+                                } else if (minutes == oldMinutes) {
+                                    if (seconds < oldSeconds) {
+                                        scoreBoard.remove(s);
+                                        scoreBoard.add(new String(clientName + " " + score + " " + time));
+                                    }
+                                }
                             }
                         }
                     if (!isThere)
-                        scoreBoard.add(clientName + " " + score + " " + time + "\n");
+                        scoreBoard.add(clientName + " " + score + " " + time);
 
                 } else
                     switch (messageFromClient) {

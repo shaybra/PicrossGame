@@ -4,14 +4,14 @@ public class GameObject {
 
     private boolean[][] board;
     private int score;
-    private String time;
-    private int timeCompare;
+    private int minutes;
+    private int seconds;
 
-    public GameObject(boolean[][] board, int score, String time, int timeCompare) {
+    public GameObject(boolean[][] board, int score, int minutes, int seconds) {
         this.board = board;
         this.score = score;
-        this.time = time;
-        this.timeCompare = timeCompare;
+        this.minutes = minutes;
+        this.seconds = seconds;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class GameObject {
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[i].length; j++)
                 output += board[i][j] + ",";
-        output += score + "," + time;
+        output += score + "," + minutes + "," + seconds;
         return output;
     }
 }
