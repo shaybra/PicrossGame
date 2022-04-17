@@ -30,7 +30,7 @@ import view.NetwokDialog;
 /**
  * Controller class for the game.
  */
-public class Controller extends SwingWorker<Void, Void> implements ActionListener {
+public class Controller implements ActionListener {
     /**
      * score of the game.
      */
@@ -71,6 +71,8 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
      * 
      */
     private Client client;
+    private BackGroundWork bgw;
+    private Controller controller = this;
 
     /**
      * Constructor for the Controller class.
@@ -154,11 +156,12 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
                     break;
                 case "Connect":
                     netwokDialog = new NetwokDialog(mainFrame);
-                    this.execute();
+                    bgw = new BackGroundWork();
+                    bgw.execute();
                     break;
                 case "Disconnect":
                     mainFrame.getMenu().connected(false);
-                    cancel(true);
+                    bgw.cancel(true);
                     client.disconnect(mainFrame.getChat());
                     break;
                 default: // grid plays with chaos
@@ -313,32 +316,36 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
     }
 
     /**
-     * @throws InterruptedException
-     * @throws InvocationTargetException
-     * 
-     */
-    @Override
-    protected Void doInBackground() throws InvocationTargetException, InterruptedException {
-        client = new Client(connectSocket(), netwokDialog.getName(), mainFrame.getChat());
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                mainFrame.getMenu().connected(client != null);
-            }
-        });
-        if (client != null)
-            client.receiveMessage(mainFrame.getChat(), model, this);
-        return null;
-    }
-
-    /**
      * 
      */
     public void close() {
-        cancel(true);
+        bgw.cancel(true);
         if (client != null)
             client.disconnect(mainFrame.getChat());
         mainFrame.dispose();
         System.exit(0);
+    }
+
+    private class BackGroundWork extends SwingWorker<Void, Void> {
+        @Override
+        protected Void doInBackground() {
+            try {
+                client = new Client(connectSocket(), netwokDialog.getName(), mainFrame.getChat());
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainFrame.getMenu().connected(client != null);
+                    }
+                });
+                if (client != null)
+                    try {
+                        client.receiveMessage(mainFrame.getChat(), model, controller);
+                    } catch (InvocationTargetException e) {
+                    }
+            } catch (InterruptedException e) {
+                return null;
+            }
+            return null;
+        }
     }
 }

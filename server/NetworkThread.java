@@ -123,6 +123,7 @@ public class NetworkThread implements Runnable {
                             out.println("/help - displays this message");
                             out.println("/name - change your name");
                             out.println("/who - list all users");
+                            out.println("/get - get the current challenge");
                             out.println("/bye - exit the chat");
                             break;
                         default:
