@@ -300,8 +300,8 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
             });
             socket.connect(
                     new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
-                    300000);
-            socket.setSoTimeout(300000);
+                    3000);
+            socket.setSoTimeout(3000);
             return socket;
         } catch (IOException e) {
             return null;
