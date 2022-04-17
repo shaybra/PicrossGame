@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import controller.Controller;
 import view.ChatFrame;
+import view.Menu;
 
 /**
  * Client is the class that handels network traffic for the client.
@@ -71,10 +72,10 @@ public class Client {
      * @param messageToSend the message to be sent to the server
      * @param chat          the chat frame where we update the chat box
      */
-    public void sendMessage(String messageToSend, ChatFrame chat) {
+    public void sendMessage(String messageToSend, ChatFrame chat, Menu menu) {
         if (out != null) {
             if ("/bye".equals(messageToSend))
-                disconnect(chat);
+                disconnect(chat, menu);
             else
                 out.println(messageToSend);
         }
@@ -141,12 +142,13 @@ public class Client {
      * 
      * @param chat the chat frame where we update the chat box
      */
-    public void disconnect(ChatFrame chat) {
+    public void disconnect(ChatFrame chat, Menu menu) {
         out.println("/bye");
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 chat.updateChat("You Disconnected\n");
+                menu.connected(false);
             }
         });
     }

@@ -117,7 +117,7 @@ public class Controller implements ActionListener {
                 case "Send": // lets grid send mail
                     output = mainFrame.getChat().getInput().getText();
                     if (!output.isEmpty() && client != null)
-                        client.sendMessage(output, mainFrame.getChat());
+                        client.sendMessage(output, mainFrame.getChat(), mainFrame.getMenu());
                     break;
                 case "New": // grid asks chaos to change the inside of his house again
                     newGame();
@@ -160,9 +160,8 @@ public class Controller implements ActionListener {
                     bgw.execute();
                     break;
                 case "Disconnect": // it cancels the background work and closes the socket
-                    mainFrame.getMenu().connected(false);
                     bgw.cancel(true);
-                    client.disconnect(mainFrame.getChat());
+                    client.disconnect(mainFrame.getChat(), mainFrame.getMenu());
                     break;
                 default: // grid plays with chaos
                     JButton button = (JButton) e.getSource();
@@ -324,7 +323,7 @@ public class Controller implements ActionListener {
     public void close() {
         bgw.cancel(true);
         if (client != null)
-            client.disconnect(mainFrame.getChat());
+            client.disconnect(mainFrame.getChat(), mainFrame.getMenu());
         mainFrame.dispose();
         System.exit(0);
     }
