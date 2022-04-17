@@ -93,7 +93,7 @@ public class NetworkThread implements Runnable {
                                 scoreBoard.add(new String(clientName + " " + time + " " + score));
                             }
                         }
-                    if (isThere)
+                    if (!isThere)
                         scoreBoard.add(clientName + " " + score + " " + time + "\n");
 
                 } else
@@ -117,7 +117,8 @@ public class NetworkThread implements Runnable {
                             break;
                         case "/get":
                             out.println("`" + currentBoard);
-                            out.println(scoreBoard);
+                            for (String s : scoreBoard)
+                                out.println(s);
                             break;
                         case "/help":
                             out.println("/help - displays this message");
