@@ -18,19 +18,20 @@ import view.ChatFrame;
  */
 public class Client {
     /**
-     * 
+     * Holds Socket Information for the Client
      */
     private Socket socket;
     /**
-     * 
+     * Holds BufferedReader Information for the Client (Input)
      */
     private BufferedReader bf;
     /**
-     * 
+     * Holds PrintWriter Information for the Client (Output)
      */
     private PrintWriter out;
     /**
-     * 
+     * Any incoming message is stored in the String to be held and used briefly to
+     * send to the chat box
      */
     private String recievedMessage;
 
@@ -83,7 +84,7 @@ public class Client {
             } catch (SocketTimeoutException se) {
                 continue;
             } catch (IOException e) {
-                continue;
+                closeAll();
             }
             if (!recievedMessage.isEmpty()) {
                 if (!recievedMessage.startsWith("`")) {
@@ -125,11 +126,10 @@ public class Client {
                 chat.updateChat("You Disconnected\n");
             }
         });
-        closeAll();
     }
 
     /**
-     * 
+     * Closes all IO
      */
     public void closeAll() {
         try {
