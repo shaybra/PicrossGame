@@ -95,7 +95,7 @@ public class Client {
      */
     public synchronized void receiveMessage(ChatFrame chat, Model model, Controller controller)
             throws InvocationTargetException, InterruptedException {
-        while (true) {
+        while (true) { //Constantly checking for messages on the Input stream, reading the bytes of data and the sending that data to the chat UI
             try {
                 recievedMessage = bf.readLine();
             } catch (SocketTimeoutException se) {
@@ -105,7 +105,7 @@ public class Client {
             }
             if (!recievedMessage.isEmpty()) {
                 if (!recievedMessage.startsWith("`")) {
-                    SwingUtilities.invokeAndWait(new Runnable() {
+                    SwingUtilities.invokeAndWait(new Runnable() { //blocks each message and sends it before moving to the next byte
                         @Override
                         public void run() {
                             chat.updateChat(recievedMessage + '\n');
@@ -148,24 +148,24 @@ public class Client {
             @Override
             public void run() {
                 chat.updateChat("You Disconnected\n");
-                menu.connected(false);
+                menu.connected(false); //set connection menu back to no connection
             }
         });
     }
 
     /**
-     * Closes all the streams and socket.
+     * Closes the BufferedReader, PrintWriter and Socket.
      */
     public void closeAll() {
         try {
             if (bf != null) {
-                bf.close();
+                bf.close(); //closes BufferedReader
             }
             if (out != null) {
-                out.close();
+                out.close(); //closes PrintWriter
             }
             if (socket != null) {
-                socket.close();
+                socket.close(); //closes socket and associated IO streams
             }
         } catch (IOException e) {
             e.printStackTrace();

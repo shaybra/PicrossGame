@@ -184,7 +184,7 @@ public class Model {
                 currentGrid[i][j] = false;
     }
 
-    public void setBoard(boolean[][] board) {
+    public void setBoard(boolean[][] board) { //
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 grid[i][j] = board[i][j];
