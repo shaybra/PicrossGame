@@ -83,6 +83,7 @@ public class NetworkThread implements Runnable {
                     score = Integer.parseInt(args[25]);
                     int minutes = Integer.parseInt(args[26]);
                     int seconds = Integer.parseInt(args[27]);
+                    int timeComp = (minutes* 60) + seconds;
                     time = minutes + ":" + seconds;
                     boolean isThere = false;
                     for (String s : scoreBoard)
@@ -91,19 +92,15 @@ public class NetworkThread implements Runnable {
                             String[] temp = s.split(" ");
                             int oldMinutes = Integer.parseInt(temp[2].split(":")[0]);
                             int oldSeconds = Integer.parseInt(temp[2].split(":")[1]);
+                            int oldTimeComp = (oldMinutes * 60) + oldSeconds;
                             int oldScore = Integer.parseInt(temp[1]);
                             if (score > oldScore) {
                                 scoreBoard.remove(s);
                                 scoreBoard.add(new String(clientName + " " + score + " " + time));
                             } else if (score == oldScore) {
-                                if (minutes < oldMinutes) {
+                                if (timeComp < oldTimeComp) {
                                     scoreBoard.remove(s);
                                     scoreBoard.add(new String(clientName + " " + score + " " + time));
-                                } else if (minutes == oldMinutes) {
-                                    if (seconds < oldSeconds) {
-                                        scoreBoard.remove(s);
-                                        scoreBoard.add(new String(clientName + " " + score + " " + time));
-                                    }
                                 }
                             }
                         }
@@ -124,19 +121,15 @@ public class NetworkThread implements Runnable {
                                     String[] temp1Time = temp1[2].split(":");
                                     int minutes1 = Integer.parseInt(temp1Time[0]);
                                     int seconds1 = Integer.parseInt(temp1Time[1]);
+                                    int timeComp1 = (minutes1 * 60) + seconds1;
                                     String[] temp2Time = temp2[2].split(":");
                                     int minutes2 = Integer.parseInt(temp2Time[0]);
                                     int seconds2 = Integer.parseInt(temp2Time[1]);
-                                    if (minutes1 < minutes2) {
+                                    int timeComp2 = (minutes2 * 60) + seconds2;
+                                    if (timeComp1 > timeComp2) {
                                         String temp = scoreBoard.get(j);
                                         scoreBoard.set(j, scoreBoard.get(j + 1));
                                         scoreBoard.set(j + 1, temp);
-                                    } else if (minutes1 == minutes2) {
-                                        if (seconds1 < seconds2) {
-                                            String temp = scoreBoard.get(j);
-                                            scoreBoard.set(j, scoreBoard.get(j + 1));
-                                            scoreBoard.set(j + 1, temp);
-                                        }
                                     }
                                 }
                             }
