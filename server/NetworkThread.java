@@ -78,14 +78,15 @@ public class NetworkThread implements Runnable {
         String messageFromClient;
         try {
             while (socket.isConnected() && in.hasNextLine()) {
-                messageFromClient = in.nextLine(); //takes from the input stream and the scanner reads the bytes
-                if (messageFromClient.startsWith("`")) {  // reads the messageFromClient and deciphers if its the object stream and parses it into its parts
+                messageFromClient = in.nextLine(); // takes from the input stream and the scanner reads the bytes
+                if (messageFromClient.startsWith("`")) { // reads the messageFromClient and deciphers if its the object
+                                                         // stream and parses it into its parts
                     String command = messageFromClient.substring(1);
                     String args[] = command.split(",");
                     String incominBoard = new String();
                     for (int i = 0; i < 25; i++)
                         incominBoard += i != 24 ? args[i] + "," : args[i];
-                    if (!incominBoard.equals(currentBoard)) { //lets server know if a new board is inbound
+                    if (!incominBoard.equals(currentBoard)) { // lets server know if a new board is inbound
                         currentBoard = incominBoard;
                         scoreBoard = new Vector<String>();
                         broadcastMessage("Server: " + clientName + " has sent a board.");
@@ -96,7 +97,7 @@ public class NetworkThread implements Runnable {
                     int timeComp = (minutes * 60) + seconds;
                     String time = minutes + ":" + seconds;
                     boolean isThere = false;
-                    for (String s : scoreBoard)  //checks all scores of user and checks if they beat there record
+                    for (String s : scoreBoard) // checks all scores of user and checks if they beat there record
                         if (s.contains(clientName)) {
                             isThere = true;
                             String[] temp = s.split(" ");
@@ -116,7 +117,8 @@ public class NetworkThread implements Runnable {
                         }
                     if (!isThere)
                         scoreBoard.add(clientName + " " + score + " " + time);
-                    if (!scoreBoard.isEmpty())  //if the scoreboard has a score of another user sorts whos at the top of the score board
+                    if (!scoreBoard.isEmpty()) // if the scoreboard has a score of another user sorts whos at the top of
+                                               // the score board
                         for (int i = 0; i < scoreBoard.size() - 1; i++)
                             for (int j = 0; j < scoreBoard.size() - 1 - i; j++) {
                                 String[] temp1 = scoreBoard.get(j).split(" ");
@@ -144,11 +146,11 @@ public class NetworkThread implements Runnable {
                                 }
                             }
                 } else
-                    switch (messageFromClient) {  // sorts proper server response to commands sent by client
-                        case "/bye": //disconnects
+                    switch (messageFromClient) { // sorts proper server response to commands sent by client
+                        case "/bye": // disconnects
                             removeNetworkThread();
                             break;
-                        case "/name": //lets client change name
+                        case "/name": // lets client change name
                             out.println("Enter your new name: ");
                             if (in.hasNextLine()) {
                                 broadcastMessage(clientName);
@@ -168,7 +170,7 @@ public class NetworkThread implements Runnable {
                             for (String s : scoreBoard)
                                 out.println(s);
                             break;
-                        case "/help": //shows all available commands
+                        case "/help": // shows all available commands
                             out.println("/help - displays this message");
                             out.println("/name - change your name");
                             out.println("/who - list all users");
@@ -176,7 +178,7 @@ public class NetworkThread implements Runnable {
                             out.println("/bye - exit the chat");
                             break;
                         default:
-                            broadcastMessage(clientName + ": " + messageFromClient); //sends messages to other clients
+                            broadcastMessage(clientName + ": " + messageFromClient); // sends messages to other clients
                             break;
                     }
             }
@@ -205,7 +207,7 @@ public class NetworkThread implements Runnable {
      */
     public synchronized void broadcastMessage(String messageToSend) {
         if (!clients.isEmpty())
-            for (NetworkThread networkThread : clients) { //sends the message to all clients who are not the sender
+            for (NetworkThread networkThread : clients) { // sends the message to all clients who are not the sender
                 if (!networkThread.clientName.equals(clientName))
                     networkThread.out.println(messageToSend);
             }
@@ -227,13 +229,13 @@ public class NetworkThread implements Runnable {
      */
     public void closeAll() {
         try {
-            if (bf != null) { //closes Scanner
+            if (in != null) { // closes Scanner
             }
             if (out != null) {
-                out.close(); //closes PrintWriter
+                out.close(); // closes PrintWriter
             }
             if (socket != null) {
-                socket.close(); //closes socket and associated IO streams
+                socket.close(); // closes socket and associated IO streams
             }
         } catch (IOException e) {
             e.printStackTrace();
