@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
+import javax.print.attribute.SupportedValuesAttribute;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -300,8 +301,8 @@ public class Controller extends SwingWorker<Void, Void> implements ActionListene
             });
             socket.connect(
                     new InetSocketAddress(InetAddress.getByName(netwokDialog.getAddress()), netwokDialog.getPort()),
-                    300000);
-            socket.setSoTimeout(300000);
+                    3000);
+            socket.setSoTimeout(3000);
             return socket;
         } catch (IOException e) {
             return null;

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import javax.swing.SwingUtilities;
 
@@ -78,8 +79,10 @@ public class Client {
         while (true) {
             try {
                 recievedMessage = bf.readLine();
+            } catch (SocketTimeoutException se) {
+                continue;
             } catch (IOException e) {
-                e.printStackTrace();
+                continue;
             }
             if (!recievedMessage.isEmpty()) {
                 if (!recievedMessage.startsWith("`")) {

@@ -82,7 +82,6 @@ public class NetworkThread implements Runnable {
                     }
                     score = Integer.parseInt(args[25]);
                     time = messageFromClient.substring(26);
-                    // if clientName is already in the scoreBoard, update the time and score
                     if (scoreBoard.contains(clientName)) {
                         int index = scoreBoard.indexOf(clientName);
                         if (time.compareTo(scoreBoard.substring(index + clientName.length() + 1,
