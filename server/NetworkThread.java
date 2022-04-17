@@ -169,19 +169,27 @@ public class NetworkThread implements Runnable {
     /**
      * 
      */
-    public synchronized void broadcastMessage(String messageToSend) throws IOException {
+    public synchronized void broadcastMessage(String messageToSend) {
+        try{
         if (!clients.isEmpty())
             for (NetworkThread networkThread : clients) {
                 if (!networkThread.clientName.equals(clientName))
                     networkThread.out.println(messageToSend);
             }
+        } catch (IOException e) {
+            closeAll();
+        }
     }
 
     /**
      * 
      */
-    public synchronized void removeNetworkThread() throws IOException {
-        broadcastMessage("Server: " + clientName + " has disconnected!");
+    public synchronized void removeNetworkThread() {
+        try{
+            broadcastMessage("Server: " + clientName + " has disconnected!");
+        } catch(IOException e){
+            closeAll();
+        }
         System.out.println(clientName + " has disconnected!");
         closeAll();
         clients.remove(this);
