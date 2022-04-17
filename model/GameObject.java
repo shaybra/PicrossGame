@@ -5,11 +5,13 @@ public class GameObject {
     private boolean[][] board;
     private int score;
     private String time;
+    private int timeCompare;
 
-    public GameObject(boolean[][] board, int score, String time) {
+    public GameObject(boolean[][] board, int score, String time, int timeCompare) {
         this.board = board;
         this.score = score;
         this.time = time;
+        this.timeCompare = timeCompare;
     }
 
     @Override
