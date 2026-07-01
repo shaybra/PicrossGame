@@ -9,7 +9,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -26,10 +25,6 @@ public class TopPanel extends JPanel {
      * JLabel array that contains the hints.
      */
     private JLabel hints[][] = new JLabel[3][5];
-    /**
-     * Random object used to generate random hints.
-     */
-    private Random rand = new Random();
 
     /**
      * Constructor for TopPanel.
@@ -46,8 +41,7 @@ public class TopPanel extends JPanel {
         hintsPanel.setLayout(new GridLayout(3, 5));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
-                int number = rand.nextInt(6);
-                hints[i][j] = number != 0 ? new JLabel(new StringBuilder().append(number).toString()) : new JLabel();
+                hints[i][j] = new JLabel(); // starts empty, real hints are generated with the first game
                 hints[i][j].setForeground(new Color(0xFFFFFF));
                 hints[i][j].setHorizontalAlignment(SwingConstants.CENTER);
                 hints[i][j].setVerticalAlignment(SwingConstants.CENTER);

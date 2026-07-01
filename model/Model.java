@@ -83,16 +83,12 @@ public class Model {
      * @return true if the game is done, false otherwise.
      */
     public boolean updateCurrentGrid(int x, int y) {
-        boolean done = true; // grid almost all the time says annoyingly "are we done yet?"
         currentGrid[x][y] = true;
         for (int i = 0; i < 5; i++) // grid checking each part of his house after chaos is done
             for (int j = 0; j < 5; j++)
-                if (grid[i][j])
-                    if (!currentGrid[i][j]) {
-                        done = false;
-                        break;
-                    }
-        return done; // chaos lets grid know if hes looked at the whole house yet
+                if (grid[i][j] && !currentGrid[i][j])
+                    return false;
+        return true; // chaos lets grid know if hes looked at the whole house yet
     }
 
     /**
@@ -101,21 +97,18 @@ public class Model {
      * @return true if the game was perfect, false otherwise.
      */
     public boolean isPerfectGame() {
-        boolean perfect = true;
         for (int i = 0; i < 5; i++) // sometimes afer guessing based of chaos's clues he manages to perfectly
                                     // describe the new house set up
             for (int j = 0; j < 5; j++)
-                if (grid[i][j] != currentGrid[i][j]) {
-                    perfect = false;
-                    break;
-                }
-        return perfect;
+                if (grid[i][j] != currentGrid[i][j])
+                    return false;
+        return true;
     }
 
     /**
-     * Gets the {@link #grid}.
-     * 
-     * @return the {@link #grid}.
+     * Gets the {@link #isMark} flag.
+     *
+     * @return true if the user is in mark mode, false otherwise.
      */
     public boolean getIsMark() {
         return isMark; // Lets grid know if mark is around
@@ -143,9 +136,7 @@ public class Model {
                 }
             }
 
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                currentGrid[i][j] = false;
+        resetCurrentGrid();
     }
 
     /**
@@ -156,9 +147,7 @@ public class Model {
             for (int j = 0; j < 5; j++)
                 grid[i][j] = false;
 
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                currentGrid[i][j] = false;
+        resetCurrentGrid();
     }
 
     /**
@@ -179,9 +168,7 @@ public class Model {
                     grid[i][j] = false;
             }
 
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                currentGrid[i][j] = false;
+        resetCurrentGrid();
     }
 
     public void setBoard(boolean[][] board) { //A house sent by a friend for grid to try

@@ -49,21 +49,24 @@ public class Client {
      * @param username  the usernamme of the client
      * @param ChatFrame the chat frame of the user where we update the chat box
      */
-    public Client(Socket socket, String username, ChatFrame chat) {
+    public Client(Socket socket, String username, ChatFrame chat) throws IOException {
+        if (socket == null)
+            throw new IOException("No connection to the server was made");
         try {
             this.socket = socket;
             bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            SwingUtilities.invokeLater(new Runnable() { //Announce to chat UI when user is connected
-                @Override
-                public void run() {
-                    chat.updateChat("Connection successful\nWelcome to our server!\nEnter'/help' for commands\n");
-                }
-            });
-            out.println(username);
         } catch (IOException e) {
             closeAll();
+            throw e;
         }
+        SwingUtilities.invokeLater(new Runnable() { //Announce to chat UI when user is connected
+            @Override
+            public void run() {
+                chat.updateChat("Connection successful\nWelcome to our server!\nEnter'/help' for commands\n");
+            }
+        });
+        out.println(username);
     }
 
     /**
@@ -100,8 +103,13 @@ public class Client {
                 recievedMessage = bf.readLine();
             } catch (SocketTimeoutException se) {
                 continue;
-            } catch (IOException e) {
+            } catch (IOException e) { //the connection was closed, stop listening
                 closeAll();
+                return;
+            }
+            if (recievedMessage == null) { //the server closed the connection, stop listening
+                closeAll();
+                return;
             }
             if (!recievedMessage.isEmpty()) {
                 if (!recievedMessage.startsWith("`")) {
@@ -134,7 +142,8 @@ public class Client {
      * @param game the gameboard to be sent
      */
     public void sendGame(GameObject game) {
-        out.println(game.toString());
+        if (out != null)
+            out.println(game.toString());
     }
 
     /**
@@ -143,7 +152,9 @@ public class Client {
      * @param chat the chat frame where we update the chat box
      */
     public void disconnect(ChatFrame chat, Menu menu) {
-        out.println("/bye");
+        if (out != null)
+            out.println("/bye");
+        closeAll(); //also makes the listening thread stop
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
