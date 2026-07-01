@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -156,12 +155,16 @@ public class Controller implements ActionListener {
                     break;
                 case "Connect": // once connected it executes the blocking background work on a diffrent thread
                     netwokDialog = new NetwokDialog(mainFrame);
-                    bgw = new BackGroundWork();
-                    bgw.execute();
+                    if (netwokDialog.pressedConnect()) {
+                        bgw = new BackGroundWork();
+                        bgw.execute();
+                    }
                     break;
                 case "Disconnect": // it cancels the background work and closes the socket
-                    bgw.cancel(true);
-                    client.disconnect(mainFrame.getChat(), mainFrame.getMenu());
+                    if (bgw != null)
+                        bgw.cancel(true);
+                    if (client != null)
+                        client.disconnect(mainFrame.getChat(), mainFrame.getMenu());
                     break;
                 default: // grid plays with chaos
                     JButton button = (JButton) e.getSource();
@@ -201,32 +204,12 @@ public class Controller implements ActionListener {
                         if (model.isPerfectGame() || score == 25) {
                             mainFrame.getFooterPanel().updateScore(24);
                             if (mainFrame.perfectGame() == 0) {
-                                // if the user clicks yes in the dialog box it sends the game board to the
-                                // server along with the score and time
-                                if (client != null) {
-                                    boolean[][] board = new boolean[5][5];
-                                    for (int i = 0; i < 5; i++)
-                                        for (int j = 0; j < 5; j++)
-                                            board[i][j] = model.getGrid(i, j);
-                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, minutes,
-                                            seconds);
-                                    client.sendGame(game);
-                                }
+                                sendGameToServer();
                                 newGame();
                             }
                         } else {
                             if (mainFrame.gameOver() == 0) {
-                                // if the user clicks yes in the dialog box it sends the game board to the
-                                // server along with the score and time
-                                if (client != null) {
-                                    boolean[][] board = new boolean[5][5];
-                                    for (int i = 0; i < 5; i++)
-                                        for (int j = 0; j < 5; j++)
-                                            board[i][j] = model.getGrid(i, j);
-                                    GameObject game = new GameObject(Arrays.copyOf(board, board.length), score, minutes,
-                                            seconds);
-                                    client.sendGame(game);
-                                }
+                                sendGameToServer();
                                 newGame();
                             }
                         }
@@ -235,6 +218,20 @@ public class Controller implements ActionListener {
             }
             if (!output.isEmpty()) // sends output to chat UI
                 mainFrame.getChat().updateChat("You: " + output + "\n");
+        }
+    }
+
+    /**
+     * If the user clicks yes in the game over/winner dialog box this sends the
+     * game board to the server along with the score and time.
+     */
+    private void sendGameToServer() {
+        if (client != null) {
+            boolean[][] board = new boolean[5][5];
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
+                    board[i][j] = model.getGrid(i, j);
+            client.sendGame(new GameObject(board, score, minutes, seconds));
         }
     }
 
@@ -321,7 +318,8 @@ public class Controller implements ActionListener {
      * Closes up the game.
      */
     public void close() {
-        bgw.cancel(true);
+        if (bgw != null)
+            bgw.cancel(true);
         if (client != null)
             client.disconnect(mainFrame.getChat(), mainFrame.getMenu());
         mainFrame.dispose();
@@ -340,20 +338,28 @@ public class Controller implements ActionListener {
         protected Void doInBackground() {
             try {
                 client = new Client(connectSocket(), netwokDialog.getName(), mainFrame.getChat());
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainFrame.getMenu().connected(client != null);
-                    }
-                });
-                if (client != null) //Constantly updates chat with server and other client messages
-                    try {
-                        client.receiveMessage(mainFrame.getChat(), model, controller);
-                    } catch (InvocationTargetException e) {
-                    }
-            } catch (InterruptedException e) {
-                return null;
+            } catch (IOException e) { // connection failed, let the user know
+                client = null;
             }
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (client == null)
+                        mainFrame.getChat().updateChat("Connection failed\n");
+                    mainFrame.getMenu().connected(client != null);
+                }
+            });
+            if (client != null) //Constantly updates chat with server and other client messages
+                try {
+                    client.receiveMessage(mainFrame.getChat(), model, controller);
+                    SwingUtilities.invokeLater(new Runnable() { //server closed the connection
+                        @Override
+                        public void run() {
+                            mainFrame.getMenu().connected(false);
+                        }
+                    });
+                } catch (InvocationTargetException | InterruptedException e) {
+                }
             return null;
         }
     }

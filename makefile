@@ -1,4 +1,5 @@
 JAVAC = javac
+JAVA = java
 
 JAVA_FILES = $(wildcard *.java controller/*.java model/*.java view/*.java server/*.java)
 
@@ -12,5 +13,13 @@ $(BUILD_DIR)/%.class: %.java
 	mkdir -p $(@D)
 	$(JAVAC) -d $(BUILD_DIR) $<
 
+run: all
+	$(JAVA) -cp $(BUILD_DIR) Game
+
+server: all
+	$(JAVA) -cp $(BUILD_DIR) PiccrossServer $(PORT)
+
 clean:
 	rm -rf $(BUILD_DIR)
+
+.PHONY: all run server clean

@@ -6,7 +6,7 @@
 */
 package view;
 
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -60,7 +60,7 @@ public class Menu extends JMenuBar {
         menuItem = new JMenuItem("New", new ImageIcon("images/New.gif"));
         menuItem.setActionCommand("New");
         menuItem.addActionListener(controller);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("New Game");
         menu.add(menuItem);
 
@@ -120,7 +120,7 @@ public class Menu extends JMenuBar {
         // solution menu item
         menuItem = new JMenuItem("Solution", new ImageIcon("images/Solution.gif"));
         menuItem.setActionCommand("Solution");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Show the solution");
         menuItem.addActionListener(controller);
         menu.add(menuItem);

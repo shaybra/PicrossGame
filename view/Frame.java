@@ -109,8 +109,8 @@ public class Frame extends JFrame {
             }
         });
 
-        setVisible(true);
         pack();
+        setVisible(true);
     }
 
     /**

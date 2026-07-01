@@ -53,15 +53,18 @@ public class SplashScreen extends JWindow {
 
         }
 
+        if (image == null) // skip the splash screen if the image could not be loaded
+            return;
+
         int width = image.getWidth();
-        int height = image.getHeight(); 
+        int height = image.getHeight();
 
         int x = (screen.width-width)/2;
         int y = (screen.height-height)/2;
 
         setBounds(x,y,width,height);
-        
-        JLabel label = new JLabel(new ImageIcon(getClass().getResource("/images/SplashScreen.png")));
+
+        JLabel label = new JLabel(new ImageIcon(image));
         label.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 

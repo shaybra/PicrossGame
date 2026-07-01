@@ -149,7 +149,7 @@ public class NetworkThread implements Runnable {
                     switch (messageFromClient) { // sorts proper server response to commands sent by client
                         case "/bye": // disconnects
                             removeNetworkThread();
-                            break;
+                            return;
                         case "/name": // lets client change name
                             out.println("Enter your new name: ");
                             if (in.hasNextLine()) {
@@ -208,7 +208,7 @@ public class NetworkThread implements Runnable {
     public synchronized void broadcastMessage(String messageToSend) {
         if (!clients.isEmpty())
             for (NetworkThread networkThread : clients) { // sends the message to all clients who are not the sender
-                if (!networkThread.clientName.equals(clientName))
+                if (networkThread != this)
                     networkThread.out.println(messageToSend);
             }
     }
@@ -229,7 +229,8 @@ public class NetworkThread implements Runnable {
      */
     public void closeAll() {
         try {
-            if (in != null) { // closes Scanner
+            if (in != null) {
+                in.close(); // closes Scanner
             }
             if (out != null) {
                 out.close(); // closes PrintWriter

@@ -42,8 +42,10 @@ public class PiccrossServer {
      * makes a new thread for the client handler.
      */
     public void startServer() {
+        if (serverSocket == null) // the server socket could not be opened
+            return;
         try {
-            while (!serverSocket.isClosed()) { 
+            while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 NetworkThread networkThread = new NetworkThread(socket);
                 Thread thread = new Thread(networkThread);
@@ -55,18 +57,23 @@ public class PiccrossServer {
 
     /**
      * The main method for the server.
-     * 
+     *
      * @param args the port to host the server on
      */
     public static void main(String[] args) {
-        if (args.length == 0 || Integer.parseInt(args[0]) <= 0 || Integer.parseInt(args[0]) >= 65536) { //determise the port the server is to connect to and starts the server
-            if (args.length != 0) // will set server to default
+        int port = 61001; // default port
+        if (args.length != 0) { //determines the port the server is to connect to and starts the server
+            try {
+                int requested = Integer.parseInt(args[0]);
+                if (requested > 0 && requested < 65536) // will set server to specified
+                    port = requested;
+                else // will set server to default
+                    System.out.println("ERROR: Invalid port number: " + args[0]);
+            } catch (NumberFormatException e) { // will set server to default
                 System.out.println("ERROR: Invalid port number: " + args[0]);
-            PiccrossServer server = new PiccrossServer(61001);
-            server.startServer();
-        } else { // will set server to specified
-            PiccrossServer server = new PiccrossServer(Integer.parseInt(args[0]));
-            server.startServer();
+            }
         }
+        PiccrossServer server = new PiccrossServer(port);
+        server.startServer();
     }
 }
